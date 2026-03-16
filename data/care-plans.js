@@ -283,7 +283,7 @@ const CARE_PLANS = {
       { time: "16:00", icon: "🏃", task: "자유 시간 (안전한 공간)", detail: "탈출하지 못하게 페렛 프루핑 확인" },
     ],
     evening: [
-      { time:="19:00", icon: "🎯", task: "트릭 훈련 (10분)", detail: "긍정 강화 훈련, 간식 활용" },
+      { time: "19:00", icon: "🎯", task: "트릭 훈련 (10분)", detail: "긍정 강화 훈련, 간식 활용" },
       { time: "20:00", icon: "🛁", task: "주 1회 목욕 확인", detail: "너무 자주 씻기면 피부 건조해져요" },
       { time: "21:00", icon: "🌙", task: "취침 준비", detail: "해먹이나 수면 공간 확인" },
     ],

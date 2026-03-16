@@ -10,8 +10,8 @@
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/style.css" />
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐾</text></svg>" />
-  <!-- Supabase JS SDK via CDN -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <!-- Supabase JS SDK via CDN — 버전 고정 -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
   <style>
     .tool-hero { background: linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%); padding: 60px 20px 50px; text-align: center; }
     .tool-hero h1 { font-size: clamp(1.8rem,4vw,2.8rem); font-weight: 900; color: white; margin-bottom: 12px; }
@@ -175,14 +175,20 @@
   <script src="js/supabase-config.js"></script>
   <script>
     // ─── Supabase 초기화 ───────────────────────────────────────────
-    let supabase = null;
+    // window.supabase = SDK 라이브러리, db = 클라이언트 인스턴스 (이름 분리)
+    let db = null;
     try {
       if (typeof SUPABASE_URL !== 'undefined' && SUPABASE_URL && SUPABASE_URL !== 'YOUR_SUPABASE_URL') {
-        supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        const supabaseLib = window.supabase;
+        if (!supabaseLib || !supabaseLib.createClient) throw new Error('Supabase SDK 로드 실패');
+        db = supabaseLib.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        console.log('✅ Supabase 연결됨:', SUPABASE_URL);
       } else {
+        console.warn('⚠️ Supabase URL 미설정 — 데모 모드');
         document.getElementById('setup-notice').style.display = 'block';
       }
     } catch(e) {
+      console.error('❌ Supabase 초기화 실패:', e);
       document.getElementById('setup-notice').style.display = 'block';
     }
 
@@ -226,20 +232,24 @@
     }
 
     async function loadPosts() {
-      if (!supabase) {
+      if (!db) {
         renderDemoPosts();
         return;
       }
       try {
-        const { data, error } = await supabase
+        const { data, error } = await db
           .from('pet_results_shares')
           .select('*')
+          .eq('is_hidden', false)
           .order('created_at', { ascending: false })
           .limit(50);
         if (error) throw error;
         allPosts = data || [];
+        console.log('✅ 게시글 로드:', allPosts.length, '개');
         renderPosts();
       } catch(e) {
+        console.error('❌ 게시글 로드 실패:', e.message);
+        showError('게시글을 불러오지 못했어요: ' + e.message);
         renderDemoPosts();
       }
     }
@@ -309,16 +319,19 @@
 
       const newPost = { id: Date.now(), nickname, top_pet, percentage, message, created_at: new Date().toISOString(), likes: 0 };
 
-      if (supabase) {
+      if (db) {
         try {
-          const { data, error } = await supabase
+          const { data, error } = await db
             .from('pet_results_shares')
             .insert([{ nickname, top_pet, percentage, message, likes: 0 }])
             .select();
           if (error) throw error;
           if (data && data[0]) newPost.id = data[0].id;
+          console.log('✅ 게시글 저장 완료');
         } catch(e) {
-          console.error(e);
+          console.error('❌ 게시글 저장 실패:', e.message);
+          showError('저장 실패: ' + e.message);
+          return;
         }
       }
 
@@ -338,9 +351,16 @@
       const post = allPosts.find(p => p.id === id);
       if (post) post.likes = newCount;
 
-      if (supabase) {
-        await supabase.from('pet_results_shares').update({ likes: newCount }).eq('id', id);
+      if (db) {
+        const { error } = await db.from('pet_results_shares').update({ likes: newCount }).eq('id', id);
+        if (error) console.error('❌ 좋아요 저장 실패:', error.message);
       }
+    }
+
+    function showError(msg) {
+      const notice = document.getElementById('setup-notice');
+      notice.style.display = 'block';
+      notice.innerHTML = `<h4>❌ 오류 발생</h4><p>${msg}</p><p style="margin-top:8px;font-size:0.82rem;">브라우저 개발자도구(F12) → Console 탭에서 자세한 내용 확인하세요</p>`;
     }
 
     function showToast(msg) {
