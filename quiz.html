@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>테스트 시작 — YourAnimal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐾</text></svg>" />
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="site-header">
+    <div class="container">
+      <div class="header-inner">
+        <a href="index.html" class="logo">
+          <span class="logo-emoji">🐾</span>
+          YourAnimal
+        </a>
+        <span id="header-progress" style="font-size:0.88rem;color:var(--text-muted);font-weight:600;"></span>
+      </div>
+    </div>
+  </header>
+
+  <!-- QUIZ -->
+  <main class="quiz-page">
+    <div class="container">
+
+      <!-- Quiz Header -->
+      <div class="quiz-header">
+        <h1>나에게 맞는 반려동물 찾기</h1>
+        <p>솔직하게 답할수록 더 정확한 결과를 드려요</p>
+      </div>
+
+      <!-- Progress -->
+      <div class="progress-wrap">
+        <div class="progress-meta">
+          <span id="progress-label">1 / 25</span>
+          <span id="progress-cat" class="question-category cat-lifestyle">라이프스타일</span>
+        </div>
+        <div class="progress-bar-bg">
+          <div class="progress-bar-fill" id="progress-fill" style="width:4%"></div>
+        </div>
+      </div>
+
+      <!-- Question -->
+      <div class="question-card" id="question-card">
+        <div id="q-number" class="question-number">Q1</div>
+        <div id="q-text" class="question-text"></div>
+        <div class="options-list" id="options-list"></div>
+        <div class="question-nav">
+          <button class="btn-prev" id="btn-prev" onclick="prevQuestion()" disabled>← 이전</button>
+          <button class="btn-next" id="btn-next" onclick="nextQuestion()" disabled>다음 →</button>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <script src="data/questions.js"></script>
+  <script src="data/pets.js"></script>
+  <script src="js/scoring.js"></script>
+  <script>
+    const CATEGORY_LABELS = {
+      lifestyle: { label: '라이프스타일', cls: 'cat-lifestyle' },
+      personality: { label: '성격 & 취향', cls: 'cat-personality' },
+      practical: { label: '현실적 고려', cls: 'cat-practical' },
+      preference: { label: '반려동물 선호', cls: 'cat-preference' },
+      commitment: { label: '책임과 헌신', cls: 'cat-commitment' },
+    };
+
+    let current = 0;
+    let answers = new Array(QUESTIONS.length).fill(null);
+
+    function renderQuestion() {
+      const q = QUESTIONS[current];
+      const total = QUESTIONS.length;
+      const pct = Math.max(4, Math.round(((current + 1) / total) * 100));
+      const cat = CATEGORY_LABELS[q.category];
+
+      // Progress
+      document.getElementById('progress-fill').style.width = pct + '%';
+      document.getElementById('progress-label').textContent = `${current + 1} / ${total}`;
+      document.getElementById('header-progress').textContent = `${current + 1} / ${total}`;
+      const catEl = document.getElementById('progress-cat');
+      catEl.textContent = cat.label;
+      catEl.className = 'question-category ' + cat.cls;
+
+      // Question
+      document.getElementById('q-number').textContent = `Q${q.id}`;
+      document.getElementById('q-text').textContent = q.question;
+
+      // Options
+      const list = document.getElementById('options-list');
+      list.innerHTML = '';
+      const markers = ['A', 'B', 'C', 'D'];
+      q.options.forEach((opt, i) => {
+        const btn = document.createElement('button');
+        btn.className = 'option-btn' + (answers[current] === i ? ' selected' : '');
+        btn.innerHTML = `<div class="option-marker">${markers[i]}</div><span>${opt.text}</span>`;
+        btn.addEventListener('click', () => selectOption(i));
+        list.appendChild(btn);
+      });
+
+      // Nav
+      document.getElementById('btn-prev').disabled = current === 0;
+      document.getElementById('btn-next').disabled = answers[current] === null;
+      document.getElementById('btn-next').textContent =
+        current === QUESTIONS.length - 1 ? '결과 보기 🎉' : '다음 →';
+
+      // Animate card
+      const card = document.getElementById('question-card');
+      card.style.animation = 'none';
+      card.offsetHeight; // reflow
+      card.style.animation = 'fadeSlideIn 0.35s ease';
+    }
+
+    function selectOption(idx) {
+      answers[current] = idx;
+      document.querySelectorAll('.option-btn').forEach((btn, i) => {
+        btn.classList.toggle('selected', i === idx);
+      });
+      document.getElementById('btn-next').disabled = false;
+
+      // Auto-advance after brief delay
+      setTimeout(() => {
+        if (answers[current] !== null) nextQuestion();
+      }, 350);
+    }
+
+    function nextQuestion() {
+      if (answers[current] === null) return;
+      if (current === QUESTIONS.length - 1) {
+        submitQuiz();
+        return;
+      }
+      current++;
+      renderQuestion();
+    }
+
+    function prevQuestion() {
+      if (current === 0) return;
+      current--;
+      renderQuestion();
+    }
+
+    function submitQuiz() {
+      // Build answers array for scoring
+      const answerData = answers.map((optIdx, i) => ({
+        questionId: QUESTIONS[i].id,
+        optionIndex: optIdx
+      }));
+
+      // Show loading
+      showLoading(() => {
+        const results = calculateResults(answerData);
+        sessionStorage.setItem('quizResults', JSON.stringify(results));
+        sessionStorage.setItem('quizAnswers', JSON.stringify(answerData));
+        window.location.href = 'results.html';
+      });
+    }
+
+    function showLoading(callback) {
+      const overlay = document.createElement('div');
+      overlay.className = 'loading-screen';
+      overlay.innerHTML = `
+        <div class="loading-emoji">🔍</div>
+        <div class="loading-text">당신의 반려동물 파트너를 찾는 중...</div>
+        <div class="loading-sub">25개의 답변을 분석하고 있어요</div>
+        <div class="loading-bar-bg">
+          <div class="loading-bar-fill"></div>
+        </div>
+      `;
+      document.body.appendChild(overlay);
+      setTimeout(callback, 2600);
+    }
+
+    // Init
+    renderQuestion();
+  </script>
+</body>
+</html>

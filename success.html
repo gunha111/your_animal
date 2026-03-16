@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>결제 완료 — YourAnimal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐾</text></svg>" />
+</head>
+<body>
+  <main class="success-page">
+    <div class="success-card">
+      <div class="success-icon">🎉</div>
+      <h1>결제가 완료됐어요!</h1>
+      <p>TOP 5 전체 결과가 잠금 해제됐어요.<br/>당신의 모든 반려동물 매칭 결과를 확인해보세요!</p>
+      <button class="go-results-btn" onclick="goResults()">전체 결과 보기 →</button>
+    </div>
+  </main>
+  <script>
+    function goResults() {
+      sessionStorage.setItem('unlocked', '1');
+      window.location.href = 'results.html?unlocked=1';
+    }
+    // Auto-redirect after 3s
+    setTimeout(goResults, 3000);
+  </script>
+</body>
+</html>

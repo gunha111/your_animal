@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>결과 — YourAnimal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐾</text></svg>" />
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="site-header">
+    <div class="container">
+      <div class="header-inner">
+        <a href="index.html" class="logo">
+          <span class="logo-emoji">🐾</span>
+          YourAnimal
+        </a>
+        <button class="retake-btn" onclick="retakeQuiz()" style="padding:8px 20px;font-size:0.85rem;">다시 하기</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- RESULTS -->
+  <main class="results-page">
+    <div class="container" id="results-container">
+      <!-- Rendered by JS -->
+    </div>
+  </main>
+
+  <!-- TOAST -->
+  <div class="toast" id="toast"></div>
+
+  <script src="data/questions.js"></script>
+  <script src="data/pets.js"></script>
+  <script src="js/scoring.js"></script>
+  <script>
+    // Stripe Payment Link — replace with your own
+    // Create a $2.99 product in Stripe Dashboard → Payment Links
+    // Add ?success_url=https://yourdomain.com/results.html?unlocked=1
+    const STRIPE_PAYMENT_LINK = 'https://buy.stripe.com/YOUR_PAYMENT_LINK_HERE';
+
+    const results = JSON.parse(sessionStorage.getItem('quizResults') || 'null');
+    const urlParams = new URLSearchParams(window.location.search);
+    const isUnlocked = urlParams.get('unlocked') === '1' || sessionStorage.getItem('unlocked') === '1';
+
+    if (isUnlocked) sessionStorage.setItem('unlocked', '1');
+
+    function retakeQuiz() {
+      sessionStorage.removeItem('quizResults');
+      sessionStorage.removeItem('quizAnswers');
+      sessionStorage.removeItem('unlocked');
+      window.location.href = 'quiz.html';
+    }
+
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      toast.textContent = msg;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 3000);
+    }
+
+    function copyLink() {
+      navigator.clipboard.writeText(window.location.origin + '/quiz.html')
+        .then(() => showToast('링크가 복사되었어요!'))
+        .catch(() => showToast('복사에 실패했어요. 직접 URL을 복사해주세요.'));
+    }
+
+    function shareTwitter(petName, pct) {
+      const text = encodeURIComponent(`나의 반려동물 성향 테스트 결과: ${petName}와 ${pct}% 매칭! 🐾 당신도 테스트해보세요 → `);
+      const url = encodeURIComponent(window.location.origin + '/quiz.html');
+      window.open(`https://twitter.com/intent/tweet?text=${text}${url}`, '_blank');
+    }
+
+    function openPayment() {
+      // Pass success URL with unlocked=1 param
+      const successUrl = encodeURIComponent(window.location.origin + '/results.html?unlocked=1');
+      window.location.href = STRIPE_PAYMENT_LINK + '?success_url=' + successUrl;
+    }
+
+    function render() {
+      const container = document.getElementById('results-container');
+
+      if (!results || results.length === 0) {
+        container.innerHTML = `
+          <div style="text-align:center;padding:80px 20px;">
+            <div style="font-size:4rem;margin-bottom:16px;">😕</div>
+            <h2 style="margin-bottom:12px;">결과를 찾을 수 없어요</h2>
+            <p style="color:var(--text-muted);margin-bottom:28px;">테스트를 먼저 완료해주세요!</p>
+            <a href="quiz.html" class="cta-btn">테스트 시작하기 →</a>
+          </div>
+        `;
+        return;
+      }
+
+      const top5 = results.slice(0, 5);
+      const winner = top5[0];
+      const pet = PETS[winner.pet];
+      const matchInfo = getMatchLabel(winner.percentage);
+
+      container.innerHTML = `
+        <!-- Header -->
+        <div class="results-header">
+          <div class="trophy">🏆</div>
+          <h1>당신의 반려동물 매칭 결과</h1>
+          <p>25개 질문을 분석한 결과예요!</p>
+        </div>
+
+        <!-- Winner Card -->
+        <div class="winner-card">
+          <div class="winner-ribbon">BEST MATCH</div>
+
+          <div class="winner-top">
+            <div class="winner-emoji-wrap">${pet.emoji}</div>
+            <div class="winner-info">
+              <div class="match-badge">${matchInfo.label}</div>
+              <h2>${pet.name}</h2>
+              <p class="tagline">${pet.tagline}</p>
+            </div>
+          </div>
+
+          <div class="match-bar-wrap">
+            <div class="match-bar-label">
+              <span>매칭 점수</span>
+              <span class="pct">${winner.percentage}%</span>
+            </div>
+            <div class="match-bar-bg">
+              <div class="match-bar-fill" id="winner-bar" style="width:0%"></div>
+            </div>
+          </div>
+
+          <p class="winner-desc">${pet.description}</p>
+
+          <div class="traits-wrap">
+            ${pet.traits.map(t => `<span class="trait-tag">${t}</span>`).join('')}
+          </div>
+
+          <div class="compat-list">
+            ${pet.compatibility_points.map(p => `
+              <div class="compat-item">
+                <span class="compat-icon">✓</span>
+                <span>${p}</span>
+              </div>
+            `).join('')}
+          </div>
+
+          <div class="fun-fact-box">
+            <strong>💡 알고 계셨나요?</strong>
+            ${pet.fun_fact}
+          </div>
+
+          <div class="meta-grid">
+            <div class="meta-item">
+              <div class="meta-label">케어 난이도</div>
+              <div class="meta-val">${pet.care_level}</div>
+            </div>
+            <div class="meta-item">
+              <div class="meta-label">필요 공간</div>
+              <div class="meta-val">${pet.space_needed}</div>
+            </div>
+            <div class="meta-item">
+              <div class="meta-label">수명</div>
+              <div class="meta-val">${pet.lifespan}</div>
+            </div>
+          </div>
+
+          <!-- Share -->
+          <div class="share-section">
+            <div class="share-label">이 결과 공유하기</div>
+            <div class="share-btns">
+              <button class="share-btn share-twitter" onclick="shareTwitter('${pet.name}', ${winner.percentage})">𝕏 트위터</button>
+              <button class="share-btn share-copy" onclick="copyLink()">🔗 링크 복사</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Paywall or Unlocked -->
+        ${isUnlocked ? renderUnlocked(top5) : renderPaywall(top5)}
+
+        <!-- Retake -->
+        <div class="retake-section">
+          <button class="retake-btn" onclick="retakeQuiz()">🔄 테스트 다시 하기</button>
+        </div>
+      `;
+
+      // Animate bar
+      setTimeout(() => {
+        document.getElementById('winner-bar').style.width = winner.percentage + '%';
+      }, 300);
+
+      // Animate result bars if unlocked
+      if (isUnlocked) {
+        setTimeout(() => {
+          document.querySelectorAll('[data-pct]').forEach(el => {
+            el.style.width = el.dataset.pct + '%';
+          });
+        }, 400);
+      }
+    }
+
+    function renderPaywall(top5) {
+      const ranks = ['#2', '#3', '#4', '#5'];
+      return `
+        <div class="paywall-section">
+          <div class="paywall-bg"></div>
+          <div class="paywall-title">🔒 나머지 TOP 4 결과도 궁금하지 않으세요?</div>
+          <p class="paywall-sub">당신과 잘 맞는 반려동물이 더 있을 수도 있어요. 전체 결과를 확인해보세요!</p>
+
+          <div class="locked-pets-grid">
+            ${top5.slice(1).map((r, i) => {
+              const p = PETS[r.pet];
+              return `
+                <div class="locked-pet-card">
+                  <div class="locked-pet-rank">${ranks[i]}</div>
+                  <div class="locked-pet-emoji">${p.emoji}</div>
+                  <div class="locked-pet-info">
+                    <div class="locked-pet-name">${p.name}</div>
+                    <div class="locked-pct">${r.percentage}% 매칭</div>
+                  </div>
+                  <div class="locked-overlay">🔒</div>
+                </div>
+              `;
+            }).join('')}
+          </div>
+
+          <div class="price-highlight">$2.99 <span>일회성 결제</span></div>
+          <p class="price-note">TOP 2~5 결과 + 각 반려동물 상세 분석 + 케어 가이드</p>
+
+          <button class="unlock-btn" onclick="openPayment()">
+            🔓 전체 결과 잠금 해제하기
+          </button>
+
+          <div class="unlock-features">
+            <span>🔐 안전한 결제</span>
+            <span>⚡ 즉시 확인</span>
+            <span>💳 카드/페이팔 지원</span>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderUnlocked(top5) {
+      const rankColors = ['gold', 'silver', 'bronze', '', ''];
+      const rankEmojis = ['🥇', '🥈', '🥉', '4위', '5위'];
+
+      return `
+        <div class="unlocked-results">
+          <div style="text-align:center;margin-bottom:28px;padding:20px;background:linear-gradient(135deg,#DCFCE7,#D1FAE5);border-radius:var(--radius);">
+            <div style="font-size:2rem;margin-bottom:8px;">🎉</div>
+            <div style="font-weight:800;font-size:1.1rem;color:#15803D;">전체 결과가 잠금 해제됐어요!</div>
+            <div style="color:#16A34A;font-size:0.9rem;">TOP 5 반려동물과의 궁합을 모두 확인하세요</div>
+          </div>
+          <div class="result-cards-list">
+            ${top5.map((r, i) => {
+              const p = PETS[r.pet];
+              const gradients = [
+                'linear-gradient(90deg,#6366F1,#EC4899)',
+                'linear-gradient(90deg,#3B82F6,#6366F1)',
+                'linear-gradient(90deg,#10B981,#3B82F6)',
+                'linear-gradient(90deg,#F59E0B,#10B981)',
+                'linear-gradient(90deg,#9CA3AF,#F59E0B)',
+              ];
+              return `
+                <div class="result-card" style="animation-delay:${i * 0.1}s">
+                  <div class="result-rank ${rankColors[i]}">${rankEmojis[i]}</div>
+                  <div class="result-emoji">${p.emoji}</div>
+                  <div class="result-info">
+                    <h3>${p.name}</h3>
+                    <div class="result-tagline">${p.tagline}</div>
+                    <div class="result-bar-row">
+                      <div class="result-bar-bg">
+                        <div class="result-bar-fill" data-pct="${r.percentage}" style="width:0%;background:${gradients[i]}"></div>
+                      </div>
+                      <div class="result-pct">${r.percentage}%</div>
+                    </div>
+                  </div>
+                </div>
+              `;
+            }).join('')}
+          </div>
+        </div>
+      `;
+    }
+
+    render();
+  </script>
+</body>
+</html>
