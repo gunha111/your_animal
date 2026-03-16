@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>반려동물 가이드 블로그 — YourAnimal</title>
+  <meta name="description" content="반려동물 추천, 강아지 고양이 차이, 처음 반려동물 키우기 등 실용적인 정보를 제공합니다." />
+  <meta name="keywords" content="반려동물 추천, 강아지 고양이 차이, 처음 반려동물, 반려동물 종류, 애완동물 키우기" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐾</text></svg>" />
+  <style>
+    .blog-hero { background: linear-gradient(135deg, #0f2027, #203a43, #2c5364); padding: 60px 20px 50px; text-align: center; }
+    .blog-hero h1 { font-size: clamp(1.8rem,4vw,2.8rem); font-weight: 900; color: white; margin-bottom: 12px; }
+    .blog-hero p { color: rgba(255,255,255,0.8); font-size: 1.05rem; }
+    .blog-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 28px; }
+    .blog-card { background: white; border-radius: 20px; overflow: hidden; box-shadow: var(--shadow); transition: var(--transition); text-decoration: none; color: var(--text); display: block; border: 2px solid var(--border); }
+    .blog-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-lg); border-color: var(--primary); }
+    .blog-thumb { height: 180px; display: flex; align-items: center; justify-content: center; font-size: 5rem; }
+    .blog-body { padding: 24px; }
+    .blog-category { display: inline-block; padding: 4px 12px; border-radius: 100px; font-size: 0.75rem; font-weight: 700; margin-bottom: 10px; }
+    .cat-guide { background: #DBEAFE; color: #1D4ED8; }
+    .cat-compare { background: #F3E8FF; color: #7E22CE; }
+    .cat-beginner { background: #DCFCE7; color: #15803D; }
+    .cat-care { background: #FEF3C7; color: #92400E; }
+    .blog-title { font-size: 1.1rem; font-weight: 800; margin-bottom: 8px; line-height: 1.45; }
+    .blog-excerpt { font-size: 0.88rem; color: var(--text-muted); line-height: 1.65; margin-bottom: 16px; }
+    .blog-meta { display: flex; align-items: center; justify-content: space-between; font-size: 0.78rem; color: var(--text-muted); }
+    .blog-readtime { font-weight: 600; }
+    .blog-tags { display: flex; gap: 6px; flex-wrap: wrap; }
+    .blog-tag { padding: 3px 10px; background: #F3F4F6; border-radius: 100px; font-size: 0.72rem; font-weight: 600; }
+    .search-wrap { max-width: 500px; margin: 0 auto 40px; }
+    .search-input { width: 100%; padding: 16px 24px; border: 2px solid var(--border); border-radius: 100px; font-size: 0.95rem; font-family: inherit; transition: var(--transition); }
+    .search-input:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 4px rgba(99,102,241,0.1); }
+  </style>
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container">
+      <div class="header-inner">
+        <a href="index.html" class="logo"><span class="logo-emoji">🐾</span>YourAnimal</a>
+        <nav style="display:flex;gap:16px;align-items:center;">
+          <a href="name-generator.html" style="font-size:0.88rem;font-weight:600;color:var(--text-muted);text-decoration:none;">이름 생성기</a>
+          <a href="care-plan.html" style="font-size:0.88rem;font-weight:600;color:var(--text-muted);text-decoration:none;">케어 플랜</a>
+          <a href="community.html" style="font-size:0.88rem;font-weight:600;color:var(--text-muted);text-decoration:none;">커뮤니티</a>
+          <a href="blog.html" style="font-size:0.88rem;font-weight:700;color:var(--primary);text-decoration:none;">블로그</a>
+          <a href="quiz.html" class="cta-btn" style="padding:10px 22px;font-size:0.85rem;">테스트</a>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <section class="blog-hero">
+    <div class="container">
+      <div class="hero-badge" style="background:rgba(255,255,255,0.1);color:white;border-color:rgba(255,255,255,0.2);">📚 반려동물 가이드</div>
+      <h1>반려동물 완전 정복 블로그</h1>
+      <p>입양 전에 꼭 알아야 할 정보부터 케어 노하우까지</p>
+    </div>
+  </section>
+
+  <main style="background:var(--bg);padding:60px 20px 80px;">
+    <div class="container-wide">
+
+      <div class="search-wrap">
+        <input type="text" class="search-input" placeholder="🔍 궁금한 반려동물을 검색해보세요..." id="search-input" oninput="filterCards()" />
+      </div>
+
+      <div class="blog-grid" id="blog-grid">
+
+        <a href="blog/dog-vs-cat.html" class="blog-card" data-tags="강아지 고양이 비교">
+          <div class="blog-thumb" style="background:linear-gradient(135deg,#FEF3C7,#FDE68A);">🐕🆚🐈</div>
+          <div class="blog-body">
+            <span class="blog-category cat-compare">비교 분석</span>
+            <div class="blog-title">강아지 vs 고양이, 나에게 맞는 건 어떤 쪽일까?</div>
+            <div class="blog-excerpt">가장 인기 있는 두 반려동물의 성격, 케어 난이도, 비용, 라이프스타일 궁합을 철저히 비교해드려요.</div>
+            <div class="blog-meta">
+              <span class="blog-readtime">⏱ 5분</span>
+              <div class="blog-tags"><span class="blog-tag">강아지</span><span class="blog-tag">고양이</span><span class="blog-tag">비교</span></div>
+            </div>
+          </div>
+        </a>
+
+        <a href="blog/first-pet-guide.html" class="blog-card" data-tags="처음 반려동물 입문 초보">
+          <div class="blog-thumb" style="background:linear-gradient(135deg,#DCFCE7,#BBF7D0);">🌱🐾</div>
+          <div class="blog-body">
+            <span class="blog-category cat-beginner">입문 가이드</span>
+            <div class="blog-title">처음 반려동물 키우는 분들을 위한 완벽 입문 가이드</div>
+            <div class="blog-excerpt">입양 전 준비, 첫날 해야 할 것, 절대 하면 안 되는 실수까지. 처음이라도 걱정 없어요!</div>
+            <div class="blog-meta">
+              <span class="blog-readtime">⏱ 8분</span>
+              <div class="blog-tags"><span class="blog-tag">입문</span><span class="blog-tag">초보</span><span class="blog-tag">준비</span></div>
+            </div>
+          </div>
+        </a>
+
+        <a href="blog/small-pet-guide.html" class="blog-card" data-tags="소형 반려동물 원룸 작은 공간">
+          <div class="blog-thumb" style="background:linear-gradient(135deg,#EDE9FE,#DDD6FE);">🐹🐠🦔</div>
+          <div class="blog-body">
+            <span class="blog-category cat-guide">소형 반려동물</span>
+            <div class="blog-title">원룸·좁은 공간에서 키우기 좋은 반려동물 TOP 5</div>
+            <div class="blog-excerpt">공간이 좁아도 행복하게 키울 수 있는 반려동물을 알아봐요. 햄스터, 물고기, 고슴도치 비교 분석!</div>
+            <div class="blog-meta">
+              <span class="blog-readtime">⏱ 4분</span>
+              <div class="blog-tags"><span class="blog-tag">원룸</span><span class="blog-tag">소형</span><span class="blog-tag">추천</span></div>
+            </div>
+          </div>
+        </a>
+
+        <a href="blog/pet-cost-guide.html" class="blog-card" data-tags="비용 돈 월 지출 예산">
+          <div class="blog-thumb" style="background:linear-gradient(135deg,#D1FAE5,#A7F3D0);">💰🐾</div>
+          <div class="blog-body">
+            <span class="blog-category cat-care">비용 가이드</span>
+            <div class="blog-title">반려동물 키우는 데 실제로 얼마나 들까? 종류별 비용 완전 분석</div>
+            <div class="blog-excerpt">입양비부터 사료, 의료비, 미용까지. 10가지 반려동물의 월 평균 비용을 솔직하게 공개해요.</div>
+            <div class="blog-meta">
+              <span class="blog-readtime">⏱ 6분</span>
+              <div class="blog-tags"><span class="blog-tag">비용</span><span class="blog-tag">예산</span><span class="blog-tag">준비</span></div>
+            </div>
+          </div>
+        </a>
+
+        <a href="blog/pet-health-check.html" class="blog-card" data-tags="건강 질병 증상 병원 아픔">
+          <div class="blog-thumb" style="background:linear-gradient(135deg,#FEE2E2,#FECACA);">🏥🐾</div>
+          <div class="blog-body">
+            <span class="blog-category cat-care">건강 관리</span>
+            <div class="blog-title">내 반려동물이 아프다는 신호 8가지 — 놓치면 안 되는 위험 신호</div>
+            <div class="blog-excerpt">반려동물은 아파도 말을 못해요. 식욕, 행동, 외형 변화로 건강 상태를 파악하는 방법을 알려드려요.</div>
+            <div class="blog-meta">
+              <span class="blog-readtime">⏱ 5분</span>
+              <div class="blog-tags"><span class="blog-tag">건강</span><span class="blog-tag">질병</span><span class="blog-tag">응급</span></div>
+            </div>
+          </div>
+        </a>
+
+        <a href="quiz.html" class="blog-card" data-tags="테스트 매칭 추천">
+          <div class="blog-thumb" style="background:linear-gradient(135deg,#EEF2FF,#E0E7FF);">🔍🐾</div>
+          <div class="blog-body">
+            <span class="blog-category cat-guide">매칭 테스트</span>
+            <div class="blog-title">나에게 딱 맞는 반려동물은? 25문항 성향 분석 테스트</div>
+            <div class="blog-excerpt">MBTI처럼 내 라이프스타일과 성격을 분석해 가장 잘 맞는 반려동물 TOP 5를 알려드려요.</div>
+            <div class="blog-meta">
+              <span class="blog-readtime">⏱ 5분 테스트</span>
+              <div class="blog-tags"><span class="blog-tag">테스트</span><span class="blog-tag">무료</span><span class="blog-tag">매칭</span></div>
+            </div>
+          </div>
+        </a>
+
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-logo">🐾 YourAnimal</div>
+    <div class="footer-links">
+      <a href="index.html">홈</a><a href="quiz.html">매칭 테스트</a>
+      <a href="name-generator.html">이름 생성기</a><a href="community.html">커뮤니티</a>
+    </div>
+    <p>© 2025 YourAnimal. All rights reserved.</p>
+  </footer>
+
+  <script>
+    function filterCards() {
+      const q = document.getElementById('search-input').value.toLowerCase();
+      document.querySelectorAll('.blog-card').forEach(card => {
+        const tags = card.dataset.tags || '';
+        const title = card.querySelector('.blog-title').textContent;
+        card.style.display = (tags + title).toLowerCase().includes(q) ? 'block' : 'none';
+      });
+    }
+  </script>
+</body>
+</html>

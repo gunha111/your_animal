@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>반려동물 이름 생성기 — YourAnimal</title>
+  <meta name="description" content="반려동물 종류와 성격을 입력하면 딱 맞는 이름을 추천해드려요. 강아지, 고양이, 토끼, 햄스터 등 10종 지원!" />
+  <meta name="keywords" content="반려동물 이름 추천, 강아지 이름, 고양이 이름, 토끼 이름, 햄스터 이름, 펫 이름 생성기" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐾</text></svg>" />
+  <style>
+    .tool-hero { background: linear-gradient(135deg, #f093fb 0%, #f5576c 50%, #fda085 100%); padding: 60px 20px 50px; text-align: center; }
+    .tool-hero h1 { font-size: clamp(1.8rem,4vw,2.8rem); font-weight: 900; color: white; margin-bottom: 12px; }
+    .tool-hero p { color: rgba(255,255,255,0.88); font-size: 1.05rem; }
+    .tool-card { background: white; border-radius: 24px; padding: 40px; box-shadow: var(--shadow-lg); margin-bottom: 28px; }
+    @media(max-width:540px){ .tool-card { padding: 28px 20px; } }
+    .input-group { margin-bottom: 24px; }
+    .input-label { font-size: 0.9rem; font-weight: 700; color: var(--text); margin-bottom: 10px; display: block; }
+    .pet-select-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; }
+    @media(max-width:480px){ .pet-select-grid { grid-template-columns: repeat(4,1fr); } }
+    .pet-select-btn {
+      padding: 12px 6px;
+      border-radius: 12px;
+      border: 2px solid var(--border);
+      background: #F9FAFB;
+      cursor: pointer;
+      text-align: center;
+      transition: var(--transition);
+      font-family: inherit;
+    }
+    .pet-select-btn:hover { border-color: var(--primary); background: #EEF2FF; }
+    .pet-select-btn.active { border-color: var(--primary); background: linear-gradient(135deg,#EEF2FF,#F5F3FF); }
+    .pet-select-btn .btn-emoji { font-size: 1.8rem; display: block; margin-bottom: 4px; }
+    .pet-select-btn .btn-name { font-size: 0.72rem; font-weight: 700; color: var(--text-muted); }
+    .pet-select-btn.active .btn-name { color: var(--primary-dark); }
+    .personality-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+    @media(max-width:480px){ .personality-grid { grid-template-columns: repeat(2,1fr); } }
+    .personality-btn {
+      padding: 14px 10px;
+      border-radius: 12px;
+      border: 2px solid var(--border);
+      background: #F9FAFB;
+      cursor: pointer;
+      text-align: center;
+      font-size: 0.85rem;
+      font-weight: 600;
+      transition: var(--transition);
+      font-family: inherit;
+      color: var(--text);
+    }
+    .personality-btn:hover { border-color: var(--secondary); background: #FDF2FF; }
+    .personality-btn.active { border-color: var(--secondary); background: linear-gradient(135deg,#FDF2FF,#FCE7F3); color: #9D174D; }
+    .generate-btn {
+      width: 100%;
+      padding: 20px;
+      background: linear-gradient(135deg, #f093fb, #f5576c);
+      color: white;
+      border: none;
+      border-radius: 100px;
+      font-size: 1.1rem;
+      font-weight: 800;
+      cursor: pointer;
+      transition: var(--transition);
+      font-family: inherit;
+    }
+    .generate-btn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(245,87,108,0.4); }
+    .generate-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+    .results-wrap { display: none; }
+    .results-wrap.show { display: block; animation: fadeSlideIn 0.4s ease; }
+    .names-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 24px; }
+    @media(max-width:480px){ .names-grid { grid-template-columns: repeat(2,1fr); } }
+    .name-card {
+      background: linear-gradient(135deg, #F5F3FF, #FDF2FF);
+      border: 2px solid #DDD6FE;
+      border-radius: 16px;
+      padding: 18px 12px;
+      text-align: center;
+      cursor: pointer;
+      transition: var(--transition);
+      position: relative;
+    }
+    .name-card:hover { transform: scale(1.04); box-shadow: var(--shadow-lg); border-color: var(--primary); }
+    .name-card .name-text { font-size: 1.2rem; font-weight: 900; color: var(--primary-dark); margin-bottom: 4px; }
+    .name-card .name-type { font-size: 0.72rem; color: var(--text-muted); font-weight: 600; }
+    .name-card .copy-hint { font-size: 0.65rem; color: var(--text-muted); margin-top: 6px; }
+    .name-card.copied { border-color: #10B981; background: linear-gradient(135deg,#DCFCE7,#D1FAE5); }
+    .name-card.copied .name-text { color: #15803D; }
+    .regen-btn {
+      width: 100%;
+      padding: 16px;
+      background: transparent;
+      color: var(--primary);
+      border: 2px solid var(--primary);
+      border-radius: 100px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: var(--transition);
+      font-family: inherit;
+    }
+    .regen-btn:hover { background: var(--primary); color: white; }
+    .how-to { background: linear-gradient(135deg,#FEF3C7,#FDE68A); border-radius: 16px; padding: 20px; margin-top: 20px; border-left: 4px solid var(--accent); }
+    .how-to h4 { font-weight: 700; margin-bottom: 8px; }
+    .how-to ul { list-style: none; }
+    .how-to li { font-size: 0.88rem; padding: 4px 0; display: flex; gap: 8px; }
+    .lang-toggle { display: flex; gap: 8px; margin-bottom: 10px; }
+    .lang-btn { padding: 6px 16px; border-radius: 100px; border: 2px solid var(--border); background: #F9FAFB; font-size: 0.82rem; font-weight: 700; cursor: pointer; transition: var(--transition); font-family: inherit; }
+    .lang-btn.active { border-color: var(--primary); background: #EEF2FF; color: var(--primary-dark); }
+  </style>
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container">
+      <div class="header-inner">
+        <a href="index.html" class="logo"><span class="logo-emoji">🐾</span>YourAnimal</a>
+        <nav style="display:flex;gap:16px;align-items:center;">
+          <a href="name-generator.html" style="font-size:0.88rem;font-weight:700;color:var(--primary);text-decoration:none;">이름 생성기</a>
+          <a href="care-plan.html" style="font-size:0.88rem;font-weight:600;color:var(--text-muted);text-decoration:none;">케어 플랜</a>
+          <a href="community.html" style="font-size:0.88rem;font-weight:600;color:var(--text-muted);text-decoration:none;">커뮤니티</a>
+          <a href="blog.html" style="font-size:0.88rem;font-weight:600;color:var(--text-muted);text-decoration:none;">블로그</a>
+          <a href="quiz.html" class="cta-btn" style="padding:10px 22px;font-size:0.85rem;">테스트</a>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <section class="tool-hero">
+    <div class="container">
+      <div class="hero-badge" style="background:rgba(255,255,255,0.2);color:white;border-color:rgba(255,255,255,0.3);">🎲 무료 이름 생성기</div>
+      <h1>반려동물 이름 생성기</h1>
+      <p>종류와 성격만 고르면 찰떡같은 이름 9개를 추천해드려요!</p>
+    </div>
+  </section>
+
+  <main style="background:linear-gradient(135deg,#f5f7ff,#fdf2ff);padding:40px 20px 80px;">
+    <div class="container">
+
+      <div class="tool-card">
+        <!-- 1. 동물 선택 -->
+        <div class="input-group">
+          <label class="input-label">1️⃣ 어떤 반려동물인가요?</label>
+          <div class="pet-select-grid" id="pet-grid">
+            <button class="pet-select-btn" data-pet="dog" onclick="selectPet('dog',this)">
+              <span class="btn-emoji">🐕</span><span class="btn-name">강아지</span>
+            </button>
+            <button class="pet-select-btn" data-pet="cat" onclick="selectPet('cat',this)">
+              <span class="btn-emoji">🐈</span><span class="btn-name">고양이</span>
+            </button>
+            <button class="pet-select-btn" data-pet="rabbit" onclick="selectPet('rabbit',this)">
+              <span class="btn-emoji">🐰</span><span class="btn-name">토끼</span>
+            </button>
+            <button class="pet-select-btn" data-pet="hamster" onclick="selectPet('hamster',this)">
+              <span class="btn-emoji">🐹</span><span class="btn-name">햄스터</span>
+            </button>
+            <button class="pet-select-btn" data-pet="fish" onclick="selectPet('fish',this)">
+              <span class="btn-emoji">🐠</span><span class="btn-name">물고기</span>
+            </button>
+            <button class="pet-select-btn" data-pet="parrot" onclick="selectPet('parrot',this)">
+              <span class="btn-emoji">🦜</span><span class="btn-name">앵무새</span>
+            </button>
+            <button class="pet-select-btn" data-pet="guinea_pig" onclick="selectPet('guinea_pig',this)">
+              <span class="btn-emoji">🐾</span><span class="btn-name">기니피그</span>
+            </button>
+            <button class="pet-select-btn" data-pet="turtle" onclick="selectPet('turtle',this)">
+              <span class="btn-emoji">🐢</span><span class="btn-name">거북이</span>
+            </button>
+            <button class="pet-select-btn" data-pet="ferret" onclick="selectPet('ferret',this)">
+              <span class="btn-emoji">🦡</span><span class="btn-name">페렛</span>
+            </button>
+            <button class="pet-select-btn" data-pet="hedgehog" onclick="selectPet('hedgehog',this)">
+              <span class="btn-emoji">🦔</span><span class="btn-name">고슴도치</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- 2. 성격 선택 -->
+        <div class="input-group">
+          <label class="input-label">2️⃣ 어떤 성격인가요? (예상 or 희망)</label>
+          <div class="personality-grid" id="personality-grid">
+            <button class="personality-btn" data-p="active" onclick="selectPersonality('active',this)">⚡ 활발한</button>
+            <button class="personality-btn" data-p="calm" onclick="selectPersonality('calm',this)">🌊 차분한</button>
+            <button class="personality-btn" data-p="cute" onclick="selectPersonality('cute',this)">🍬 귀여운</button>
+            <button class="personality-btn" data-p="brave" onclick="selectPersonality('brave',this)">🦁 용감한</button>
+            <button class="personality-btn" data-p="smart" onclick="selectPersonality('smart',this)">🧠 영리한</button>
+            <button class="personality-btn" data-p="elegant" onclick="selectPersonality('elegant',this)">✨ 우아한</button>
+          </div>
+        </div>
+
+        <!-- 3. 언어 선택 -->
+        <div class="input-group">
+          <label class="input-label">3️⃣ 어떤 스타일의 이름을 원하나요?</label>
+          <div class="lang-toggle">
+            <button class="lang-btn active" id="lang-ko" onclick="selectLang('ko')">🇰🇷 한국어</button>
+            <button class="lang-btn" id="lang-en" onclick="selectLang('en')">🌍 영어/외국어</button>
+            <button class="lang-btn" id="lang-mix" onclick="selectLang('mix')">🎲 랜덤 믹스</button>
+          </div>
+        </div>
+
+        <button class="generate-btn" id="generate-btn" onclick="generateNames()" disabled>
+          ✨ 이름 추천받기
+        </button>
+      </div>
+
+      <!-- Results -->
+      <div class="tool-card results-wrap" id="results-wrap">
+        <h3 style="font-size:1.2rem;font-weight:800;margin-bottom:6px;">🎉 추천 이름이에요!</h3>
+        <p style="color:var(--text-muted);font-size:0.88rem;margin-bottom:20px;">마음에 드는 이름을 클릭하면 복사돼요</p>
+        <div class="names-grid" id="names-grid"></div>
+        <button class="regen-btn" onclick="generateNames()">🔄 다시 뽑기</button>
+
+        <div class="how-to">
+          <h4>💡 이름 고를 때 팁</h4>
+          <ul>
+            <li><span>🔊</span> 2~3음절이 부르기 편해요</li>
+            <li><span>📣</span> 끝이 모음으로 끝나면 반려동물이 더 잘 반응해요</li>
+            <li><span>❤️</span> 부르는 것이 즐거운 이름이 최고예요</li>
+            <li><span>🏥</span> 동물병원에서 부를 때 부끄럽지 않은 이름으로!</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- CTA -->
+      <div style="text-align:center;margin-top:32px;">
+        <p style="color:var(--text-muted);margin-bottom:16px;">아직 어떤 반려동물이 나와 맞는지 모른다면?</p>
+        <a href="quiz.html" class="cta-btn" style="background:linear-gradient(135deg,#f093fb,#f5576c);color:white;box-shadow:0 8px 24px rgba(245,87,108,0.3);">
+          나에게 맞는 반려동물 찾기 →
+        </a>
+      </div>
+
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-logo">🐾 YourAnimal</div>
+    <div class="footer-links">
+      <a href="index.html">홈</a><a href="quiz.html">매칭 테스트</a>
+      <a href="care-plan.html">케어 플랜</a><a href="blog.html">블로그</a>
+    </div>
+    <p>© 2025 YourAnimal. All rights reserved.</p>
+  </footer>
+
+  <div class="toast" id="toast"></div>
+
+  <script src="data/names.js"></script>
+  <script>
+    let selectedPet = null;
+    let selectedPersonality = null;
+    let selectedLang = 'ko';
+
+    function selectPet(pet, el) {
+      selectedPet = pet;
+      document.querySelectorAll('.pet-select-btn').forEach(b => b.classList.remove('active'));
+      el.classList.add('active');
+      checkReady();
+    }
+    function selectPersonality(p, el) {
+      selectedPersonality = p;
+      document.querySelectorAll('.personality-btn').forEach(b => b.classList.remove('active'));
+      el.classList.add('active');
+      checkReady();
+    }
+    function selectLang(lang) {
+      selectedLang = lang;
+      ['ko','en','mix'].forEach(l => document.getElementById('lang-'+l).classList.toggle('active', l===lang));
+    }
+    function checkReady() {
+      document.getElementById('generate-btn').disabled = !(selectedPet && selectedPersonality);
+    }
+
+    function shuffle(arr) {
+      const a = [...arr];
+      for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}
+      return a;
+    }
+
+    function generateNames() {
+      if (!selectedPet || !selectedPersonality) return;
+      const petNames = PET_NAMES[selectedPet]?.[selectedPersonality] || [];
+
+      let pool = [];
+      if (selectedLang === 'ko') {
+        pool = [...petNames];
+      } else if (selectedLang === 'en') {
+        const adjectives = NAME_ADJECTIVES_EN;
+        const petWord = { dog:'Rex', cat:'Mochi', rabbit:'Bun', hamster:'Ham', fish:'Fin', parrot:'Polly', guinea_pig:'Piggy', turtle:'Turty', ferret:'Fuzzy', hedgehog:'Spike' };
+        pool = adjectives.map(adj => adj + ' ' + petWord[selectedPet]);
+        pool = [...pool, ...petNames.slice(0,5).map(n => n.charAt(0).toUpperCase()+n.slice(1))];
+      } else {
+        pool = [...petNames, ...NAME_ADJECTIVES_KO.map(adj => adj + ' ' + petNames[Math.floor(Math.random()*petNames.length)])];
+      }
+
+      const selected = shuffle(pool).slice(0, 9);
+      const personalities = { active:'활발한', calm:'차분한', cute:'귀여운', brave:'용감한', smart:'영리한', elegant:'우아한' };
+      const grid = document.getElementById('names-grid');
+      grid.innerHTML = selected.map(name => `
+        <div class="name-card" onclick="copyName('${name}', this)">
+          <div class="name-text">${name}</div>
+          <div class="name-type">${personalities[selectedPersonality]}</div>
+          <div class="copy-hint">클릭하여 복사</div>
+        </div>
+      `).join('');
+      document.getElementById('results-wrap').classList.add('show');
+      document.getElementById('results-wrap').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function copyName(name, el) {
+      navigator.clipboard.writeText(name).then(() => {
+        el.classList.add('copied');
+        el.querySelector('.copy-hint').textContent = '✓ 복사됨!';
+        setTimeout(() => { el.classList.remove('copied'); el.querySelector('.copy-hint').textContent = '클릭하여 복사'; }, 2000);
+      });
+    }
+  </script>
+</body>
+</html>

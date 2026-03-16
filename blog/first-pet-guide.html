@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>처음 반려동물 키우는 분들을 위한 완벽 입문 가이드 — YourAnimal</title>
+  <meta name="description" content="처음 반려동물을 키우는 분들을 위한 완벽 가이드. 입양 전 준비, 첫날 해야 할 것, 절대 하면 안 되는 실수까지 모두 알려드려요." />
+  <meta name="keywords" content="처음 반려동물, 반려동물 입양 준비, 초보 반려인, 반려동물 키우기, 반려동물 체크리스트" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐾</text></svg>" />
+  <style>
+    .article-hero { background: linear-gradient(135deg, #DCFCE7 0%, #A7F3D0 100%); padding: 60px 20px 50px; text-align: center; }
+    .article-hero .article-cat { display: inline-block; padding: 4px 14px; border-radius: 100px; background: white; font-size: 0.82rem; font-weight: 700; margin-bottom: 16px; color: #15803D; }
+    .article-hero h1 { font-size: clamp(1.6rem,4vw,2.4rem); font-weight: 900; color: #1F2937; margin-bottom: 12px; line-height: 1.3; }
+    .article-hero .meta { color: #166534; font-size: 0.88rem; }
+    .article-body { max-width: 720px; margin: 0 auto; padding: 60px 20px 80px; }
+    .article-body h2 { font-size: 1.5rem; font-weight: 800; margin: 40px 0 16px; color: var(--text); }
+    .article-body h3 { font-size: 1.15rem; font-weight: 700; margin: 28px 0 12px; }
+    .article-body p { font-size: 1rem; line-height: 1.85; color: #374151; margin-bottom: 16px; }
+    .article-body ul, .article-body ol { padding-left: 24px; margin-bottom: 16px; }
+    .article-body li { font-size: 0.95rem; line-height: 1.75; color: #374151; margin-bottom: 8px; }
+    .checklist { list-style: none; padding: 0; }
+    .checklist li { display: flex; align-items: flex-start; gap: 10px; padding: 10px 14px; background: #F9FAFB; border-radius: 10px; margin-bottom: 8px; }
+    .checklist li::before { content: '☐'; font-size: 1.1rem; flex-shrink: 0; margin-top: 1px; }
+    .step-card { display: flex; gap: 20px; padding: 24px; background: white; border-radius: 16px; box-shadow: var(--shadow); margin-bottom: 16px; border: 2px solid var(--border); }
+    .step-num { width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg,var(--primary),var(--secondary)); color: white; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 1.1rem; flex-shrink: 0; }
+    .step-content h4 { font-weight: 800; margin-bottom: 6px; }
+    .step-content p { font-size: 0.9rem; color: var(--text-muted); margin: 0; }
+    .danger-box { background: #FEF2F2; border: 2px solid #FECACA; border-radius: 16px; padding: 24px; margin: 28px 0; }
+    .danger-box h4 { color: #991B1B; font-weight: 800; margin-bottom: 12px; }
+    .danger-box li { color: #7F1D1D; }
+    .tip-box { background: #EFF6FF; border-left: 4px solid var(--primary); border-radius: 0 16px 16px 0; padding: 20px 24px; margin: 28px 0; }
+    .tip-box h4 { font-weight: 800; color: var(--primary-dark); margin-bottom: 8px; }
+    .cta-inline { background: linear-gradient(135deg,var(--primary),var(--secondary)); border-radius: 20px; padding: 32px; text-align: center; margin: 40px 0; color: white; }
+    .cta-inline h3 { font-size: 1.3rem; font-weight: 800; margin-bottom: 8px; }
+    .cta-inline p { opacity: 0.88; margin-bottom: 20px; }
+    .cta-inline a { display: inline-block; background: white; color: var(--primary-dark); padding: 14px 36px; border-radius: 100px; font-weight: 800; text-decoration: none; }
+    .cost-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; margin: 20px 0; }
+    @media(max-width:480px){ .cost-grid { grid-template-columns: 1fr; } }
+    .cost-card { background: #F9FAFB; border-radius: 12px; padding: 16px; text-align: center; border: 2px solid var(--border); }
+    .cost-card .cost-label { font-size: 0.78rem; color: var(--text-muted); font-weight: 600; margin-bottom: 6px; }
+    .cost-card .cost-val { font-size: 1.1rem; font-weight: 800; color: var(--text); }
+  </style>
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container">
+      <div class="header-inner">
+        <a href="../index.html" class="logo"><span class="logo-emoji">🐾</span>YourAnimal</a>
+        <nav style="display:flex;gap:16px;align-items:center;">
+          <a href="../blog.html" style="font-size:0.88rem;font-weight:700;color:var(--primary);text-decoration:none;">← 블로그</a>
+          <a href="../quiz.html" class="cta-btn" style="padding:10px 22px;font-size:0.85rem;">테스트 시작</a>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <section class="article-hero">
+    <div class="container">
+      <span class="article-cat">🌱 입문 가이드</span>
+      <h1>처음 반려동물 키우는 분들을<br/>위한 완벽 입문 가이드</h1>
+      <div class="meta">⏱ 읽기 8분 · 초보 반려인 필독</div>
+    </div>
+  </section>
+
+  <article class="article-body">
+
+    <p>처음 반려동물을 키우기로 결심했나요? 정말 잘 하셨어요! 반려동물은 삶의 질을 높이고, 외로움을 줄이며, 매일 작은 기쁨을 선물해줘요.</p>
+    <p>하지만 막상 입양 전에 무엇을 준비해야 할지, 첫날 어떻게 해야 할지 몰라서 당황하는 분들이 많아요. 이 가이드를 읽으면 자신 있게 시작할 수 있을 거예요!</p>
+
+    <h2>입양 전 반드시 생각해볼 것</h2>
+    <p>반려동물은 충동적으로 결정하면 안 돼요. 아래 5가지를 진지하게 고민해보세요.</p>
+
+    <div class="step-card"><div class="step-num">1</div><div class="step-content"><h4>나의 라이프스타일과 맞는가?</h4><p>활동량, 집에 있는 시간, 여행 빈도 등을 솔직하게 체크해보세요. 강아지는 하루 1~2시간 산책이 필요하고, 앵무새는 매일 긴 시간 교감이 필요해요.</p></div></div>
+    <div class="step-card"><div class="step-num">2</div><div class="step-content"><h4>15년 이상 책임질 수 있는가?</h4><p>강아지와 고양이의 수명은 평균 12~18년이에요. 취업, 결혼, 이사 등 인생의 변화 속에서도 끝까지 책임질 수 있는지 생각해보세요.</p></div></div>
+    <div class="step-card"><div class="step-num">3</div><div class="step-content"><h4>경제적으로 감당할 수 있는가?</h4><p>사료, 의료비, 미용비, 용품비 등 월 10~30만원의 지출이 발생해요. 특히 아플 때 수십만 원의 병원비가 생길 수 있어요.</p></div></div>
+    <div class="step-card"><div class="step-num">4</div><div class="step-content"><h4>가족 모두 동의하는가?</h4><p>함께 사는 가족 중 알레르기가 있거나 반대하는 사람이 있다면 갈등이 생길 수 있어요. 사전에 충분히 합의해야 해요.</p></div></div>
+    <div class="step-card"><div class="step-num">5</div><div class="step-content"><h4>입양처를 신중히 선택했는가?</h4><p>강아지·고양이는 유기동물 보호소 입양을 적극 권장해요. 펫샵보다 건강하고, 사회화가 잘 된 경우가 많아요.</p></div></div>
+
+    <h2>입양 전 준비물 체크리스트</h2>
+    <ul class="checklist">
+      <li>먹이 그릇 (물 그릇 포함, 스테인리스 추천)</li>
+      <li>잠자리 (방석, 하우스, 또는 캐리어)</li>
+      <li>화장실 (모래통, 모래 or 패드)</li>
+      <li>이동장 (병원 방문, 이동 시 필수)</li>
+      <li>종류에 맞는 사료 (수의사 추천 사료)</li>
+      <li>장난감 2~3개</li>
+      <li>가까운 동물병원 위치 파악</li>
+      <li>건강보험 가입 여부 확인 (선택)</li>
+    </ul>
+
+    <h2>입양 첫날 해야 할 것</h2>
+
+    <div class="tip-box">
+      <h4>💡 첫날의 황금 원칙</h4>
+      <p>반려동물에게 <strong>첫날은 가장 무섭고 혼란스러운 날</strong>이에요. 과도한 접촉, 사진 촬영, 외부인 방문은 최대한 자제하고 조용히 적응할 시간을 줘야 해요.</p>
+    </div>
+
+    <ol>
+      <li><strong>케이지나 방을 미리 세팅해두세요</strong> — 숨을 수 있는 공간이 있어야 안심해요</li>
+      <li><strong>이동장 안에서 스스로 나오게 두세요</strong> — 억지로 꺼내면 트라우마가 생길 수 있어요</li>
+      <li><strong>물과 사료를 제공하고 조용히 지켜보세요</strong></li>
+      <li><strong>첫날은 만지거나 이름을 부르며 찾지 마세요</strong> — 익숙해질 때까지 기다려요</li>
+      <li><strong>익숙한 냄새를 가져오세요</strong> — 입양처에서 쓰던 수건이나 장난감이 큰 도움이 돼요</li>
+    </ol>
+
+    <h2>절대 하면 안 되는 실수 5가지</h2>
+    <div class="danger-box">
+      <h4>⚠️ 초보 반려인이 자주 하는 실수</h4>
+      <ul>
+        <li><strong>첫날부터 손님들을 불러 구경시키기</strong> — 극심한 스트레스의 원인이에요</li>
+        <li><strong>인터넷 정보만 믿고 아플 때 집에서 해결하려 하기</strong> — 반드시 수의사에게 가야 해요</li>
+        <li><strong>사람 음식 주기</strong> — 포도, 초콜릿, 양파, 마늘 등은 반려동물에게 독이에요</li>
+        <li><strong>예방접종과 중성화 수술 미루기</strong> — 건강과 행동 문제 예방에 매우 중요해요</li>
+        <li><strong>처벌과 체벌로 훈련하기</strong> — 공포심과 불신을 심어줘요. 긍정 강화 훈련이 정답이에요</li>
+      </ul>
+    </div>
+
+    <h2>첫 1개월 예상 비용</h2>
+    <div class="cost-grid">
+      <div class="cost-card"><div class="cost-label">초기 용품비</div><div class="cost-val">10~30만원</div></div>
+      <div class="cost-card"><div class="cost-label">첫 건강검진</div><div class="cost-val">3~8만원</div></div>
+      <div class="cost-card"><div class="cost-label">예방접종</div><div class="cost-val">5~15만원</div></div>
+      <div class="cost-card"><div class="cost-label">사료 (월)</div><div class="cost-val">3~10만원</div></div>
+      <div class="cost-card"><div class="cost-label">간식·장난감</div><div class="cost-val">2~5만원</div></div>
+      <div class="cost-card"><div class="cost-label">합계 (첫달)</div><div class="cost-val">23~68만원</div></div>
+    </div>
+
+    <h2>마지막으로</h2>
+    <p>반려동물을 키우는 건 분명히 힘들고 책임이 따르지만, 그 이상의 기쁨과 사랑을 받을 수 있어요. 처음에 막막해도 하루하루 함께하다 보면 어느새 당신 없이는 못 사는 존재가 생기게 될 거예요.</p>
+    <p>가장 중요한 건 <strong>충분히 준비하고, 끝까지 책임지겠다는 마음</strong>이에요. 그 마음이 있다면 분명히 훌륭한 반려인이 될 수 있어요! 🐾</p>
+
+    <div class="cta-inline">
+      <h3>어떤 반려동물이 나에게 맞는지 아직 모르겠다면?</h3>
+      <p>5분 테스트로 나의 라이프스타일에 딱 맞는 반려동물을 찾아드려요</p>
+      <a href="../quiz.html">무료 매칭 테스트 →</a>
+    </div>
+
+  </article>
+
+  <footer class="site-footer">
+    <div class="footer-logo">🐾 YourAnimal</div>
+    <div class="footer-links">
+      <a href="../index.html">홈</a><a href="../quiz.html">매칭 테스트</a>
+      <a href="../blog.html">블로그</a><a href="../community.html">커뮤니티</a>
+    </div>
+    <p>© 2025 YourAnimal. All rights reserved.</p>
+  </footer>
+
+</body>
+</html>

@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>일일 케어 플랜 생성기 — YourAnimal</title>
+  <meta name="description" content="반려동물 종류를 선택하면 아침·오후·저녁 맞춤 케어 루틴과 주간·월간 체크리스트를 자동으로 생성해드려요." />
+  <meta name="keywords" content="반려동물 케어 플랜, 강아지 일과표, 고양이 케어 루틴, 반려동물 건강 관리" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐾</text></svg>" />
+  <style>
+    .tool-hero { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); padding: 60px 20px 50px; text-align: center; }
+    .tool-hero h1 { font-size: clamp(1.8rem,4vw,2.8rem); font-weight: 900; color: white; margin-bottom: 12px; }
+    .tool-hero p { color: rgba(255,255,255,0.9); font-size: 1.05rem; }
+    .tool-card { background: white; border-radius: 24px; padding: 40px; box-shadow: var(--shadow-lg); margin-bottom: 28px; }
+    @media(max-width:540px){ .tool-card { padding: 24px 18px; } }
+    .pet-select-grid { display: grid; grid-template-columns: repeat(5,1fr); gap: 10px; }
+    @media(max-width:480px){ .pet-select-grid { grid-template-columns: repeat(4,1fr); } }
+    .pet-select-btn { padding: 14px 6px; border-radius: 12px; border: 2px solid var(--border); background: #F9FAFB; cursor: pointer; text-align: center; transition: var(--transition); font-family: inherit; }
+    .pet-select-btn:hover { border-color: #4facfe; background: #EFF6FF; }
+    .pet-select-btn.active { border-color: #4facfe; background: linear-gradient(135deg,#EFF6FF,#ECFEFF); }
+    .pet-select-btn .btn-emoji { font-size: 1.8rem; display: block; margin-bottom: 4px; }
+    .pet-select-btn .btn-name { font-size: 0.72rem; font-weight: 700; color: var(--text-muted); }
+    .gen-btn { width:100%; padding:20px; background:linear-gradient(135deg,#4facfe,#00f2fe); color:white; border:none; border-radius:100px; font-size:1.1rem; font-weight:800; cursor:pointer; transition:var(--transition); font-family:inherit; margin-top:24px; }
+    .gen-btn:hover:not(:disabled) { transform:translateY(-2px); box-shadow:0 8px 24px rgba(79,172,254,0.4); }
+    .gen-btn:disabled { opacity:0.4; cursor:not-allowed; }
+    .plan-wrap { display:none; }
+    .plan-wrap.show { display:block; animation:fadeSlideIn 0.4s ease; }
+    .plan-header { display:flex; align-items:center; gap:16px; margin-bottom:28px; padding:24px; background:linear-gradient(135deg,#EFF6FF,#ECFEFF); border-radius:16px; }
+    .plan-pet-emoji { font-size:3.5rem; }
+    .plan-pet-name { font-size:1.5rem; font-weight:900; }
+    .plan-pet-sub { color:var(--text-muted); font-size:0.9rem; }
+    .time-section { margin-bottom:28px; }
+    .time-section-header { display:flex; align-items:center; gap:12px; margin-bottom:16px; padding-bottom:10px; border-bottom:2px solid var(--border); }
+    .time-section-icon { font-size:1.5rem; }
+    .time-section-title { font-size:1.05rem; font-weight:800; }
+    .task-list { display:flex; flex-direction:column; gap:10px; }
+    .task-item { display:flex; align-items:flex-start; gap:14px; padding:14px 16px; background:#F9FAFB; border-radius:12px; border-left:3px solid transparent; transition:var(--transition); }
+    .task-item:hover { border-left-color:#4facfe; background:#EFF6FF; }
+    .task-icon { font-size:1.3rem; min-width:24px; }
+    .task-time { font-size:0.8rem; font-weight:700; color:var(--text-muted); min-width:48px; }
+    .task-content { flex:1; }
+    .task-name { font-weight:700; font-size:0.92rem; margin-bottom:2px; }
+    .task-detail { font-size:0.82rem; color:var(--text-muted); }
+    .task-check { width:22px; height:22px; border-radius:6px; border:2px solid var(--border); cursor:pointer; display:flex; align-items:center; justify-content:center; transition:var(--transition); flex-shrink:0; }
+    .task-check:hover { border-color:#4facfe; }
+    .task-check.done { background:#4facfe; border-color:#4facfe; color:white; }
+    .weekly-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; }
+    @media(max-width:480px){ .weekly-grid { grid-template-columns:repeat(2,1fr); } }
+    .weekly-card { background:#F9FAFB; border-radius:12px; padding:14px; border:2px solid var(--border); }
+    .weekly-day { font-size:0.8rem; font-weight:800; color:var(--primary); margin-bottom:6px; }
+    .weekly-task { font-size:0.85rem; font-weight:700; margin-bottom:4px; }
+    .weekly-detail { font-size:0.78rem; color:var(--text-muted); }
+    .monthly-list { display:flex; flex-direction:column; gap:8px; }
+    .monthly-item { display:flex; align-items:center; gap:10px; padding:12px 14px; background:#FEF3C7; border-radius:10px; font-size:0.88rem; font-weight:600; }
+    .tips-list { display:flex; flex-direction:column; gap:8px; }
+    .tip-item { padding:12px 16px; background:linear-gradient(135deg,#EFF6FF,#ECFEFF); border-radius:10px; font-size:0.88rem; border-left:3px solid #4facfe; }
+    .print-btn { width:100%; padding:16px; background:transparent; color:#4facfe; border:2px solid #4facfe; border-radius:100px; font-size:0.95rem; font-weight:700; cursor:pointer; transition:var(--transition); font-family:inherit; margin-top:16px; }
+    .print-btn:hover { background:#4facfe; color:white; }
+    .progress-ring { text-align:center; margin:20px 0; }
+    .progress-ring .count { font-size:2rem; font-weight:900; color:#4facfe; }
+    .progress-ring .total { font-size:1rem; color:var(--text-muted); }
+    @media print {
+      .site-header, .tool-hero, .gen-btn, .print-btn, .cta-wrap, .site-footer { display:none!important; }
+      body { background:white; }
+      .plan-wrap { display:block!important; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container">
+      <div class="header-inner">
+        <a href="index.html" class="logo"><span class="logo-emoji">🐾</span>YourAnimal</a>
+        <nav style="display:flex;gap:16px;align-items:center;">
+          <a href="name-generator.html" style="font-size:0.88rem;font-weight:600;color:var(--text-muted);text-decoration:none;">이름 생성기</a>
+          <a href="care-plan.html" style="font-size:0.88rem;font-weight:700;color:var(--primary);text-decoration:none;">케어 플랜</a>
+          <a href="community.html" style="font-size:0.88rem;font-weight:600;color:var(--text-muted);text-decoration:none;">커뮤니티</a>
+          <a href="blog.html" style="font-size:0.88rem;font-weight:600;color:var(--text-muted);text-decoration:none;">블로그</a>
+          <a href="quiz.html" class="cta-btn" style="padding:10px 22px;font-size:0.85rem;">테스트</a>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <section class="tool-hero">
+    <div class="container">
+      <div class="hero-badge" style="background:rgba(255,255,255,0.2);color:white;border-color:rgba(255,255,255,0.3);">📋 무료 케어 플랜</div>
+      <h1>일일 케어 루틴 생성기</h1>
+      <p>반려동물에 맞는 하루 루틴을 자동으로 만들어드려요</p>
+    </div>
+  </section>
+
+  <main style="background:linear-gradient(135deg,#f0f7ff,#ecfeff);padding:40px 20px 80px;">
+    <div class="container">
+
+      <div class="tool-card">
+        <label style="font-size:0.9rem;font-weight:700;display:block;margin-bottom:12px;">어떤 반려동물인가요?</label>
+        <div class="pet-select-grid">
+          <button class="pet-select-btn" onclick="selectPet('dog','강아지','🐕',this)"><span class="btn-emoji">🐕</span><span class="btn-name">강아지</span></button>
+          <button class="pet-select-btn" onclick="selectPet('cat','고양이','🐈',this)"><span class="btn-emoji">🐈</span><span class="btn-name">고양이</span></button>
+          <button class="pet-select-btn" onclick="selectPet('rabbit','토끼','🐰',this)"><span class="btn-emoji">🐰</span><span class="btn-name">토끼</span></button>
+          <button class="pet-select-btn" onclick="selectPet('hamster','햄스터','🐹',this)"><span class="btn-emoji">🐹</span><span class="btn-name">햄스터</span></button>
+          <button class="pet-select-btn" onclick="selectPet('fish','물고기','🐠',this)"><span class="btn-emoji">🐠</span><span class="btn-name">물고기</span></button>
+          <button class="pet-select-btn" onclick="selectPet('parrot','앵무새','🦜',this)"><span class="btn-emoji">🦜</span><span class="btn-name">앵무새</span></button>
+          <button class="pet-select-btn" onclick="selectPet('guinea_pig','기니피그','🐾',this)"><span class="btn-emoji">🐾</span><span class="btn-name">기니피그</span></button>
+          <button class="pet-select-btn" onclick="selectPet('turtle','거북이','🐢',this)"><span class="btn-emoji">🐢</span><span class="btn-name">거북이</span></button>
+          <button class="pet-select-btn" onclick="selectPet('ferret','페렛','🦡',this)"><span class="btn-emoji">🦡</span><span class="btn-name">페렛</span></button>
+          <button class="pet-select-btn" onclick="selectPet('hedgehog','고슴도치','🦔',this)"><span class="btn-emoji">🦔</span><span class="btn-name">고슴도치</span></button>
+        </div>
+        <button class="gen-btn" id="gen-btn" disabled onclick="generatePlan()">📋 케어 플랜 생성하기</button>
+      </div>
+
+      <!-- Plan Result -->
+      <div class="plan-wrap" id="plan-wrap">
+
+        <div class="tool-card">
+          <div class="plan-header" id="plan-header"></div>
+
+          <!-- Morning -->
+          <div class="time-section">
+            <div class="time-section-header">
+              <span class="time-section-icon">🌅</span>
+              <span class="time-section-title">아침 루틴</span>
+            </div>
+            <div class="task-list" id="morning-tasks"></div>
+          </div>
+
+          <!-- Afternoon -->
+          <div class="time-section">
+            <div class="time-section-header">
+              <span class="time-section-icon">☀️</span>
+              <span class="time-section-title">낮 루틴</span>
+            </div>
+            <div class="task-list" id="afternoon-tasks"></div>
+          </div>
+
+          <!-- Evening -->
+          <div class="time-section">
+            <div class="time-section-header">
+              <span class="time-section-icon">🌙</span>
+              <span class="time-section-title">저녁 루틴</span>
+            </div>
+            <div class="task-list" id="evening-tasks"></div>
+          </div>
+
+          <!-- Done count -->
+          <div class="progress-ring">
+            <div class="count" id="done-count">0</div>
+            <div class="total" id="done-total">/ 0 완료</div>
+          </div>
+
+          <button class="print-btn" onclick="window.print()">🖨️ 인쇄 / PDF 저장</button>
+        </div>
+
+        <!-- Weekly -->
+        <div class="tool-card">
+          <h3 style="font-size:1.1rem;font-weight:800;margin-bottom:20px;">📅 주간 케어 체크리스트</h3>
+          <div class="weekly-grid" id="weekly-grid"></div>
+        </div>
+
+        <!-- Monthly -->
+        <div class="tool-card">
+          <h3 style="font-size:1.1rem;font-weight:800;margin-bottom:16px;">🗓️ 월간 체크리스트</h3>
+          <div class="monthly-list" id="monthly-list"></div>
+        </div>
+
+        <!-- Tips -->
+        <div class="tool-card">
+          <h3 style="font-size:1.1rem;font-weight:800;margin-bottom:16px;">💡 케어 핵심 팁</h3>
+          <div class="tips-list" id="tips-list"></div>
+        </div>
+
+      </div>
+
+      <!-- CTA -->
+      <div class="cta-wrap" style="text-align:center;margin-top:32px;">
+        <p style="color:var(--text-muted);margin-bottom:16px;">아직 어떤 반려동물이 맞는지 모른다면?</p>
+        <a href="quiz.html" class="cta-btn">나에게 맞는 반려동물 찾기 →</a>
+      </div>
+
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-logo">🐾 YourAnimal</div>
+    <div class="footer-links">
+      <a href="index.html">홈</a><a href="quiz.html">매칭 테스트</a>
+      <a href="name-generator.html">이름 생성기</a><a href="blog.html">블로그</a>
+    </div>
+    <p>© 2025 YourAnimal. All rights reserved.</p>
+  </footer>
+
+  <script src="data/pets.js"></script>
+  <script src="data/care-plans.js"></script>
+  <script>
+    let selectedPet = null, selectedPetName = '', selectedPetEmoji = '';
+    let doneCount = 0, totalTasks = 0;
+
+    function selectPet(pet, name, emoji, el) {
+      selectedPet = pet; selectedPetName = name; selectedPetEmoji = emoji;
+      document.querySelectorAll('.pet-select-btn').forEach(b => b.classList.remove('active'));
+      el.classList.add('active');
+      document.getElementById('gen-btn').disabled = false;
+    }
+
+    function toggleTask(el) {
+      el.classList.toggle('done');
+      el.textContent = el.classList.contains('done') ? '✓' : '';
+      updateCount();
+    }
+
+    function updateCount() {
+      const done = document.querySelectorAll('.task-check.done').length;
+      const total = document.querySelectorAll('.task-check').length;
+      document.getElementById('done-count').textContent = done;
+      document.getElementById('done-total').textContent = `/ ${total} 완료`;
+    }
+
+    function renderTasks(containerId, tasks) {
+      const el = document.getElementById(containerId);
+      el.innerHTML = tasks.map(t => `
+        <div class="task-item">
+          <span class="task-icon">${t.icon}</span>
+          <span class="task-time">${t.time}</span>
+          <div class="task-content">
+            <div class="task-name">${t.task}</div>
+            <div class="task-detail">${t.detail}</div>
+          </div>
+          <div class="task-check" onclick="toggleTask(this)"></div>
+        </div>
+      `).join('');
+    }
+
+    function generatePlan() {
+      if (!selectedPet) return;
+      const plan = CARE_PLANS[selectedPet];
+      if (!plan) return;
+
+      document.getElementById('plan-header').innerHTML = `
+        <div class="plan-pet-emoji">${selectedPetEmoji}</div>
+        <div>
+          <div class="plan-pet-name">${selectedPetName} 케어 플랜</div>
+          <div class="plan-pet-sub">오늘도 건강하고 행복한 하루를 위해 💙</div>
+        </div>
+      `;
+
+      renderTasks('morning-tasks', plan.morning);
+      renderTasks('afternoon-tasks', plan.afternoon);
+      renderTasks('evening-tasks', plan.evening);
+
+      // Weekly
+      document.getElementById('weekly-grid').innerHTML = plan.weekly.map(w => `
+        <div class="weekly-card">
+          <div class="weekly-day">${w.icon} ${w.day}요일</div>
+          <div class="weekly-task">${w.task}</div>
+          <div class="weekly-detail">${w.detail}</div>
+        </div>
+      `).join('');
+
+      // Monthly
+      document.getElementById('monthly-list').innerHTML = plan.monthly.map(m => `
+        <div class="monthly-item"><span>📌</span><span>${m}</span></div>
+      `).join('');
+
+      // Tips
+      document.getElementById('tips-list').innerHTML = plan.tips.map(t => `
+        <div class="tip-item">${t}</div>
+      `).join('');
+
+      document.getElementById('plan-wrap').classList.add('show');
+      updateCount();
+      document.getElementById('plan-wrap').scrollIntoView({ behavior: 'smooth' });
+    }
+  </script>
+</body>
+</html>

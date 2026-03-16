@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>커뮤니티 — 결과 공유 게시판 — YourAnimal</title>
+  <meta name="description" content="다른 사람들의 반려동물 매칭 결과를 보고, 나의 결과도 공유해보세요!" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐾</text></svg>" />
+  <!-- Supabase JS SDK via CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    .tool-hero { background: linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%); padding: 60px 20px 50px; text-align: center; }
+    .tool-hero h1 { font-size: clamp(1.8rem,4vw,2.8rem); font-weight: 900; color: white; margin-bottom: 12px; }
+    .tool-hero p { color: rgba(255,255,255,0.9); font-size: 1.05rem; }
+    .community-layout { display: grid; grid-template-columns: 360px 1fr; gap: 28px; align-items: start; }
+    @media(max-width:900px){ .community-layout { grid-template-columns: 1fr; } }
+    .panel { background: white; border-radius: 24px; padding: 32px; box-shadow: var(--shadow-lg); }
+    .panel h3 { font-size: 1.1rem; font-weight: 800; margin-bottom: 20px; }
+    .form-group { margin-bottom: 16px; }
+    .form-label { font-size: 0.85rem; font-weight: 700; display: block; margin-bottom: 8px; }
+    .form-input { width: 100%; padding: 12px 16px; border: 2px solid var(--border); border-radius: 12px; font-size: 0.9rem; font-family: inherit; transition: var(--transition); }
+    .form-input:focus { outline: none; border-color: var(--primary); }
+    .form-textarea { resize: vertical; min-height: 80px; }
+    .form-select { width: 100%; padding: 12px 16px; border: 2px solid var(--border); border-radius: 12px; font-size: 0.9rem; font-family: inherit; appearance: none; background: white url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%236B7280' d='M6 8L1 3h10z'/%3E%3C/svg%3E") no-repeat right 14px center; }
+    .submit-btn { width: 100%; padding: 16px; background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; border: none; border-radius: 100px; font-size: 0.95rem; font-weight: 800; cursor: pointer; transition: var(--transition); font-family: inherit; }
+    .submit-btn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(99,102,241,0.4); }
+    .submit-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+    .share-from-result { background: linear-gradient(135deg, #EEF2FF, #F5F3FF); border: 2px solid #C7D2FE; border-radius: 16px; padding: 20px; margin-bottom: 20px; }
+    .share-from-result h4 { font-weight: 800; margin-bottom: 8px; font-size: 0.95rem; }
+    .share-from-result p { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 12px; }
+    .posts-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+    .posts-count { font-size: 0.85rem; color: var(--text-muted); font-weight: 600; }
+    .filter-tabs { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
+    .filter-tab { padding: 6px 16px; border-radius: 100px; border: 2px solid var(--border); background: white; font-size: 0.82rem; font-weight: 700; cursor: pointer; transition: var(--transition); font-family: inherit; }
+    .filter-tab.active { border-color: var(--primary); background: #EEF2FF; color: var(--primary-dark); }
+    .posts-list { display: flex; flex-direction: column; gap: 16px; }
+    .post-card { background: #F9FAFB; border-radius: 16px; padding: 20px; border: 2px solid var(--border); transition: var(--transition); }
+    .post-card:hover { border-color: var(--primary); background: white; box-shadow: var(--shadow); }
+    .post-top { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+    .post-avatar { width: 42px; height: 42px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; background: linear-gradient(135deg,#EEF2FF,#F5F3FF); flex-shrink: 0; }
+    .post-nickname { font-weight: 700; font-size: 0.92rem; }
+    .post-time { font-size: 0.78rem; color: var(--text-muted); }
+    .post-result { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+    .post-pet-badge { display: flex; align-items: center; gap: 6px; padding: 4px 12px; border-radius: 100px; font-size: 0.82rem; font-weight: 700; background: linear-gradient(135deg,#EEF2FF,#F5F3FF); color: var(--primary-dark); }
+    .post-pct { font-size: 0.9rem; font-weight: 700; color: var(--primary); }
+    .post-message { font-size: 0.88rem; color: var(--text); line-height: 1.6; margin-bottom: 12px; }
+    .post-actions { display: flex; align-items: center; gap: 12px; }
+    .like-btn { display: flex; align-items: center; gap: 6px; padding: 6px 14px; border-radius: 100px; border: 2px solid var(--border); background: white; font-size: 0.82rem; font-weight: 700; cursor: pointer; transition: var(--transition); font-family: inherit; }
+    .like-btn:hover { border-color: #EF4444; color: #EF4444; }
+    .like-btn.liked { border-color: #EF4444; background: #FEF2F2; color: #EF4444; }
+    .empty-state { text-align: center; padding: 60px 20px; }
+    .empty-state .empty-icon { font-size: 3.5rem; margin-bottom: 16px; }
+    .setup-notice { background: #FEF3C7; border: 2px solid #FDE68A; border-radius: 16px; padding: 20px; margin-bottom: 24px; }
+    .setup-notice h4 { font-weight: 800; margin-bottom: 8px; color: #92400E; }
+    .setup-notice p { font-size: 0.88rem; color: #78350F; }
+    .setup-notice code { background: #FDE68A; padding: 2px 6px; border-radius: 4px; font-size: 0.82rem; }
+    .loading-posts { text-align:center; padding:40px; color:var(--text-muted); }
+  </style>
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container">
+      <div class="header-inner">
+        <a href="index.html" class="logo"><span class="logo-emoji">🐾</span>YourAnimal</a>
+        <nav style="display:flex;gap:16px;align-items:center;">
+          <a href="name-generator.html" style="font-size:0.88rem;font-weight:600;color:var(--text-muted);text-decoration:none;">이름 생성기</a>
+          <a href="care-plan.html" style="font-size:0.88rem;font-weight:600;color:var(--text-muted);text-decoration:none;">케어 플랜</a>
+          <a href="community.html" style="font-size:0.88rem;font-weight:700;color:var(--primary);text-decoration:none;">커뮤니티</a>
+          <a href="blog.html" style="font-size:0.88rem;font-weight:600;color:var(--text-muted);text-decoration:none;">블로그</a>
+          <a href="quiz.html" class="cta-btn" style="padding:10px 22px;font-size:0.85rem;">테스트</a>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <section class="tool-hero">
+    <div class="container">
+      <div class="hero-badge" style="background:rgba(255,255,255,0.2);color:white;border-color:rgba(255,255,255,0.3);">💬 커뮤니티</div>
+      <h1>결과 공유 게시판</h1>
+      <p>다른 사람들의 매칭 결과를 구경하고 나의 결과도 공유해봐요!</p>
+    </div>
+  </section>
+
+  <main style="background:linear-gradient(135deg,#faf5ff,#fdf2ff);padding:40px 20px 80px;">
+    <div class="container-wide">
+
+      <!-- Supabase 미설정 안내 -->
+      <div class="setup-notice" id="setup-notice" style="display:none;">
+        <h4>⚙️ Supabase 연동이 필요해요</h4>
+        <p><code>js/supabase-config.js</code> 파일에 Supabase URL과 anon key를 입력해주세요. <a href="SETUP.md">SETUP.md</a> 참고</p>
+      </div>
+
+      <div class="community-layout">
+
+        <!-- 글쓰기 패널 -->
+        <div>
+          <!-- 내 결과에서 불러오기 -->
+          <div class="panel" id="share-from-result-panel" style="margin-bottom:20px;">
+            <div class="share-from-result" id="my-result-preview" style="display:none;"></div>
+            <h3>✍️ 결과 공유하기</h3>
+            <div class="form-group">
+              <label class="form-label">닉네임</label>
+              <input type="text" class="form-input" id="input-nickname" placeholder="익명의 집사" maxlength="20" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">나의 1위 반려동물</label>
+              <select class="form-select" id="input-pet">
+                <option value="">선택해주세요</option>
+                <option value="dog">🐕 강아지</option>
+                <option value="cat">🐈 고양이</option>
+                <option value="rabbit">🐰 토끼</option>
+                <option value="hamster">🐹 햄스터</option>
+                <option value="fish">🐠 물고기</option>
+                <option value="parrot">🦜 앵무새</option>
+                <option value="guinea_pig">🐾 기니피그</option>
+                <option value="turtle">🐢 거북이</option>
+                <option value="ferret">🦡 페렛</option>
+                <option value="hedgehog">🦔 고슴도치</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">매칭 퍼센트</label>
+              <input type="number" class="form-input" id="input-pct" placeholder="예: 87" min="1" max="100" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">한마디 (선택)</label>
+              <textarea class="form-input form-textarea" id="input-message" placeholder="결과를 보고 어떤 생각이 들었나요? 😊" maxlength="200"></textarea>
+            </div>
+            <button class="submit-btn" onclick="submitPost()">공유하기 →</button>
+          </div>
+        </div>
+
+        <!-- 게시판 -->
+        <div class="panel">
+          <div class="posts-header">
+            <h3 style="margin-bottom:0;">🏆 매칭 결과 모음</h3>
+            <span class="posts-count" id="posts-count">로딩 중...</span>
+          </div>
+
+          <div class="filter-tabs" id="filter-tabs">
+            <button class="filter-tab active" onclick="filterPosts('all', this)">전체</button>
+            <button class="filter-tab" onclick="filterPosts('dog', this)">🐕 강아지</button>
+            <button class="filter-tab" onclick="filterPosts('cat', this)">🐈 고양이</button>
+            <button class="filter-tab" onclick="filterPosts('rabbit', this)">🐰 토끼</button>
+            <button class="filter-tab" onclick="filterPosts('hamster', this)">🐹 햄스터</button>
+            <button class="filter-tab" onclick="filterPosts('fish', this)">🐠 물고기</button>
+          </div>
+
+          <div class="posts-list" id="posts-list">
+            <div class="loading-posts">게시글을 불러오는 중...</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-logo">🐾 YourAnimal</div>
+    <div class="footer-links">
+      <a href="index.html">홈</a><a href="quiz.html">매칭 테스트</a>
+      <a href="name-generator.html">이름 생성기</a><a href="blog.html">블로그</a>
+    </div>
+    <p>© 2025 YourAnimal. All rights reserved.</p>
+  </footer>
+
+  <div class="toast" id="toast"></div>
+
+  <script src="data/pets.js"></script>
+  <script src="js/supabase-config.js"></script>
+  <script>
+    // ─── Supabase 초기화 ───────────────────────────────────────────
+    let supabase = null;
+    try {
+      if (typeof SUPABASE_URL !== 'undefined' && SUPABASE_URL && SUPABASE_URL !== 'YOUR_SUPABASE_URL') {
+        supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+      } else {
+        document.getElementById('setup-notice').style.display = 'block';
+      }
+    } catch(e) {
+      document.getElementById('setup-notice').style.display = 'block';
+    }
+
+    // ─── 내 퀴즈 결과 불러오기 ─────────────────────────────────────
+    const myResults = JSON.parse(sessionStorage.getItem('quizResults') || 'null');
+    if (myResults && myResults.length > 0) {
+      const top = myResults[0];
+      const pet = PETS[top.pet];
+      const preview = document.getElementById('my-result-preview');
+      preview.style.display = 'block';
+      preview.innerHTML = `
+        <h4>📊 내 테스트 결과 불러오기</h4>
+        <p>테스트 결과가 있어요! 자동으로 채워드릴게요.</p>
+        <button onclick="fillFromResult()" style="padding:8px 20px;border-radius:100px;border:2px solid var(--primary);background:transparent;color:var(--primary);font-weight:700;cursor:pointer;font-family:inherit;font-size:0.85rem;">
+          ${pet.emoji} ${pet.name} ${top.percentage}% 결과 불러오기
+        </button>
+      `;
+    }
+
+    function fillFromResult() {
+      if (!myResults || !myResults.length) return;
+      const top = myResults[0];
+      document.getElementById('input-pet').value = top.pet;
+      document.getElementById('input-pct').value = top.percentage;
+      showToast('결과가 자동으로 채워졌어요!');
+    }
+
+    // ─── 글 목록 ───────────────────────────────────────────────────
+    let allPosts = [];
+    let currentFilter = 'all';
+
+    const PET_EMOJIS = { dog:'🐕', cat:'🐈', rabbit:'🐰', hamster:'🐹', fish:'🐠', parrot:'🦜', guinea_pig:'🐾', turtle:'🐢', ferret:'🦡', hedgehog:'🦔' };
+    const PET_NAMES_KO = { dog:'강아지', cat:'고양이', rabbit:'토끼', hamster:'햄스터', fish:'물고기', parrot:'앵무새', guinea_pig:'기니피그', turtle:'거북이', ferret:'페렛', hedgehog:'고슴도치' };
+
+    function timeAgo(dateStr) {
+      const diff = (Date.now() - new Date(dateStr).getTime()) / 1000;
+      if (diff < 60) return '방금 전';
+      if (diff < 3600) return Math.floor(diff/60) + '분 전';
+      if (diff < 86400) return Math.floor(diff/3600) + '시간 전';
+      return Math.floor(diff/86400) + '일 전';
+    }
+
+    async function loadPosts() {
+      if (!supabase) {
+        renderDemoPosts();
+        return;
+      }
+      try {
+        const { data, error } = await supabase
+          .from('pet_results_shares')
+          .select('*')
+          .order('created_at', { ascending: false })
+          .limit(50);
+        if (error) throw error;
+        allPosts = data || [];
+        renderPosts();
+      } catch(e) {
+        renderDemoPosts();
+      }
+    }
+
+    function renderDemoPosts() {
+      allPosts = [
+        { id:1, nickname:'고양이집사', top_pet:'cat', percentage:94, message:'고양이가 1위라니! 원래 키우던 거라 공감 100%예요 ㅎㅎ', created_at: new Date(Date.now()-3600000).toISOString(), likes:24 },
+        { id:2, nickname:'강아지러버', top_pet:'dog', percentage:91, message:'강아지랑 매일 산책하는 게 낙이에요. 너무 잘 맞네요!', created_at: new Date(Date.now()-7200000).toISOString(), likes:18 },
+        { id:3, nickname:'원룸거주자', top_pet:'fish', percentage:88, message:'원룸이라 어쩔 수 없다 생각했는데 물고기가 이렇게 힐링인줄 몰랐어요', created_at: new Date(Date.now()-86400000).toISOString(), likes:31 },
+        { id:4, nickname:'야행성인간', top_pet:'hamster', percentage:85, message:'밤에 같이 깨어있는 햄스터 짱입니다 🐹', created_at: new Date(Date.now()-172800000).toISOString(), likes:12 },
+        { id:5, nickname:'조용한사람', top_pet:'rabbit', percentage:82, message:'토끼가 생각보다 훨씬 개성이 강해서 놀랐어요. 신뢰 쌓는 재미가 있어요!', created_at: new Date(Date.now()-259200000).toISOString(), likes:9 },
+        { id:6, nickname:'앵무왕', top_pet:'parrot', percentage:90, message:'앵무새가 제 이름 부르는 날 너무 감동이었어요 😭', created_at: new Date(Date.now()-345600000).toISOString(), likes:27 },
+      ];
+      document.getElementById('setup-notice').style.display = 'block';
+      renderPosts();
+    }
+
+    function renderPosts() {
+      const filtered = currentFilter === 'all' ? allPosts : allPosts.filter(p => p.top_pet === currentFilter);
+      document.getElementById('posts-count').textContent = `총 ${filtered.length}개`;
+      const list = document.getElementById('posts-list');
+
+      if (!filtered.length) {
+        list.innerHTML = `<div class="empty-state"><div class="empty-icon">🐾</div><p>아직 게시글이 없어요.<br/>첫 번째로 결과를 공유해보세요!</p></div>`;
+        return;
+      }
+
+      list.innerHTML = filtered.map(p => `
+        <div class="post-card" id="post-${p.id}">
+          <div class="post-top">
+            <div class="post-avatar">${PET_EMOJIS[p.top_pet] || '🐾'}</div>
+            <div>
+              <div class="post-nickname">${p.nickname || '익명'}</div>
+              <div class="post-time">${timeAgo(p.created_at)}</div>
+            </div>
+          </div>
+          <div class="post-result">
+            <span class="post-pet-badge">${PET_EMOJIS[p.top_pet]} ${PET_NAMES_KO[p.top_pet]}</span>
+            <span class="post-pct">${p.percentage}% 매칭</span>
+          </div>
+          ${p.message ? `<div class="post-message">"${p.message}"</div>` : ''}
+          <div class="post-actions">
+            <button class="like-btn" onclick="likePost(${p.id}, this)">
+              ❤️ <span class="like-count">${p.likes || 0}</span>
+            </button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function filterPosts(pet, el) {
+      currentFilter = pet;
+      document.querySelectorAll('.filter-tab').forEach(b => b.classList.remove('active'));
+      el.classList.add('active');
+      renderPosts();
+    }
+
+    // ─── 글 등록 ───────────────────────────────────────────────────
+    async function submitPost() {
+      const nickname = document.getElementById('input-nickname').value.trim() || '익명';
+      const top_pet = document.getElementById('input-pet').value;
+      const percentage = parseInt(document.getElementById('input-pct').value);
+      const message = document.getElementById('input-message').value.trim();
+
+      if (!top_pet) { showToast('반려동물을 선택해주세요!'); return; }
+      if (!percentage || percentage < 1 || percentage > 100) { showToast('매칭 퍼센트를 올바르게 입력해주세요!'); return; }
+
+      const newPost = { id: Date.now(), nickname, top_pet, percentage, message, created_at: new Date().toISOString(), likes: 0 };
+
+      if (supabase) {
+        try {
+          const { data, error } = await supabase
+            .from('pet_results_shares')
+            .insert([{ nickname, top_pet, percentage, message, likes: 0 }])
+            .select();
+          if (error) throw error;
+          if (data && data[0]) newPost.id = data[0].id;
+        } catch(e) {
+          console.error(e);
+        }
+      }
+
+      allPosts.unshift(newPost);
+      renderPosts();
+      document.getElementById('input-message').value = '';
+      showToast('🎉 공유됐어요!');
+    }
+
+    // ─── 좋아요 ────────────────────────────────────────────────────
+    async function likePost(id, btn) {
+      if (btn.classList.contains('liked')) return;
+      btn.classList.add('liked');
+      const countEl = btn.querySelector('.like-count');
+      const newCount = parseInt(countEl.textContent) + 1;
+      countEl.textContent = newCount;
+      const post = allPosts.find(p => p.id === id);
+      if (post) post.likes = newCount;
+
+      if (supabase) {
+        await supabase.from('pet_results_shares').update({ likes: newCount }).eq('id', id);
+      }
+    }
+
+    function showToast(msg) {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 3000);
+    }
+
+    loadPosts();
+  </script>
+</body>
+</html>
