@@ -7,7 +7,7 @@
 // 3. 아래 값을 교체하세요
 
 const SUPABASE_URL = 'https://xbgrstqlcrttjeoszpet.supabase.co';         // 예: https://abcdefgh.supabase.co
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhiZ3JzdHFsY3J0dGplb3N6cGV0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM2NDAzODQsImV4cCI6MjA4OTIxNjM4NH0.odzFVtT44TDBNi5A3niFTM1ZQDOU3333ozZA2DArExM'; // 예: eyJhbGciOiJIUzI1NiIsInR5cCI6...
+const SUPABASE_ANON_KEY = 'sb_publishable_tdPfKTEGd8_k2TA0jo5z3w_0RJbXoYA';
 
 // ===================================================
 // Supabase SQL — 아래 쿼리를 Supabase SQL Editor에서 실행하세요
