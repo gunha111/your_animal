@@ -39,10 +39,10 @@
   <script src="data/pets.js"></script>
   <script src="js/scoring.js"></script>
   <script>
-    // Stripe Payment Link — replace with your own
-    // Create a $2.99 product in Stripe Dashboard → Payment Links
-    // Add ?success_url=https://yourdomain.com/results.html?unlocked=1
-    const STRIPE_PAYMENT_LINK = 'https://buy.stripe.com/YOUR_PAYMENT_LINK_HERE';
+    // 토스페이먼츠 Payment Link — 아래 설정 방법 참고 (SETUP.md)
+    // 토스페이먼츠 대시보드 → 결제 링크 생성 → ₩3,900 상품
+    // 성공 URL: https://mypetgenerator.com/success.html
+    const TOSS_PAYMENT_LINK = 'https://link.tosspayments.com/YOUR_LINK_HERE';
 
     const results = JSON.parse(sessionStorage.getItem('quizResults') || 'null');
     const urlParams = new URLSearchParams(window.location.search);
@@ -77,9 +77,7 @@
     }
 
     function openPayment() {
-      // Pass success URL with unlocked=1 param
-      const successUrl = encodeURIComponent(window.location.origin + '/results.html?unlocked=1');
-      window.location.href = STRIPE_PAYMENT_LINK + '?success_url=' + successUrl;
+      window.location.href = TOSS_PAYMENT_LINK;
     }
 
     function render() {
@@ -227,7 +225,23 @@
             }).join('')}
           </div>
 
-          <div class="price-highlight">$2.99 <span>일회성 결제</span></div>
+          <!-- 한국 결제 수단 아이콘 -->
+          <div class="pay-methods">
+            <div class="pay-method kakao">
+              <span class="pay-icon">💛</span>카카오페이
+            </div>
+            <div class="pay-method naver">
+              <span class="pay-icon">🟢</span>네이버페이
+            </div>
+            <div class="pay-method toss">
+              <span class="pay-icon">🔵</span>토스페이
+            </div>
+            <div class="pay-method card">
+              <span class="pay-icon">💳</span>신용·체크카드
+            </div>
+          </div>
+
+          <div class="price-highlight">₩3,900 <span>일회성 결제</span></div>
           <p class="price-note">TOP 2~5 결과 + 각 반려동물 상세 분석 + 케어 가이드</p>
 
           <button class="unlock-btn" onclick="openPayment()">
@@ -235,9 +249,9 @@
           </button>
 
           <div class="unlock-features">
-            <span>🔐 안전한 결제</span>
-            <span>⚡ 즉시 확인</span>
-            <span>💳 카드/페이팔 지원</span>
+            <span>🔐 토스페이먼츠 보안결제</span>
+            <span>⚡ 결제 즉시 확인</span>
+            <span>↩️ 환불 보장</span>
           </div>
         </div>
       `;

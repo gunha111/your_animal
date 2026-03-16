@@ -781,6 +781,31 @@ body {
   100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
 }
 
+/* ===== 한국 결제 수단 배지 ===== */
+.pay-methods {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 24px;
+  position: relative;
+}
+.pay-method {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 7px 14px;
+  border-radius: 100px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  border: 1.5px solid transparent;
+}
+.pay-icon { font-size: 0.95rem; }
+.pay-method.kakao  { background: #FEF9C3; color: #78350F; border-color: #FDE68A; }
+.pay-method.naver  { background: #DCFCE7; color: #14532D; border-color: #86EFAC; }
+.pay-method.toss   { background: #DBEAFE; color: #1E3A8A; border-color: #93C5FD; }
+.pay-method.card   { background: #F3F4F6; color: #374151; border-color: #D1D5DB; }
+
 /* Toast */
 .toast {
   position: fixed;

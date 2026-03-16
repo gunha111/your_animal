@@ -15,50 +15,66 @@ your_animal/
 └── js/scoring.js     # 매칭 알고리즘
 ```
 
-## Stripe 결제 연동 방법
+## 토스페이먼츠 결제 연동 방법
 
-### 방법 1: Stripe Payment Links (가장 간단, 추천)
+> 카카오페이, 네이버페이, 토스페이, 신용/체크카드 모두 지원하는 한국 1위 결제 PG
 
-1. [Stripe Dashboard](https://dashboard.stripe.com) 로그인
-2. Products → Add product → 이름: "YourAnimal 전체 결과", 가격: $2.99
-3. Payment Links → Create a link → 해당 상품 선택
-4. Confirmation page → "Redirect customers to your website" 선택
-5. URL: `https://yourdomain.com/success.html`
-6. 생성된 Payment Link URL 복사
+### 방법 1: 토스페이먼츠 결제 링크 (가장 간단, 추천 ⭐)
 
-7. `results.html` 파일에서 이 줄 수정:
+백엔드 없이 5분 안에 설정 가능합니다.
+
+1. [토스페이먼츠 대시보드](https://developers.tosspayments.com) 가입 및 로그인
+2. 상점 관리 → **결제 링크** → 결제 링크 만들기
+3. 상품명: `YourAnimal 반려동물 매칭 전체 결과`, 금액: `3,900`
+4. 결제 완료 후 이동 URL: `https://mypetgenerator.com/success.html`
+5. 생성된 링크 복사 (예: `https://link.tosspayments.com/xxxx`)
+
+6. `results.html` 파일에서 수정:
 ```js
-const STRIPE_PAYMENT_LINK = 'https://buy.stripe.com/YOUR_PAYMENT_LINK_HERE';
+const TOSS_PAYMENT_LINK = 'https://link.tosspayments.com/YOUR_LINK_HERE';
 ```
 → 복사한 URL로 교체
 
-### 방법 2: Stripe Checkout (서버 필요, 더 안전)
+---
 
-서버리스 함수 (Vercel/Netlify)를 사용하는 경우:
+### 방법 2: 토스페이먼츠 JS SDK (서버 필요, 더 안전)
 
+Vercel/Netlify 서버리스 함수를 사용하는 경우:
+
+**`api/payment.js`** (Vercel)
 ```js
-// api/create-checkout.js (Vercel Edge Function)
-import Stripe from 'stripe';
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+import fetch from 'node-fetch';
 
 export default async function handler(req, res) {
-  const session = await stripe.checkout.sessions.create({
-    payment_method_types: ['card'],
-    line_items: [{
-      price_data: {
-        currency: 'usd',
-        product_data: { name: 'YourAnimal 전체 결과 (TOP 2~5)' },
-        unit_amount: 299, // $2.99
-      },
-      quantity: 1,
-    }],
-    mode: 'payment',
-    success_url: `${req.headers.origin}/success.html?session_id={CHECKOUT_SESSION_ID}`,
-    cancel_url: `${req.headers.origin}/results.html`,
+  const { orderId, amount } = req.body;
+
+  const response = await fetch('https://api.tosspayments.com/v1/payments', {
+    method: 'POST',
+    headers: {
+      Authorization: `Basic ${Buffer.from(process.env.TOSS_SECRET_KEY + ':').toString('base64')}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      amount,
+      orderId,
+      orderName: 'YourAnimal 반려동물 매칭 전체 결과',
+      successUrl: `${process.env.BASE_URL}/success.html`,
+      failUrl: `${process.env.BASE_URL}/results.html`,
+    }),
   });
-  res.json({ url: session.url });
+
+  const data = await response.json();
+  res.json(data);
 }
 ```
+
+**환경변수 설정 (.env)**
+```
+TOSS_SECRET_KEY=test_sk_YOUR_SECRET_KEY
+BASE_URL=https://mypetgenerator.com
+```
+
+**테스트 키 발급**: 토스페이먼츠 개발자센터 → 내 개발정보 → API 키
 
 ## 배포 방법
 
