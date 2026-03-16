@@ -39,10 +39,7 @@ function getSessionId() {
 // ── Paddle init ─────────────────────────────────────────────────
 function initPaddle() {
   if (typeof Paddle === 'undefined') return;
-  Paddle.Initialize({
-    token: PADDLE_CLIENT_TOKEN,
-    seller: 302249,
-  });
+  Paddle.Initialize({ token: PADDLE_CLIENT_TOKEN });
 }
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', initPaddle);
