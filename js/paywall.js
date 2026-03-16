@@ -8,13 +8,13 @@
 //   3. Netlify env vars: PADDLE_WEBHOOK_SECRET, SUPABASE_URL, SUPABASE_SERVICE_KEY
 // ================================================================
 
-const PADDLE_CLIENT_TOKEN = 'live_XXXXXXXXXXXXXXXXXXXXXXXXX'; // ← replace
+const PADDLE_CLIENT_TOKEN = 'live_ee1c199a48838d75d5ece38b08b';
 
 const PADDLE_PRICE_IDS = {
-  name_gen:     'pri_XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX', // $1.99
-  care_plan:    'pri_XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX', // $2.99
-  quiz_unlock:  'pri_XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX', // $2.99
-  subscription: 'pri_XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX', // $9.99/mo
+  name_gen:     'pri_01kkv9mkb7yem5da8v2d6zk9bt', // $1.99
+  care_plan:    'pri_01kkv9rq8ae9cb24xfahcghm6c', // $2.99
+  quiz_unlock:  'pri_01kkv9vq4s2ab2d90pjeayns9v', // $2.99
+  subscription: 'pri_01kkv9z7hax4j6by4axsd3dzqb', // $9.99/mo
 };
 
 const STORAGE_KEYS = {
