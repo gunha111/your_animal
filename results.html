@@ -223,30 +223,58 @@
             }).join('')}
           </div>
 
-          <!-- Payment methods -->
-          <div class="pay-methods">
-            <div class="pay-method card">
-              <span class="pay-icon">💳</span>Visa / Mastercard
+          <!-- Pricing Options -->
+          <div class="pricing-options">
+
+            <!-- One-time option -->
+            <div class="pricing-card" onclick="openPayment()">
+              <div class="pricing-card-header">
+                <div class="pricing-card-title">One-Time Unlock</div>
+                <div class="pricing-card-price">$2.99</div>
+                <div class="pricing-card-period">single purchase</div>
+              </div>
+              <ul class="pricing-card-features">
+                <li>✓ TOP 2–5 results revealed</li>
+                <li>✓ Detailed analysis for each pet</li>
+                <li>✓ One quiz unlock only</li>
+                <li style="color:#9CA3AF;">✗ Name Generator</li>
+                <li style="color:#9CA3AF;">✗ Care Plan Generator</li>
+                <li style="color:#9CA3AF;">✗ Unlimited retakes</li>
+              </ul>
+              <button class="pricing-card-btn secondary-btn">Unlock Results</button>
             </div>
-            <div class="pay-method toss">
-              <span class="pay-icon">🅿️</span>PayPal
+
+            <!-- Subscription option — highlighted -->
+            <div class="pricing-card pricing-card-featured" onclick="Paywall.pay('subscription')">
+              <div class="pricing-card-badge">⭐ BEST VALUE</div>
+              <div class="pricing-card-header">
+                <div class="pricing-card-title">All-In-One Plan</div>
+                <div class="pricing-card-price">$9.99</div>
+                <div class="pricing-card-period">per month</div>
+              </div>
+              <ul class="pricing-card-features">
+                <li>✓ TOP 2–5 results revealed</li>
+                <li>✓ Detailed analysis for each pet</li>
+                <li>✓ <strong>Unlimited quiz retakes</strong></li>
+                <li>✓ <strong>Name Generator</strong> (worth $1.99)</li>
+                <li>✓ <strong>Care Plan Generator</strong> (worth $2.99)</li>
+                <li>✓ <strong>Priority access to new features</strong></li>
+              </ul>
+              <div class="pricing-savings">Save $7.96 vs. buying separately</div>
+              <button class="pricing-card-btn featured-btn">Get All-In-One →</button>
             </div>
-            <div class="pay-method kakao">
-              <span class="pay-icon">📱</span>Apple Pay
-            </div>
-            <div class="pay-method card">
-              <span class="pay-icon">💳</span>Credit / Debit Card
-            </div>
+
           </div>
 
-          <div class="price-highlight">$2.99 <span>one-time payment</span></div>
-          <p class="price-note">TOP 2–5 results + detailed analysis for each pet + care guide</p>
+          <!-- Payment methods -->
+          <div class="pay-methods" style="margin-top:16px;">
+            <div class="pay-method card"><span class="pay-icon">💳</span>Visa / Mastercard</div>
+            <div class="pay-method toss"><span class="pay-icon">🅿️</span>PayPal</div>
+            <div class="pay-method kakao"><span class="pay-icon">📱</span>Apple Pay</div>
+            <div class="pay-method card"><span class="pay-icon">💳</span>Credit / Debit Card</div>
+          </div>
 
-          <button class="unlock-btn" onclick="openPayment()">
-            🔓 Unlock Full Results
-          </button>
-
-          <div class="unlock-features">
+          <div class="unlock-features" style="margin-top:16px;">
             <span>🔐 Secure payment via Paddle</span>
             <span>⚡ Instant access after payment</span>
           </div>
