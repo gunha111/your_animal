@@ -124,16 +124,6 @@ const Paywall = {
 
     Paddle.Checkout.open({
       items: [{ priceId, quantity: 1 }],
-      customData: {
-        session_id: getSessionId(),
-        product_type: type,
-      },
-      settings: {
-        displayMode: 'overlay',
-        theme: 'light',
-        locale: 'en',
-        successUrl: `${window.location.origin}/success.html?type=${type}`,
-      },
     });
   },
 
