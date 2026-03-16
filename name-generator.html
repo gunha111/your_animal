@@ -130,7 +130,7 @@
 
   <section class="tool-hero">
     <div class="container">
-      <div class="hero-badge" style="background:rgba(255,255,255,0.2);color:white;border-color:rgba(255,255,255,0.3);">🎲 무료 이름 생성기</div>
+      <div class="hero-badge" style="background:rgba(255,255,255,0.2);color:white;border-color:rgba(255,255,255,0.3);">🎲 1회 무료 · 이후 ₩1,900</div>
       <h1>반려동물 이름 생성기</h1>
       <p>종류와 성격만 고르면 찰떡같은 이름 9개를 추천해드려요!</p>
     </div>
@@ -245,7 +245,31 @@
 
   <div class="toast" id="toast"></div>
 
+  <!-- Paywall Modal -->
+  <div id="paywall-modal" style="display:none;position:fixed;inset:0;z-index:1000;background:rgba(0,0,0,0.6);align-items:center;justify-content:center;padding:20px;">
+    <div style="background:white;border-radius:24px;padding:40px 32px;max-width:420px;width:100%;text-align:center;position:relative;animation:fadeSlideIn 0.3s ease;">
+      <button onclick="document.getElementById('paywall-modal').style.display='none'" style="position:absolute;top:14px;right:18px;background:none;border:none;font-size:1.5rem;cursor:pointer;color:var(--text-muted);line-height:1;">✕</button>
+      <div style="font-size:3rem;margin-bottom:12px;">🔒</div>
+      <h2 style="font-size:1.35rem;font-weight:900;margin-bottom:8px;">무료 사용 횟수를 다 쓰셨어요</h2>
+      <p style="color:var(--text-muted);font-size:0.9rem;margin-bottom:28px;">이름 생성기를 계속 이용하려면<br>아래 옵션 중 하나를 선택해주세요</p>
+      <div style="display:flex;flex-direction:column;gap:12px;">
+        <button onclick="Paywall.pay('name_gen')" style="padding:18px 24px;background:linear-gradient(135deg,#f093fb,#f5576c);color:white;border:none;border-radius:14px;font-size:1rem;font-weight:800;cursor:pointer;font-family:inherit;">
+          이름 생성기 잠금해제 — ₩1,900
+          <div style="font-size:0.78rem;font-weight:600;opacity:0.9;margin-top:4px;">일회성 결제 · 이후 무제한 사용</div>
+        </button>
+        <button onclick="Paywall.pay('subscription')" style="padding:18px 24px;background:linear-gradient(135deg,#667eea,#764ba2);color:white;border:none;border-radius:14px;font-size:1rem;font-weight:800;cursor:pointer;font-family:inherit;">
+          구독 — ₩9,900/월
+          <div style="font-size:0.78rem;font-weight:600;opacity:0.9;margin-top:4px;">이름 생성기 + 케어플랜 + 모든 기능</div>
+        </button>
+      </div>
+      <div style="margin-top:20px;display:flex;justify-content:center;gap:14px;font-size:0.75rem;color:var(--text-muted);">
+        <span>🟡 카카오페이</span><span>🟢 네이버페이</span><span>💙 토스</span><span>💳 카드</span>
+      </div>
+    </div>
+  </div>
+
   <script src="data/names.js"></script>
+  <script src="js/paywall.js"></script>
   <script>
     let selectedPet = null;
     let selectedPersonality = null;
@@ -277,8 +301,28 @@
       return a;
     }
 
+    window.addEventListener('DOMContentLoaded', function() {
+      const paid = Paywall.checkReturnFromPayment();
+      if (paid) showToast('결제 완료! 이름 생성기를 마음껏 이용하세요 🎉');
+    });
+
+    function showToast(msg) {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 3000);
+    }
+
     function generateNames() {
       if (!selectedPet || !selectedPersonality) return;
+
+      // Paywall check
+      if (!Paywall.canUseNameGen()) {
+        document.getElementById('paywall-modal').style.display = 'flex';
+        return;
+      }
+      const isFree = Paywall.isNameGenFree();
+
       const petNames = PET_NAMES[selectedPet]?.[selectedPersonality] || [];
 
       let pool = [];
@@ -305,6 +349,12 @@
       `).join('');
       document.getElementById('results-wrap').classList.add('show');
       document.getElementById('results-wrap').scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+      // Record free use after first generation
+      if (isFree) {
+        Paywall.recordNameGenUse();
+        showToast('이름이 생성되었어요! 다음 생성부터는 ₩1,900이 필요해요');
+      }
     }
 
     function copyName(name, el) {
