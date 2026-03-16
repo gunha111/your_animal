@@ -1,0 +1,10 @@
+# 환경변수 / 키 파일 — 절대 GitHub에 올리면 안 됨
+js/supabase-config.js
+
+# OS
+.DS_Store
+Thumbs.db
+
+# 에디터
+.vscode/
+.idea/
