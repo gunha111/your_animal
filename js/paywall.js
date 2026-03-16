@@ -14,7 +14,7 @@ const PADDLE_PRICE_IDS = {
   name_gen:     'pri_01kkv9mkb7yem5da8v2d6zk9bt', // $1.99
   care_plan:    'pri_01kkv9rq8ae9cb24xfahcghm6c', // $2.99
   quiz_unlock:  'pri_01kkv9vq4s2ab2d90pjeayns9v', // $2.99
-  subscription: 'pri_01kkv9z7hax4j6by4axsd3dzqb', // $9.99/mo
+  subscription: 'pri_01kkv9z7hax4j6by4axsd3dzqb', // $5.99/mo
 };
 
 const STORAGE_KEYS = {
