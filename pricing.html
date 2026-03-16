@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pricing — YourAnimal</title>
+  <meta name="description" content="Simple, honest pricing for YourAnimal. Try free, then only pay for what you need. From $1.99 per feature or $9.99/month for everything." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐾</text></svg>" />
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="site-header">
+    <div class="container">
+      <div class="header-inner">
+        <a href="index.html" class="logo">
+          <span class="logo-emoji">🐾</span>
+          YourAnimal
+        </a>
+        <nav style="display:flex;gap:20px;align-items:center;">
+          <a href="name-generator.html" style="font-size:0.88rem;font-weight:600;color:var(--text-muted);text-decoration:none;white-space:nowrap;">Name Generator</a>
+          <a href="care-plan.html" style="font-size:0.88rem;font-weight:600;color:var(--text-muted);text-decoration:none;white-space:nowrap;">Care Plan</a>
+          <a href="community.html" style="font-size:0.88rem;font-weight:600;color:var(--text-muted);text-decoration:none;white-space:nowrap;">Community</a>
+          <a href="blog.html" style="font-size:0.88rem;font-weight:600;color:var(--text-muted);text-decoration:none;white-space:nowrap;">Blog</a>
+          <a href="quiz.html" class="cta-btn" style="padding:10px 24px;font-size:0.88rem;white-space:nowrap;">Start Quiz →</a>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section style="background:linear-gradient(135deg,#667eea 0%,#764ba2 50%,#f093fb 100%);padding:80px 20px 60px;text-align:center;position:relative;overflow:hidden;">
+    <div style="position:absolute;inset:0;background:url(\"data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Ccircle cx='30' cy='30' r='4'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E\");"></div>
+    <div class="container" style="position:relative;">
+      <div class="hero-badge">💰 Simple, Honest Pricing</div>
+      <h1 style="font-size:clamp(2rem,5vw,3rem);font-weight:900;color:white;line-height:1.15;margin-bottom:16px;">Try free. Pay only when <span style="background:linear-gradient(to right,#FDE68A,#FCA5A5);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">you love it.</span></h1>
+      <p style="font-size:1.1rem;color:rgba(255,255,255,0.88);max-width:500px;margin:0 auto 32px;">Your #1 pet match and one Name Generator use are always free. Unlock more when you're ready.</p>
+      <a href="quiz.html" class="cta-btn">Take the Free Quiz →</a>
+    </div>
+  </section>
+
+  <!-- PRICING CARDS -->
+  <section class="pricing-section">
+    <div class="container" style="max-width:1000px;">
+      <h2 class="section-title">Choose your plan</h2>
+      <p class="section-sub">No hidden fees. No subscriptions you didn't ask for.</p>
+
+      <div class="pricing-cards">
+
+        <!-- Free -->
+        <div class="pricing-card">
+          <div class="pricing-tier">Free</div>
+          <div class="pricing-price">$0</div>
+          <div class="pricing-desc">Get started right now, no card needed</div>
+          <ul class="pricing-features">
+            <li><span class="check">✓</span> 25-question pet matching quiz</li>
+            <li><span class="check">✓</span> <strong>#1 Result</strong> with full analysis</li>
+            <li><span class="check">✓</span> Name Generator (1 free use)</li>
+            <li><span class="check">✓</span> Full community access</li>
+            <li><span class="check">✓</span> Pet Guide Blog</li>
+            <li><span class="lock">🔒</span> TOP 2–5 results</li>
+            <li><span class="lock">🔒</span> Care Plan Generator</li>
+            <li><span class="lock">🔒</span> Unlimited Name Generator</li>
+          </ul>
+          <a href="quiz.html" style="display:block;margin-top:24px;padding:14px;text-align:center;background:#F3F4F6;border-radius:100px;font-weight:800;font-size:0.9rem;color:var(--text);text-decoration:none;">Start Free Quiz →</a>
+        </div>
+
+        <!-- All-In-One (featured) -->
+        <div class="pricing-card featured">
+          <div class="pricing-badge">Most Popular</div>
+          <div class="pricing-tier">All-In-One Plan</div>
+          <div class="pricing-price">$9.99 <span>/ mo</span></div>
+          <div class="pricing-desc">Unlimited access for 30 days — cancel anytime</div>
+          <ul class="pricing-features">
+            <li><span class="check">✓</span> Everything in Free</li>
+            <li><span class="check">✓</span> <strong>Full TOP 1–5 results</strong></li>
+            <li><span class="check">✓</span> Unlimited Name Generator</li>
+            <li><span class="check">✓</span> Unlimited Care Plans</li>
+            <li><span class="check">✓</span> Breed recommendation guide</li>
+            <li><span class="check">✓</span> Instant access to new features</li>
+            <li><span class="check">✓</span> Priority support</li>
+          </ul>
+          <div class="pay-methods" style="margin-top:18px;justify-content:flex-start;flex-wrap:wrap;gap:6px;">
+            <div class="pay-method card"><span class="pay-icon">💳</span>Visa/Mastercard</div>
+            <div class="pay-method toss"><span class="pay-icon">🅿️</span>PayPal</div>
+            <div class="pay-method kakao"><span class="pay-icon">📱</span>Apple Pay</div>
+          </div>
+          <a href="quiz.html" style="display:block;margin-top:18px;padding:14px;text-align:center;background:linear-gradient(135deg,var(--primary),var(--secondary));border-radius:100px;font-weight:800;font-size:0.9rem;color:white;text-decoration:none;">Start Subscription →</a>
+          <p style="text-align:center;font-size:0.75rem;color:var(--text-muted);margin-top:10px;">Billed monthly via Paddle. Cancel anytime.</p>
+        </div>
+
+        <!-- Pay Per Feature -->
+        <div class="pricing-card">
+          <div class="pricing-tier">Pay Per Feature</div>
+          <div class="pricing-price" style="font-size:1.5rem;">From $1.99</div>
+          <div class="pricing-desc">One-time unlocks — only pay for what you need</div>
+          <ul class="pricing-features">
+            <li><span class="check">✓</span> Name Generator unlock — <strong>$1.99</strong></li>
+            <li><span class="check">✓</span> TOP 2–5 results — <strong>$2.99</strong></li>
+            <li><span class="check">✓</span> Care Plan unlock — <strong>$2.99</strong></li>
+            <li style="color:var(--text-muted);font-size:0.82rem;padding-top:12px;border-bottom:none;"><span style="opacity:0.5;">💡</span> Need all 3? The subscription saves $6+</li>
+          </ul>
+          <a href="quiz.html" style="display:block;margin-top:24px;padding:14px;text-align:center;background:#F3F4F6;border-radius:100px;font-weight:800;font-size:0.9rem;color:var(--text);text-decoration:none;">Take Quiz First →</a>
+        </div>
+
+      </div>
+
+      <!-- Refund notice -->
+      <div class="refund-notice">
+        <span class="refund-icon">💡</span>
+        <p>
+          <strong>Try it free before you pay.</strong>
+          Your #1 pet match and one Name Generator use are always free — no card required.
+          Only pay when you're happy with what you see.<br/>
+          <span style="margin-top:6px;display:inline-block;font-size:0.8rem;">
+            Due to the nature of digital content, purchases are non-refundable once accessed.
+            <a href="refund.html" style="color:var(--primary);text-decoration:underline;">See our full Refund Policy →</a>
+          </span>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- COMPARISON TABLE -->
+  <section class="section" style="background:white;padding-top:0;">
+    <div class="container" style="max-width:900px;">
+      <h2 class="section-title">Feature comparison</h2>
+      <p class="section-sub">Everything side by side — no surprises</p>
+      <div style="overflow-x:auto;">
+        <table style="width:100%;border-collapse:collapse;font-size:0.92rem;">
+          <thead>
+            <tr style="background:linear-gradient(135deg,#EEF2FF,#F5F3FF);">
+              <th style="text-align:left;padding:16px 20px;font-weight:800;color:var(--text);border-bottom:2px solid var(--border);">Feature</th>
+              <th style="text-align:center;padding:16px 12px;font-weight:800;color:var(--text-muted);border-bottom:2px solid var(--border);">Free</th>
+              <th style="text-align:center;padding:16px 12px;font-weight:800;color:var(--text-muted);border-bottom:2px solid var(--border);">Pay Per Feature</th>
+              <th style="text-align:center;padding:16px 12px;font-weight:800;color:var(--primary);border-bottom:2px solid var(--primary);background:rgba(99,102,241,0.06);">All-In-One<br/><span style="font-size:0.75rem;font-weight:600;">$9.99/mo</span></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="border-bottom:1px solid var(--border);">
+              <td style="padding:14px 20px;font-weight:600;">Pet Matching Quiz</td>
+              <td style="text-align:center;padding:14px 12px;color:#10B981;font-size:1.1rem;">✓</td>
+              <td style="text-align:center;padding:14px 12px;color:#10B981;font-size:1.1rem;">✓</td>
+              <td style="text-align:center;padding:14px 12px;color:#10B981;font-size:1.1rem;background:rgba(99,102,241,0.04);">✓</td>
+            </tr>
+            <tr style="border-bottom:1px solid var(--border);background:#FAFAFA;">
+              <td style="padding:14px 20px;font-weight:600;">#1 Match Result (Free)</td>
+              <td style="text-align:center;padding:14px 12px;color:#10B981;font-size:1.1rem;">✓</td>
+              <td style="text-align:center;padding:14px 12px;color:#10B981;font-size:1.1rem;">✓</td>
+              <td style="text-align:center;padding:14px 12px;color:#10B981;font-size:1.1rem;background:rgba(99,102,241,0.04);">✓</td>
+            </tr>
+            <tr style="border-bottom:1px solid var(--border);">
+              <td style="padding:14px 20px;font-weight:600;">TOP 2–5 Results</td>
+              <td style="text-align:center;padding:14px 12px;color:#D1D5DB;font-size:1.1rem;">✗</td>
+              <td style="text-align:center;padding:14px 12px;color:var(--text-muted);font-size:0.88rem;font-weight:600;">$2.99 one-time</td>
+              <td style="text-align:center;padding:14px 12px;color:#10B981;font-size:1.1rem;background:rgba(99,102,241,0.04);">✓ Unlimited</td>
+            </tr>
+            <tr style="border-bottom:1px solid var(--border);background:#FAFAFA;">
+              <td style="padding:14px 20px;font-weight:600;">Name Generator</td>
+              <td style="text-align:center;padding:14px 12px;color:var(--text-muted);font-size:0.88rem;font-weight:600;">1 free use</td>
+              <td style="text-align:center;padding:14px 12px;color:var(--text-muted);font-size:0.88rem;font-weight:600;">$1.99 one-time</td>
+              <td style="text-align:center;padding:14px 12px;color:#10B981;font-size:1.1rem;background:rgba(99,102,241,0.04);">✓ Unlimited</td>
+            </tr>
+            <tr style="border-bottom:1px solid var(--border);">
+              <td style="padding:14px 20px;font-weight:600;">Care Plan Generator</td>
+              <td style="text-align:center;padding:14px 12px;color:#D1D5DB;font-size:1.1rem;">✗</td>
+              <td style="text-align:center;padding:14px 12px;color:var(--text-muted);font-size:0.88rem;font-weight:600;">$2.99 one-time</td>
+              <td style="text-align:center;padding:14px 12px;color:#10B981;font-size:1.1rem;background:rgba(99,102,241,0.04);">✓ Unlimited</td>
+            </tr>
+            <tr style="border-bottom:1px solid var(--border);background:#FAFAFA;">
+              <td style="padding:14px 20px;font-weight:600;">Community Access</td>
+              <td style="text-align:center;padding:14px 12px;color:#10B981;font-size:1.1rem;">✓</td>
+              <td style="text-align:center;padding:14px 12px;color:#10B981;font-size:1.1rem;">✓</td>
+              <td style="text-align:center;padding:14px 12px;color:#10B981;font-size:1.1rem;background:rgba(99,102,241,0.04);">✓</td>
+            </tr>
+            <tr style="border-bottom:1px solid var(--border);">
+              <td style="padding:14px 20px;font-weight:600;">Breed Recommendation Guide</td>
+              <td style="text-align:center;padding:14px 12px;color:#D1D5DB;font-size:1.1rem;">✗</td>
+              <td style="text-align:center;padding:14px 12px;color:#D1D5DB;font-size:1.1rem;">✗</td>
+              <td style="text-align:center;padding:14px 12px;color:#10B981;font-size:1.1rem;background:rgba(99,102,241,0.04);">✓</td>
+            </tr>
+            <tr style="border-bottom:1px solid var(--border);background:#FAFAFA;">
+              <td style="padding:14px 20px;font-weight:600;">New Features (instant access)</td>
+              <td style="text-align:center;padding:14px 12px;color:#D1D5DB;font-size:1.1rem;">✗</td>
+              <td style="text-align:center;padding:14px 12px;color:#D1D5DB;font-size:1.1rem;">✗</td>
+              <td style="text-align:center;padding:14px 12px;color:#10B981;font-size:1.1rem;background:rgba(99,102,241,0.04);">✓</td>
+            </tr>
+            <tr>
+              <td style="padding:14px 20px;font-weight:600;">Payment</td>
+              <td style="text-align:center;padding:14px 12px;color:var(--text-muted);font-size:0.88rem;">None</td>
+              <td style="text-align:center;padding:14px 12px;color:var(--text-muted);font-size:0.88rem;">One-time</td>
+              <td style="text-align:center;padding:14px 12px;color:var(--primary);font-size:0.88rem;font-weight:700;background:rgba(99,102,241,0.04);">$9.99/mo</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="section" style="background:linear-gradient(135deg,#f5f7ff,#fdf2ff);">
+    <div class="container">
+      <h2 class="section-title">Frequently asked questions</h2>
+      <p class="section-sub">Got questions? We've got answers.</p>
+      <div style="display:flex;flex-direction:column;gap:16px;max-width:700px;margin:0 auto;">
+
+        <details style="background:white;border-radius:16px;border:1px solid var(--border);padding:20px 24px;cursor:pointer;">
+          <summary style="font-weight:700;font-size:1rem;color:var(--text);list-style:none;display:flex;justify-content:space-between;align-items:center;">
+            What's included in the free plan?
+            <span style="font-size:1.2rem;color:var(--primary);">+</span>
+          </summary>
+          <p style="margin-top:14px;font-size:0.92rem;color:var(--text-muted);line-height:1.7;">
+            The free plan gives you full access to the 25-question pet matching quiz, your #1 pet match result with complete analysis, one use of the Name Generator, and unlimited access to the community and blog. No credit card required — ever.
+          </p>
+        </details>
+
+        <details style="background:white;border-radius:16px;border:1px solid var(--border);padding:20px 24px;cursor:pointer;">
+          <summary style="font-weight:700;font-size:1rem;color:var(--text);list-style:none;display:flex;justify-content:space-between;align-items:center;">
+            How does the subscription work?
+            <span style="font-size:1.2rem;color:var(--primary);">+</span>
+          </summary>
+          <p style="margin-top:14px;font-size:0.92rem;color:var(--text-muted);line-height:1.7;">
+            The All-In-One subscription is billed at $9.99 per month through Paddle, our secure payment processor. You get immediate access to all features. You can cancel at any time from your account settings — no penalty, no questions asked. Cancelling stops the next billing cycle; you keep access until the end of the current period.
+          </p>
+        </details>
+
+        <details style="background:white;border-radius:16px;border:1px solid var(--border);padding:20px 24px;cursor:pointer;">
+          <summary style="font-weight:700;font-size:1rem;color:var(--text);list-style:none;display:flex;justify-content:space-between;align-items:center;">
+            Can I use YourAnimal on multiple devices?
+            <span style="font-size:1.2rem;color:var(--primary);">+</span>
+          </summary>
+          <p style="margin-top:14px;font-size:0.92rem;color:var(--text-muted);line-height:1.7;">
+            Yes. YourAnimal works in any modern browser on desktop, tablet, and mobile. Your account and any unlocked features are tied to your login, so you can access them from any device at any time.
+          </p>
+        </details>
+
+        <details style="background:white;border-radius:16px;border:1px solid var(--border);padding:20px 24px;cursor:pointer;">
+          <summary style="font-weight:700;font-size:1rem;color:var(--text);list-style:none;display:flex;justify-content:space-between;align-items:center;">
+            What's the difference between Pay Per Feature and the subscription?
+            <span style="font-size:1.2rem;color:var(--primary);">+</span>
+          </summary>
+          <p style="margin-top:14px;font-size:0.92rem;color:var(--text-muted);line-height:1.7;">
+            Pay Per Feature lets you unlock individual items — Name Generator for $1.99, TOP 5 results for $2.99, Care Plan for $2.99. These are permanent, one-time unlocks. The subscription ($9.99/mo) gives you all features unlocked for 30 days and is the better value if you plan to use more than one feature, or want access to new features as they launch.
+          </p>
+        </details>
+
+        <details style="background:white;border-radius:16px;border:1px solid var(--border);padding:20px 24px;cursor:pointer;">
+          <summary style="font-weight:700;font-size:1rem;color:var(--text);list-style:none;display:flex;justify-content:space-between;align-items:center;">
+            What payment methods are accepted?
+            <span style="font-size:1.2rem;color:var(--primary);">+</span>
+          </summary>
+          <p style="margin-top:14px;font-size:0.92rem;color:var(--text-muted);line-height:1.7;">
+            Payments are handled securely by Paddle. We accept all major credit and debit cards (Visa, Mastercard, American Express), PayPal, and Apple Pay. Paddle is a registered Merchant of Record, which means they handle all sales tax and VAT on our behalf.
+          </p>
+        </details>
+
+        <details style="background:white;border-radius:16px;border:1px solid var(--border);padding:20px 24px;cursor:pointer;">
+          <summary style="font-weight:700;font-size:1rem;color:var(--text);list-style:none;display:flex;justify-content:space-between;align-items:center;">
+            Are purchases refundable?
+            <span style="font-size:1.2rem;color:var(--primary);">+</span>
+          </summary>
+          <p style="margin-top:14px;font-size:0.92rem;color:var(--text-muted);line-height:1.7;">
+            Because our content is digital and delivered instantly, purchases are generally non-refundable once the content has been accessed. That's why we encourage you to try the free features first — your #1 result and one Name Generator use are always free. If a technical error prevented you from accessing your purchase, contact us within 48 hours at <a href="mailto:support@mypetgenerator.com" style="color:var(--primary);">support@mypetgenerator.com</a> and we'll make it right. <a href="refund.html" style="color:var(--primary);">Read the full Refund Policy →</a>
+          </p>
+        </details>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- FINAL CTA -->
+  <section style="background:linear-gradient(135deg,#667eea,#764ba2,#f093fb);padding:80px 20px;text-align:center;">
+    <div class="container">
+      <h2 style="font-size:clamp(1.8rem,4vw,2.5rem);font-weight:900;color:white;margin-bottom:16px;">
+        Still not sure? Start free.
+      </h2>
+      <p style="color:rgba(255,255,255,0.85);font-size:1.05rem;margin-bottom:40px;">Take the full quiz and get your #1 match — no payment needed, ever.</p>
+      <a href="quiz.html" class="cta-btn">
+        Take the Free Quiz →
+      </a>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="footer-logo">🐾 YourAnimal</div>
+    <div class="footer-links">
+      <a href="terms.html">Terms of Service</a>
+      <a href="privacy.html">Privacy Policy</a>
+      <a href="refund.html">Refund Policy</a>
+      <a href="pricing.html">Pricing</a>
+      <a href="mailto:support@mypetgenerator.com">Contact Us</a>
+    </div>
+    <p>© 2025 YourAnimal. All rights reserved.</p>
+  </footer>
+
+</body>
+</html>

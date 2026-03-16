@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>결제 완료 — YourAnimal</title>
+  <title>Payment Complete — YourAnimal</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
@@ -14,18 +14,19 @@
   <main class="success-page">
     <div class="success-card">
       <div class="success-icon">🎉</div>
-      <h1 id="success-title">결제가 완료됐어요!</h1>
-      <p id="success-msg">잠시 후 자동으로 이동합니다...</p>
-      <button class="go-results-btn" id="go-btn" onclick="goNext()">계속하기 →</button>
+      <h1 id="success-title">Payment complete!</h1>
+      <p id="success-msg">Redirecting you in a moment...</p>
+      <button class="go-results-btn" id="go-btn" onclick="goNext()">Continue →</button>
     </div>
   </main>
+  <script src="https://cdn.paddle.com/paddle/v2/paddle.js"></script>
   <script src="js/paywall.js"></script>
   <script>
     const REDIRECT = {
-      name_gen:     { page: 'name-generator.html', title: '이름 생성기가 잠금 해제됐어요!', msg: '이름 생성기를 무제한으로 이용하실 수 있어요.' },
-      care_plan:    { page: 'care-plan.html',       title: '케어 플랜이 잠금 해제됐어요!', msg: '모든 반려동물의 맞춤 케어 플랜을 이용하실 수 있어요.' },
-      quiz_unlock:  { page: 'results.html',         title: 'TOP 5 전체 결과가 잠금 해제됐어요!', msg: '모든 반려동물 매칭 결과를 확인해보세요.' },
-      subscription: { page: 'index.html',           title: '구독이 시작됐어요! 🌟',         msg: '30일간 이름 생성기 · 케어 플랜 · 퀴즈 TOP5 모든 기능을 이용하실 수 있어요.' },
+      name_gen:     { page: 'name-generator.html', title: 'Name Generator unlocked!', msg: 'You can now use the Name Generator as many times as you like.' },
+      care_plan:    { page: 'care-plan.html',       title: 'Care Plan unlocked!', msg: 'Access personalized care plans for all pets.' },
+      quiz_unlock:  { page: 'results.html',         title: 'Full TOP 5 results unlocked!', msg: 'Check out all your pet match results now.' },
+      subscription: { page: 'index.html',           title: 'Subscription active! 🌟', msg: 'Enjoy 30 days of unlimited access to the Name Generator, Care Plan, and Quiz TOP 5.' },
     };
 
     const params = new URLSearchParams(window.location.search);
@@ -39,7 +40,7 @@
     document.getElementById('success-title').textContent = info.title;
     document.getElementById('success-msg').textContent = info.msg;
     document.getElementById('go-btn').textContent =
-      type === 'quiz_unlock' ? '전체 결과 보기 →' : '바로 이용하기 →';
+      type === 'quiz_unlock' ? 'View Full Results →' : 'Get Started →';
 
     function goNext() {
       if (type === 'quiz_unlock') {

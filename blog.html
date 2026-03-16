@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>반려동물 가이드 블로그 — YourAnimal</title>
-  <meta name="description" content="반려동물 추천, 강아지 고양이 차이, 처음 반려동물 키우기 등 실용적인 정보를 제공합니다." />
-  <meta name="keywords" content="반려동물 추천, 강아지 고양이 차이, 처음 반려동물, 반려동물 종류, 애완동물 키우기" />
+  <title>Pet Guide Blog — YourAnimal</title>
+  <meta name="description" content="Pet recommendations, dog vs. cat comparisons, first-time owner guides, and practical care tips." />
+  <meta name="keywords" content="pet recommendations, dog vs cat, first pet, types of pets, how to care for a pet" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
@@ -43,11 +43,11 @@
       <div class="header-inner">
         <a href="index.html" class="logo"><span class="logo-emoji">🐾</span>YourAnimal</a>
         <nav style="display:flex;gap:16px;align-items:center;">
-          <a href="name-generator.html" style="font-size:0.88rem;font-weight:600;color:var(--text-muted);text-decoration:none;">이름 생성기</a>
-          <a href="care-plan.html" style="font-size:0.88rem;font-weight:600;color:var(--text-muted);text-decoration:none;">케어 플랜</a>
-          <a href="community.html" style="font-size:0.88rem;font-weight:600;color:var(--text-muted);text-decoration:none;">커뮤니티</a>
-          <a href="blog.html" style="font-size:0.88rem;font-weight:700;color:var(--primary);text-decoration:none;">블로그</a>
-          <a href="quiz.html" class="cta-btn" style="padding:10px 22px;font-size:0.85rem;">테스트</a>
+          <a href="name-generator.html" style="font-size:0.88rem;font-weight:600;color:var(--text-muted);text-decoration:none;">Name Generator</a>
+          <a href="care-plan.html" style="font-size:0.88rem;font-weight:600;color:var(--text-muted);text-decoration:none;">Care Plan</a>
+          <a href="community.html" style="font-size:0.88rem;font-weight:600;color:var(--text-muted);text-decoration:none;">Community</a>
+          <a href="blog.html" style="font-size:0.88rem;font-weight:700;color:var(--primary);text-decoration:none;">Blog</a>
+          <a href="quiz.html" class="cta-btn" style="padding:10px 22px;font-size:0.85rem;">Quiz</a>
         </nav>
       </div>
     </div>
@@ -55,9 +55,9 @@
 
   <section class="blog-hero">
     <div class="container">
-      <div class="hero-badge" style="background:rgba(255,255,255,0.1);color:white;border-color:rgba(255,255,255,0.2);">📚 반려동물 가이드</div>
-      <h1>반려동물 완전 정복 블로그</h1>
-      <p>입양 전에 꼭 알아야 할 정보부터 케어 노하우까지</p>
+      <div class="hero-badge" style="background:rgba(255,255,255,0.1);color:white;border-color:rgba(255,255,255,0.2);">📚 Pet Guides</div>
+      <h1>The Ultimate Pet Guide Blog</h1>
+      <p>Everything you need to know before adopting — and all the care tips you'll need after</p>
     </div>
   </section>
 
@@ -65,85 +65,85 @@
     <div class="container-wide">
 
       <div class="search-wrap">
-        <input type="text" class="search-input" placeholder="🔍 궁금한 반려동물을 검색해보세요..." id="search-input" oninput="filterCards()" />
+        <input type="text" class="search-input" placeholder="🔍 Search for a pet or topic..." id="search-input" oninput="filterCards()" />
       </div>
 
       <div class="blog-grid" id="blog-grid">
 
-        <a href="blog/dog-vs-cat.html" class="blog-card" data-tags="강아지 고양이 비교">
+        <a href="blog/dog-vs-cat.html" class="blog-card" data-tags="dog cat compare versus comparison">
           <div class="blog-thumb" style="background:linear-gradient(135deg,#FEF3C7,#FDE68A);">🐕🆚🐈</div>
           <div class="blog-body">
-            <span class="blog-category cat-compare">비교 분석</span>
-            <div class="blog-title">강아지 vs 고양이, 나에게 맞는 건 어떤 쪽일까?</div>
-            <div class="blog-excerpt">가장 인기 있는 두 반려동물의 성격, 케어 난이도, 비용, 라이프스타일 궁합을 철저히 비교해드려요.</div>
+            <span class="blog-category cat-compare">Comparison</span>
+            <div class="blog-title">Dog vs. Cat — Which One Is Actually Right for You?</div>
+            <div class="blog-excerpt">We compare personality, care difficulty, cost, and lifestyle fit for the two most popular pets so you can make the right call.</div>
             <div class="blog-meta">
-              <span class="blog-readtime">⏱ 5분</span>
-              <div class="blog-tags"><span class="blog-tag">강아지</span><span class="blog-tag">고양이</span><span class="blog-tag">비교</span></div>
+              <span class="blog-readtime">⏱ 5 min read</span>
+              <div class="blog-tags"><span class="blog-tag">Dog</span><span class="blog-tag">Cat</span><span class="blog-tag">Compare</span></div>
             </div>
           </div>
         </a>
 
-        <a href="blog/first-pet-guide.html" class="blog-card" data-tags="처음 반려동물 입문 초보">
+        <a href="blog/first-pet-guide.html" class="blog-card" data-tags="first pet beginner guide new owner">
           <div class="blog-thumb" style="background:linear-gradient(135deg,#DCFCE7,#BBF7D0);">🌱🐾</div>
           <div class="blog-body">
-            <span class="blog-category cat-beginner">입문 가이드</span>
-            <div class="blog-title">처음 반려동물 키우는 분들을 위한 완벽 입문 가이드</div>
-            <div class="blog-excerpt">입양 전 준비, 첫날 해야 할 것, 절대 하면 안 되는 실수까지. 처음이라도 걱정 없어요!</div>
+            <span class="blog-category cat-beginner">Beginner Guide</span>
+            <div class="blog-title">The Complete First-Time Pet Owner's Guide</div>
+            <div class="blog-excerpt">What to prepare before adoption, what to do on day one, and the mistakes everyone makes. Don't worry — we've got you covered!</div>
             <div class="blog-meta">
-              <span class="blog-readtime">⏱ 8분</span>
-              <div class="blog-tags"><span class="blog-tag">입문</span><span class="blog-tag">초보</span><span class="blog-tag">준비</span></div>
+              <span class="blog-readtime">⏱ 8 min read</span>
+              <div class="blog-tags"><span class="blog-tag">Beginner</span><span class="blog-tag">Guide</span><span class="blog-tag">Prep</span></div>
             </div>
           </div>
         </a>
 
-        <a href="blog/small-pet-guide.html" class="blog-card" data-tags="소형 반려동물 원룸 작은 공간">
+        <a href="blog/small-pet-guide.html" class="blog-card" data-tags="small pets apartment studio tiny space">
           <div class="blog-thumb" style="background:linear-gradient(135deg,#EDE9FE,#DDD6FE);">🐹🐠🦔</div>
           <div class="blog-body">
-            <span class="blog-category cat-guide">소형 반려동물</span>
-            <div class="blog-title">원룸·좁은 공간에서 키우기 좋은 반려동물 TOP 5</div>
-            <div class="blog-excerpt">공간이 좁아도 행복하게 키울 수 있는 반려동물을 알아봐요. 햄스터, 물고기, 고슴도치 비교 분석!</div>
+            <span class="blog-category cat-guide">Small Pets</span>
+            <div class="blog-title">Best Pets for Small Apartments — TOP 5 Picks</div>
+            <div class="blog-excerpt">Limited space doesn't mean limited love. Here's a breakdown of the best pets for apartment living — hamsters, fish, hedgehogs and more!</div>
             <div class="blog-meta">
-              <span class="blog-readtime">⏱ 4분</span>
-              <div class="blog-tags"><span class="blog-tag">원룸</span><span class="blog-tag">소형</span><span class="blog-tag">추천</span></div>
+              <span class="blog-readtime">⏱ 4 min read</span>
+              <div class="blog-tags"><span class="blog-tag">Apartment</span><span class="blog-tag">Small</span><span class="blog-tag">Picks</span></div>
             </div>
           </div>
         </a>
 
-        <a href="blog/pet-cost-guide.html" class="blog-card" data-tags="비용 돈 월 지출 예산">
+        <a href="blog/pet-cost-guide.html" class="blog-card" data-tags="cost money monthly budget expenses">
           <div class="blog-thumb" style="background:linear-gradient(135deg,#D1FAE5,#A7F3D0);">💰🐾</div>
           <div class="blog-body">
-            <span class="blog-category cat-care">비용 가이드</span>
-            <div class="blog-title">반려동물 키우는 데 실제로 얼마나 들까? 종류별 비용 완전 분석</div>
-            <div class="blog-excerpt">입양비부터 사료, 의료비, 미용까지. 10가지 반려동물의 월 평균 비용을 솔직하게 공개해요.</div>
+            <span class="blog-category cat-care">Cost Guide</span>
+            <div class="blog-title">How Much Does a Pet Actually Cost? A Full Breakdown by Type</div>
+            <div class="blog-excerpt">From adoption fees to food, vet bills, and grooming — we break down the real monthly costs for all 10 pets, honestly.</div>
             <div class="blog-meta">
-              <span class="blog-readtime">⏱ 6분</span>
-              <div class="blog-tags"><span class="blog-tag">비용</span><span class="blog-tag">예산</span><span class="blog-tag">준비</span></div>
+              <span class="blog-readtime">⏱ 6 min read</span>
+              <div class="blog-tags"><span class="blog-tag">Cost</span><span class="blog-tag">Budget</span><span class="blog-tag">Planning</span></div>
             </div>
           </div>
         </a>
 
-        <a href="blog/pet-health-check.html" class="blog-card" data-tags="건강 질병 증상 병원 아픔">
+        <a href="blog/pet-health-check.html" class="blog-card" data-tags="health sick symptoms vet emergency warning">
           <div class="blog-thumb" style="background:linear-gradient(135deg,#FEE2E2,#FECACA);">🏥🐾</div>
           <div class="blog-body">
-            <span class="blog-category cat-care">건강 관리</span>
-            <div class="blog-title">내 반려동물이 아프다는 신호 8가지 — 놓치면 안 되는 위험 신호</div>
-            <div class="blog-excerpt">반려동물은 아파도 말을 못해요. 식욕, 행동, 외형 변화로 건강 상태를 파악하는 방법을 알려드려요.</div>
+            <span class="blog-category cat-care">Health</span>
+            <div class="blog-title">8 Signs Your Pet Might Be Sick — Warning Signs You Shouldn't Ignore</div>
+            <div class="blog-excerpt">Pets can't tell you when something's wrong. Here's how to spot health issues early through changes in appetite, behavior, and appearance.</div>
             <div class="blog-meta">
-              <span class="blog-readtime">⏱ 5분</span>
-              <div class="blog-tags"><span class="blog-tag">건강</span><span class="blog-tag">질병</span><span class="blog-tag">응급</span></div>
+              <span class="blog-readtime">⏱ 5 min read</span>
+              <div class="blog-tags"><span class="blog-tag">Health</span><span class="blog-tag">Sick</span><span class="blog-tag">Emergency</span></div>
             </div>
           </div>
         </a>
 
-        <a href="quiz.html" class="blog-card" data-tags="테스트 매칭 추천">
+        <a href="quiz.html" class="blog-card" data-tags="quiz matching test personality recommendation">
           <div class="blog-thumb" style="background:linear-gradient(135deg,#EEF2FF,#E0E7FF);">🔍🐾</div>
           <div class="blog-body">
-            <span class="blog-category cat-guide">매칭 테스트</span>
-            <div class="blog-title">나에게 딱 맞는 반려동물은? 25문항 성향 분석 테스트</div>
-            <div class="blog-excerpt">MBTI처럼 내 라이프스타일과 성격을 분석해 가장 잘 맞는 반려동물 TOP 5를 알려드려요.</div>
+            <span class="blog-category cat-guide">Pet Match Quiz</span>
+            <div class="blog-title">Which Pet Matches Your Personality? Take the 25-Question Quiz</div>
+            <div class="blog-excerpt">We analyze your lifestyle and personality to find your top 5 best-fit pets — like a personality test, but for animals.</div>
             <div class="blog-meta">
-              <span class="blog-readtime">⏱ 5분 테스트</span>
-              <div class="blog-tags"><span class="blog-tag">테스트</span><span class="blog-tag">무료</span><span class="blog-tag">매칭</span></div>
+              <span class="blog-readtime">⏱ 5 min quiz</span>
+              <div class="blog-tags"><span class="blog-tag">Quiz</span><span class="blog-tag">Free</span><span class="blog-tag">Match</span></div>
             </div>
           </div>
         </a>
@@ -155,8 +155,11 @@
   <footer class="site-footer">
     <div class="footer-logo">🐾 YourAnimal</div>
     <div class="footer-links">
-      <a href="index.html">홈</a><a href="quiz.html">매칭 테스트</a>
-      <a href="name-generator.html">이름 생성기</a><a href="community.html">커뮤니티</a>
+      <a href="terms.html">Terms of Service</a>
+      <a href="privacy.html">Privacy Policy</a>
+      <a href="refund.html">Refund Policy</a>
+      <a href="pricing.html">Pricing</a>
+      <a href="mailto:support@mypetgenerator.com">Contact Us</a>
     </div>
     <p>© 2025 YourAnimal. All rights reserved.</p>
   </footer>

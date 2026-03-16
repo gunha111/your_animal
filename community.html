@@ -1,19 +1,19 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>커뮤니티 — 결과 공유 게시판 — YourAnimal</title>
-  <meta name="description" content="다른 사람들의 반려동물 매칭 결과를 보고, 나의 결과도 공유해보세요!" />
+  <title>Community — Share Your Results — YourAnimal</title>
+  <meta name="description" content="See what other people got matched with and share your own pet quiz result!" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/style.css" />
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐾</text></svg>" />
-  <!-- Supabase JS SDK via CDN — 버전 고정 -->
+  <!-- Supabase JS SDK via CDN -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
   <style>
-    /* ── 히어로 ── */
+    /* ── Hero ── */
     .tool-hero {
       background: linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%);
       padding: 48px 20px 40px;
@@ -22,21 +22,21 @@
     .tool-hero h1 { font-size: clamp(1.6rem,4vw,2.4rem); font-weight:900; color:white; margin-bottom:10px; }
     .tool-hero p { color:rgba(255,255,255,0.9); font-size:0.98rem; }
 
-    /* ── 레이아웃 ── */
+    /* ── Layout ── */
     .community-layout {
       display: grid;
       grid-template-columns: 340px 1fr;
       gap: 24px;
       align-items: start;
     }
-    /* 모바일: 게시판 먼저, 폼 나중 */
+    /* Mobile: posts first, form second */
     @media(max-width:900px){
       .community-layout { grid-template-columns: 1fr; }
       .write-panel { order: 2; }
       .posts-panel { order: 1; }
     }
 
-    /* ── 패널 ── */
+    /* ── Panels ── */
     .panel {
       background: white;
       border-radius: 20px;
@@ -46,7 +46,7 @@
     @media(max-width:540px){ .panel { padding: 20px 16px; border-radius:16px; } }
     .panel h3 { font-size:1.05rem; font-weight:800; margin-bottom:18px; }
 
-    /* ── 폼 ── */
+    /* ── Form ── */
     .form-group { margin-bottom:14px; }
     .form-label { font-size:0.83rem; font-weight:700; display:block; margin-bottom:7px; color:var(--text); }
     .form-input {
@@ -71,7 +71,7 @@
     .submit-btn:hover:not(:disabled){ transform:translateY(-2px); box-shadow:0 6px 20px rgba(99,102,241,0.4); }
     .submit-btn:disabled { opacity:0.5; cursor:not-allowed; }
 
-    /* ── 내 결과 미리보기 ── */
+    /* ── My result preview ── */
     .my-result-box {
       background:linear-gradient(135deg,#EEF2FF,#F5F3FF);
       border:2px solid #C7D2FE; border-radius:14px;
@@ -80,14 +80,14 @@
     .my-result-box h4 { font-weight:800; margin-bottom:6px; font-size:0.9rem; }
     .my-result-box p { font-size:0.82rem; color:var(--text-muted); margin-bottom:10px; }
 
-    /* ── 게시판 헤더 ── */
+    /* ── Posts header ── */
     .posts-header {
       display:flex; justify-content:space-between; align-items:center;
       margin-bottom:16px;
     }
     .posts-count { font-size:0.82rem; color:var(--text-muted); font-weight:600; }
 
-    /* ── 필터 탭 — 모바일 수평 스크롤 ── */
+    /* ── Filter tabs — horizontal scroll on mobile ── */
     .filter-scroll {
       overflow-x: auto;
       -webkit-overflow-scrolling: touch;
@@ -117,10 +117,10 @@
     }
     .filter-tab.active { border-color:var(--primary); background:#EEF2FF; color:var(--primary-dark); }
 
-    /* ── 게시글 목록 ── */
+    /* ── Posts list ── */
     .posts-list { display:flex; flex-direction:column; gap:14px; }
 
-    /* ── 게시글 카드 ── */
+    /* ── Post card ── */
     .post-card {
       background:#F9FAFB; border-radius:14px; padding:16px;
       border:2px solid var(--border); transition:var(--transition);
@@ -158,18 +158,18 @@
       border:2px solid var(--border); background:white;
       font-size:0.82rem; font-weight:700; cursor:pointer;
       transition:var(--transition); font-family:inherit;
-      min-height:40px; /* 터치 타겟 */
+      min-height:40px;
       -webkit-tap-highlight-color: transparent;
     }
     .like-btn:hover { border-color:#EF4444; color:#EF4444; }
     .like-btn.liked { border-color:#EF4444; background:#FEF2F2; color:#EF4444; }
 
-    /* ── 빈 상태 ── */
+    /* ── Empty state ── */
     .empty-state { text-align:center; padding:50px 20px; }
     .empty-state .empty-icon { font-size:3rem; margin-bottom:14px; }
     .empty-state p { color:var(--text-muted); font-size:0.9rem; line-height:1.7; }
 
-    /* ── 오류/안내 배너 ── */
+    /* ── Notice banner ── */
     .setup-notice {
       background:#FEF3C7; border:2px solid #FDE68A;
       border-radius:14px; padding:16px 20px; margin-bottom:20px;
@@ -181,7 +181,7 @@
     .setup-notice.error p { color:#7F1D1D; }
     .setup-notice code { background:#FDE68A; padding:2px 6px; border-radius:4px; font-size:0.8rem; }
 
-    /* ── 로딩 ── */
+    /* ── Loading ── */
     .loading-posts { text-align:center; padding:40px; color:var(--text-muted); }
     .loading-dots { display:inline-flex; gap:6px; margin-top:10px; }
     .loading-dots span {
@@ -195,7 +195,7 @@
       40%{ transform:scale(1); opacity:1; }
     }
 
-    /* ── 모바일 FAB (공유하기) ── */
+    /* ── Mobile FAB ── */
     .fab-write {
       display:none;
       position:fixed; bottom:24px; right:20px; z-index:50;
@@ -208,13 +208,12 @@
     }
     @media(max-width:900px){ .fab-write { display:flex; align-items:center; gap:8px; } }
 
-    /* ── 모바일 헤더 네비 ── */
+    /* ── Mobile nav ── */
     @media(max-width:640px){
       .site-header .header-inner nav { gap:10px; }
       .site-header .header-inner nav a:not(.cta-btn) { font-size:0.8rem; }
     }
     @media(max-width:480px){
-      /* 네비 텍스트 숨기고 아이콘만 */
       .nav-text { display:none; }
     }
   </style>
@@ -227,18 +226,18 @@
         <a href="index.html" class="logo"><span class="logo-emoji">🐾</span>YourAnimal</a>
         <nav style="display:flex;gap:12px;align-items:center;">
           <a href="name-generator.html" style="font-size:0.88rem;font-weight:600;color:var(--text-muted);text-decoration:none;">
-            <span class="nav-text">이름 생성기</span><span class="nav-icon" style="display:none;">🎲</span>
+            <span class="nav-text">Name Generator</span><span class="nav-icon" style="display:none;">🎲</span>
           </a>
           <a href="care-plan.html" style="font-size:0.88rem;font-weight:600;color:var(--text-muted);text-decoration:none;">
-            <span class="nav-text">케어 플랜</span><span class="nav-icon" style="display:none;">📋</span>
+            <span class="nav-text">Care Plan</span><span class="nav-icon" style="display:none;">📋</span>
           </a>
           <a href="community.html" style="font-size:0.88rem;font-weight:700;color:var(--primary);text-decoration:none;">
-            <span class="nav-text">커뮤니티</span><span class="nav-icon" style="display:none;">💬</span>
+            <span class="nav-text">Community</span><span class="nav-icon" style="display:none;">💬</span>
           </a>
           <a href="blog.html" style="font-size:0.88rem;font-weight:600;color:var(--text-muted);text-decoration:none;">
-            <span class="nav-text">블로그</span><span class="nav-icon" style="display:none;">📝</span>
+            <span class="nav-text">Blog</span><span class="nav-icon" style="display:none;">📝</span>
           </a>
-          <a href="quiz.html" class="cta-btn" style="padding:10px 20px;font-size:0.85rem;">테스트</a>
+          <a href="quiz.html" class="cta-btn" style="padding:10px 20px;font-size:0.85rem;">Quiz</a>
         </nav>
       </div>
     </div>
@@ -246,90 +245,90 @@
 
   <section class="tool-hero">
     <div class="container">
-      <div class="hero-badge" style="background:rgba(255,255,255,0.2);color:white;border-color:rgba(255,255,255,0.3);">💬 커뮤니티</div>
-      <h1>결과 공유 게시판</h1>
-      <p>다른 사람들의 매칭 결과를 구경하고 나의 결과도 공유해봐요!</p>
+      <div class="hero-badge" style="background:rgba(255,255,255,0.2);color:white;border-color:rgba(255,255,255,0.3);">💬 Community</div>
+      <h1>Share Your Results</h1>
+      <p>See what other pet lovers got matched with — and share your own result!</p>
     </div>
   </section>
 
   <main style="background:linear-gradient(135deg,#faf5ff,#fdf2ff);padding:32px 16px 100px;">
     <div class="container-wide">
 
-      <!-- 오류/안내 배너 -->
+      <!-- Notice banner -->
       <div class="setup-notice" id="setup-notice" style="display:none;">
-        <h4>⚙️ Supabase 연동이 필요해요</h4>
-        <p><code>js/supabase-config.js</code> 파일에 Supabase URL과 anon key를 입력해주세요.</p>
+        <h4>⚙️ Supabase connection needed</h4>
+        <p>Enter your Supabase URL and anon key in <code>js/supabase-config.js</code> to enable the community board.</p>
       </div>
 
       <div class="community-layout">
 
-        <!-- 글쓰기 패널 -->
+        <!-- Write panel -->
         <div class="write-panel">
           <div class="panel" id="write-form-panel">
-            <!-- 내 결과 미리보기 -->
+            <!-- My result preview -->
             <div class="my-result-box" id="my-result-preview" style="display:none;"></div>
 
-            <h3>✍️ 결과 공유하기</h3>
+            <h3>✍️ Share Your Result</h3>
 
             <div class="form-group">
-              <label class="form-label">닉네임</label>
-              <input type="text" class="form-input" id="input-nickname" placeholder="익명의 집사" maxlength="20" />
+              <label class="form-label">Nickname</label>
+              <input type="text" class="form-input" id="input-nickname" placeholder="Anonymous Pet Lover" maxlength="20" />
             </div>
             <div class="form-group">
-              <label class="form-label">나의 1위 반려동물</label>
+              <label class="form-label">Your #1 pet match</label>
               <select class="form-select" id="input-pet">
-                <option value="">선택해주세요</option>
-                <option value="dog">🐕 강아지</option>
-                <option value="cat">🐈 고양이</option>
-                <option value="rabbit">🐰 토끼</option>
-                <option value="hamster">🐹 햄스터</option>
-                <option value="fish">🐠 물고기</option>
-                <option value="parrot">🦜 앵무새</option>
-                <option value="guinea_pig">🐾 기니피그</option>
-                <option value="turtle">🐢 거북이</option>
-                <option value="ferret">🦡 페렛</option>
-                <option value="hedgehog">🦔 고슴도치</option>
+                <option value="">Select a pet</option>
+                <option value="dog">🐕 Dog</option>
+                <option value="cat">🐈 Cat</option>
+                <option value="rabbit">🐰 Rabbit</option>
+                <option value="hamster">🐹 Hamster</option>
+                <option value="fish">🐠 Fish</option>
+                <option value="parrot">🦜 Parrot</option>
+                <option value="guinea_pig">🐾 Guinea Pig</option>
+                <option value="turtle">🐢 Turtle</option>
+                <option value="ferret">🦡 Ferret</option>
+                <option value="hedgehog">🦔 Hedgehog</option>
               </select>
             </div>
             <div class="form-group">
-              <label class="form-label">매칭 퍼센트</label>
-              <input type="number" class="form-input" id="input-pct" placeholder="예: 87" min="1" max="100" inputmode="numeric" />
+              <label class="form-label">Match percentage</label>
+              <input type="number" class="form-input" id="input-pct" placeholder="e.g. 87" min="1" max="100" inputmode="numeric" />
             </div>
             <div class="form-group">
-              <label class="form-label">한마디 <span style="font-weight:400;color:var(--text-muted);">(선택)</span></label>
-              <textarea class="form-input form-textarea" id="input-message" placeholder="결과를 보고 어떤 생각이 들었나요? 😊" maxlength="200"></textarea>
+              <label class="form-label">A quick thought <span style="font-weight:400;color:var(--text-muted);">(optional)</span></label>
+              <textarea class="form-input form-textarea" id="input-message" placeholder="What did you think of your result? 😊" maxlength="200"></textarea>
             </div>
-            <button class="submit-btn" onclick="submitPost()">공유하기 →</button>
+            <button class="submit-btn" onclick="submitPost()">Share →</button>
           </div>
         </div>
 
-        <!-- 게시판 -->
+        <!-- Posts board -->
         <div class="posts-panel panel">
           <div class="posts-header">
-            <h3 style="margin-bottom:0;">🏆 매칭 결과 모음</h3>
-            <span class="posts-count" id="posts-count">로딩 중...</span>
+            <h3 style="margin-bottom:0;">🏆 Match Results Feed</h3>
+            <span class="posts-count" id="posts-count">Loading...</span>
           </div>
 
-          <!-- 필터 탭 — 수평 스크롤 -->
+          <!-- Filter tabs — horizontal scroll -->
           <div class="filter-scroll">
             <div class="filter-tabs" id="filter-tabs">
-              <button class="filter-tab active" onclick="filterPosts('all',this)">전체</button>
-              <button class="filter-tab" onclick="filterPosts('dog',this)">🐕 강아지</button>
-              <button class="filter-tab" onclick="filterPosts('cat',this)">🐈 고양이</button>
-              <button class="filter-tab" onclick="filterPosts('rabbit',this)">🐰 토끼</button>
-              <button class="filter-tab" onclick="filterPosts('hamster',this)">🐹 햄스터</button>
-              <button class="filter-tab" onclick="filterPosts('fish',this)">🐠 물고기</button>
-              <button class="filter-tab" onclick="filterPosts('parrot',this)">🦜 앵무새</button>
-              <button class="filter-tab" onclick="filterPosts('guinea_pig',this)">🐾 기니피그</button>
-              <button class="filter-tab" onclick="filterPosts('turtle',this)">🐢 거북이</button>
-              <button class="filter-tab" onclick="filterPosts('ferret',this)">🦡 페렛</button>
-              <button class="filter-tab" onclick="filterPosts('hedgehog',this)">🦔 고슴도치</button>
+              <button class="filter-tab active" onclick="filterPosts('all',this)">All</button>
+              <button class="filter-tab" onclick="filterPosts('dog',this)">🐕 Dog</button>
+              <button class="filter-tab" onclick="filterPosts('cat',this)">🐈 Cat</button>
+              <button class="filter-tab" onclick="filterPosts('rabbit',this)">🐰 Rabbit</button>
+              <button class="filter-tab" onclick="filterPosts('hamster',this)">🐹 Hamster</button>
+              <button class="filter-tab" onclick="filterPosts('fish',this)">🐠 Fish</button>
+              <button class="filter-tab" onclick="filterPosts('parrot',this)">🦜 Parrot</button>
+              <button class="filter-tab" onclick="filterPosts('guinea_pig',this)">🐾 Guinea Pig</button>
+              <button class="filter-tab" onclick="filterPosts('turtle',this)">🐢 Turtle</button>
+              <button class="filter-tab" onclick="filterPosts('ferret',this)">🦡 Ferret</button>
+              <button class="filter-tab" onclick="filterPosts('hedgehog',this)">🦔 Hedgehog</button>
             </div>
           </div>
 
           <div class="posts-list" id="posts-list">
             <div class="loading-posts">
-              게시글을 불러오는 중...
+              Loading posts...
               <div class="loading-dots"><span></span><span></span><span></span></div>
             </div>
           </div>
@@ -339,14 +338,17 @@
     </div>
   </main>
 
-  <!-- 모바일 FAB -->
-  <button class="fab-write" onclick="scrollToForm()">✍️ <span>공유하기</span></button>
+  <!-- Mobile FAB -->
+  <button class="fab-write" onclick="scrollToForm()">✍️ <span>Share</span></button>
 
   <footer class="site-footer">
     <div class="footer-logo">🐾 YourAnimal</div>
     <div class="footer-links">
-      <a href="index.html">홈</a><a href="quiz.html">매칭 테스트</a>
-      <a href="name-generator.html">이름 생성기</a><a href="blog.html">블로그</a>
+      <a href="terms.html">Terms of Service</a>
+      <a href="privacy.html">Privacy Policy</a>
+      <a href="refund.html">Refund Policy</a>
+      <a href="pricing.html">Pricing</a>
+      <a href="mailto:support@mypetgenerator.com">Contact Us</a>
     </div>
     <p>© 2025 YourAnimal. All rights reserved.</p>
   </footer>
@@ -356,30 +358,30 @@
   <script src="data/pets.js"></script>
   <script src="js/supabase-config.js"></script>
   <script>
-    // ─── 480px 이하: 네비 아이콘 표시 ────────────────────────────
+    // ─── 480px and below: show nav icons ────────────────────────────
     if (window.innerWidth <= 480) {
       document.querySelectorAll('.nav-text').forEach(el => el.style.display = 'none');
       document.querySelectorAll('.nav-icon').forEach(el => el.style.display = 'inline');
     }
 
-    // ─── Supabase 초기화 ───────────────────────────────────────────
+    // ─── Supabase init ───────────────────────────────────────────────
     let db = null;
     try {
       if (typeof SUPABASE_URL !== 'undefined' && SUPABASE_URL && !SUPABASE_URL.includes('YOUR_')) {
         const supabaseLib = window.supabase;
-        if (!supabaseLib || !supabaseLib.createClient) throw new Error('Supabase SDK 로드 실패');
+        if (!supabaseLib || !supabaseLib.createClient) throw new Error('Supabase SDK failed to load');
         db = supabaseLib.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-        console.log('✅ Supabase 연결됨:', SUPABASE_URL);
+        console.log('✅ Supabase connected:', SUPABASE_URL);
       } else {
-        console.warn('⚠️ Supabase URL 미설정 — 데모 모드');
+        console.warn('⚠️ Supabase URL not configured — running in demo mode');
         document.getElementById('setup-notice').style.display = 'block';
       }
     } catch(e) {
-      console.error('❌ Supabase 초기화 실패:', e);
+      console.error('❌ Supabase init failed:', e);
       document.getElementById('setup-notice').style.display = 'block';
     }
 
-    // ─── 내 퀴즈 결과 불러오기 ─────────────────────────────────────
+    // ─── Load my quiz result ─────────────────────────────────────────
     const myResults = JSON.parse(sessionStorage.getItem('quizResults') || 'null');
     if (myResults && myResults.length > 0) {
       const top = myResults[0];
@@ -387,10 +389,10 @@
       const preview = document.getElementById('my-result-preview');
       preview.style.display = 'block';
       preview.innerHTML = `
-        <h4>📊 내 테스트 결과 불러오기</h4>
-        <p>결과가 있어요! 아래 버튼으로 자동 입력할 수 있어요.</p>
+        <h4>📊 Auto-fill from my quiz</h4>
+        <p>You have a result saved! Click below to fill in the form automatically.</p>
         <button onclick="fillFromResult()" style="padding:8px 18px;border-radius:100px;border:2px solid var(--primary);background:transparent;color:var(--primary);font-weight:700;cursor:pointer;font-family:inherit;font-size:0.85rem;-webkit-tap-highlight-color:transparent;">
-          ${pet.emoji} ${pet.name} ${top.percentage}% 불러오기
+          ${pet.emoji} ${pet.name} ${top.percentage}% — Auto-fill
         </button>
       `;
     }
@@ -400,29 +402,28 @@
       const top = myResults[0];
       document.getElementById('input-pet').value = top.pet;
       document.getElementById('input-pct').value = top.percentage;
-      showToast('결과가 자동으로 채워졌어요!');
+      showToast('Form filled from your quiz result!');
     }
 
-    // ─── 상수 ─────────────────────────────────────────────────────
+    // ─── Constants ───────────────────────────────────────────────────
     const PET_EMOJIS = { dog:'🐕', cat:'🐈', rabbit:'🐰', hamster:'🐹', fish:'🐠', parrot:'🦜', guinea_pig:'🐾', turtle:'🐢', ferret:'🦡', hedgehog:'🦔' };
-    const PET_NAMES_KO = { dog:'강아지', cat:'고양이', rabbit:'토끼', hamster:'햄스터', fish:'물고기', parrot:'앵무새', guinea_pig:'기니피그', turtle:'거북이', ferret:'페렛', hedgehog:'고슴도치' };
+    const PET_NAMES_EN = { dog:'Dog', cat:'Cat', rabbit:'Rabbit', hamster:'Hamster', fish:'Fish', parrot:'Parrot', guinea_pig:'Guinea Pig', turtle:'Turtle', ferret:'Ferret', hedgehog:'Hedgehog' };
 
     function timeAgo(dateStr) {
       const diff = (Date.now() - new Date(dateStr).getTime()) / 1000;
-      if (diff < 60) return '방금 전';
-      if (diff < 3600) return Math.floor(diff/60) + '분 전';
-      if (diff < 86400) return Math.floor(diff/3600) + '시간 전';
-      return Math.floor(diff/86400) + '일 전';
+      if (diff < 60) return 'just now';
+      if (diff < 3600) return Math.floor(diff/60) + 'm ago';
+      if (diff < 86400) return Math.floor(diff/3600) + 'h ago';
+      return Math.floor(diff/86400) + 'd ago';
     }
 
-    // ─── 게시글 로드 ───────────────────────────────────────────────
+    // ─── Load posts ──────────────────────────────────────────────────
     let allPosts = [];
     let currentFilter = 'all';
 
     async function loadPosts() {
       if (!db) { renderDemoPosts(); return; }
       try {
-        // is_hidden 컬럼 없이 단순 조회
         const { data, error } = await db
           .from('pet_results_shares')
           .select('*')
@@ -430,37 +431,37 @@
           .limit(50);
         if (error) throw error;
         allPosts = data || [];
-        console.log('✅ 게시글 로드:', allPosts.length, '개');
+        console.log('✅ Posts loaded:', allPosts.length);
         renderPosts();
       } catch(e) {
-        console.error('❌ 게시글 로드 실패:', e.message);
-        showError('게시글을 불러오지 못했어요: ' + e.message);
+        console.error('❌ Failed to load posts:', e.message);
+        showError('Could not load posts: ' + e.message);
         renderDemoPosts();
       }
     }
 
     function renderDemoPosts() {
       allPosts = [
-        { id:1, nickname:'고양이집사', top_pet:'cat', percentage:94, message:'고양이가 1위라니! 원래 키우던 거라 공감 100%예요 ㅎㅎ', created_at: new Date(Date.now()-3600000).toISOString(), likes:24 },
-        { id:2, nickname:'강아지러버', top_pet:'dog', percentage:91, message:'강아지랑 매일 산책하는 게 낙이에요. 너무 잘 맞네요!', created_at: new Date(Date.now()-7200000).toISOString(), likes:18 },
-        { id:3, nickname:'원룸거주자', top_pet:'fish', percentage:88, message:'원룸이라 어쩔 수 없다 생각했는데 물고기가 이렇게 힐링인줄 몰랐어요', created_at: new Date(Date.now()-86400000).toISOString(), likes:31 },
-        { id:4, nickname:'야행성인간', top_pet:'hamster', percentage:85, message:'밤에 같이 깨어있는 햄스터 짱입니다 🐹', created_at: new Date(Date.now()-172800000).toISOString(), likes:12 },
-        { id:5, nickname:'조용한사람', top_pet:'rabbit', percentage:82, message:'토끼가 생각보다 훨씬 개성이 강해서 놀랐어요. 신뢰 쌓는 재미가 있어요!', created_at: new Date(Date.now()-259200000).toISOString(), likes:9 },
-        { id:6, nickname:'앵무왕', top_pet:'parrot', percentage:90, message:'앵무새가 제 이름 부르는 날 너무 감동이었어요 😭', created_at: new Date(Date.now()-345600000).toISOString(), likes:27 },
+        { id:1, nickname:'CatLover99', top_pet:'cat', percentage:94, message:'Cat as my #1?! I already have two — totally makes sense lol', created_at: new Date(Date.now()-3600000).toISOString(), likes:24 },
+        { id:2, nickname:'DogDad_Mike', top_pet:'dog', percentage:91, message:'Daily walks with my pup are the highlight of my day. This quiz nailed it!', created_at: new Date(Date.now()-7200000).toISOString(), likes:18 },
+        { id:3, nickname:'StudioApartment', top_pet:'fish', percentage:88, message:'Tiny apartment, so fish seemed boring — but my betta tank is honestly the most relaxing thing in my home now', created_at: new Date(Date.now()-86400000).toISOString(), likes:31 },
+        { id:4, nickname:'NightOwlLife', top_pet:'hamster', percentage:85, message:'My hamster and I are both up at 2am. We get each other 🐹', created_at: new Date(Date.now()-172800000).toISOString(), likes:12 },
+        { id:5, nickname:'QuietType', top_pet:'rabbit', percentage:82, message:'Rabbits have way more personality than I expected. Earning their trust is so rewarding!', created_at: new Date(Date.now()-259200000).toISOString(), likes:9 },
+        { id:6, nickname:'ParrotParent', top_pet:'parrot', percentage:90, message:'The day my parrot said my name for the first time I actually cried 😭', created_at: new Date(Date.now()-345600000).toISOString(), likes:27 },
       ];
       renderPosts();
     }
 
     function renderPosts() {
       const filtered = currentFilter === 'all' ? allPosts : allPosts.filter(p => p.top_pet === currentFilter);
-      document.getElementById('posts-count').textContent = `총 ${filtered.length}개`;
+      document.getElementById('posts-count').textContent = `${filtered.length} posts`;
       const list = document.getElementById('posts-list');
 
       if (!filtered.length) {
         list.innerHTML = `
           <div class="empty-state">
             <div class="empty-icon">🐾</div>
-            <p>아직 게시글이 없어요.<br/>첫 번째로 결과를 공유해보세요!</p>
+            <p>No posts yet.<br/>Be the first to share your result!</p>
           </div>`;
         return;
       }
@@ -470,17 +471,17 @@
           <div class="post-top">
             <div class="post-avatar">${PET_EMOJIS[p.top_pet] || '🐾'}</div>
             <div>
-              <div class="post-nickname">${escapeHtml(p.nickname || '익명')}</div>
+              <div class="post-nickname">${escapeHtml(p.nickname || 'Anonymous')}</div>
               <div class="post-time">${timeAgo(p.created_at)}</div>
             </div>
           </div>
           <div class="post-result">
-            <span class="post-pet-badge">${PET_EMOJIS[p.top_pet]} ${PET_NAMES_KO[p.top_pet]}</span>
-            <span class="post-pct">${p.percentage}% 매칭</span>
+            <span class="post-pet-badge">${PET_EMOJIS[p.top_pet]} ${PET_NAMES_EN[p.top_pet]}</span>
+            <span class="post-pct">${p.percentage}% match</span>
           </div>
           ${p.message ? `<div class="post-message">"${escapeHtml(p.message)}"</div>` : ''}
           <div class="post-actions">
-            <button class="like-btn" onclick="likePost(${p.id}, this)" aria-label="좋아요">
+            <button class="like-btn" onclick="likePost(${p.id}, this)" aria-label="Like">
               ❤️ <span class="like-count">${p.likes || 0}</span>
             </button>
           </div>
@@ -499,18 +500,18 @@
       renderPosts();
     }
 
-    // ─── 글 등록 ───────────────────────────────────────────────────
+    // ─── Submit post ─────────────────────────────────────────────────
     async function submitPost() {
-      const nickname = document.getElementById('input-nickname').value.trim() || '익명';
+      const nickname = document.getElementById('input-nickname').value.trim() || 'Anonymous';
       const top_pet = document.getElementById('input-pet').value;
       const percentage = parseInt(document.getElementById('input-pct').value);
       const message = document.getElementById('input-message').value.trim();
 
-      if (!top_pet) { showToast('반려동물을 선택해주세요!'); return; }
-      if (!percentage || percentage < 1 || percentage > 100) { showToast('매칭 퍼센트를 올바르게 입력해주세요!'); return; }
+      if (!top_pet) { showToast('Please select a pet!'); return; }
+      if (!percentage || percentage < 1 || percentage > 100) { showToast('Please enter a valid match percentage!'); return; }
 
       const btn = document.querySelector('.submit-btn');
-      btn.disabled = true; btn.textContent = '공유 중...';
+      btn.disabled = true; btn.textContent = 'Sharing...';
 
       const newPost = {
         id: Date.now(), nickname, top_pet, percentage, message,
@@ -525,11 +526,11 @@
             .select();
           if (error) throw error;
           if (data && data[0]) newPost.id = data[0].id;
-          console.log('✅ 게시글 저장 완료');
+          console.log('✅ Post saved');
         } catch(e) {
-          console.error('❌ 게시글 저장 실패:', e.message);
-          showError('저장 실패: ' + e.message);
-          btn.disabled = false; btn.textContent = '공유하기 →';
+          console.error('❌ Failed to save post:', e.message);
+          showError('Save failed: ' + e.message);
+          btn.disabled = false; btn.textContent = 'Share →';
           return;
         }
       }
@@ -539,16 +540,16 @@
       document.querySelectorAll('.filter-tab').forEach((b,i) => b.classList.toggle('active', i===0));
       renderPosts();
       document.getElementById('input-message').value = '';
-      btn.disabled = false; btn.textContent = '공유하기 →';
-      showToast('🎉 공유됐어요!');
+      btn.disabled = false; btn.textContent = 'Share →';
+      showToast('🎉 Posted!');
 
-      // 모바일: 게시판으로 스크롤
+      // Mobile: scroll to posts
       if (window.innerWidth <= 900) {
         document.querySelector('.posts-panel').scrollIntoView({ behavior:'smooth', block:'start' });
       }
     }
 
-    // ─── 좋아요 ────────────────────────────────────────────────────
+    // ─── Like ────────────────────────────────────────────────────────
     async function likePost(id, btn) {
       if (btn.classList.contains('liked')) return;
       btn.classList.add('liked');
@@ -560,21 +561,21 @@
 
       if (db) {
         const { error } = await db.from('pet_results_shares').update({ likes: newCount }).eq('id', id);
-        if (error) console.error('❌ 좋아요 저장 실패:', error.message);
+        if (error) console.error('❌ Failed to save like:', error.message);
       }
     }
 
-    // ─── FAB → 폼으로 스크롤 ──────────────────────────────────────
+    // ─── FAB → scroll to form ─────────────────────────────────────
     function scrollToForm() {
       document.getElementById('write-form-panel').scrollIntoView({ behavior:'smooth', block:'start' });
     }
 
-    // ─── 오류/토스트 ───────────────────────────────────────────────
+    // ─── Error/toast ─────────────────────────────────────────────────
     function showError(msg) {
       const notice = document.getElementById('setup-notice');
       notice.className = 'setup-notice error';
       notice.style.display = 'block';
-      notice.innerHTML = `<h4>❌ 오류 발생</h4><p>${msg}</p><p style="margin-top:6px;font-size:0.8rem;opacity:0.8;">F12 → Console 탭에서 자세한 내용 확인</p>`;
+      notice.innerHTML = `<h4>❌ An error occurred</h4><p>${msg}</p><p style="margin-top:6px;font-size:0.8rem;opacity:0.8;">Check the Console tab (F12) for more details</p>`;
     }
 
     function showToast(msg) {

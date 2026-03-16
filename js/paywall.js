@@ -1,22 +1,40 @@
 // =====================================================
-// YourAnimal 결제 상태 관리
-// Toss Payment Links → SETUP.md 참고하여 링크 교체
+// YourAnimal 결제 상태 관리 — Paddle Billing v2
+// 설정 방법:
+//   1. Paddle 대시보드 → Developer → Authentication
+//      → Client-side token 복사 → PADDLE_CLIENT_TOKEN에 붙여넣기
+//   2. Catalog → Products → 각 상품 Price 생성
+//      → Price ID (pri_xxx...) 복사 → PADDLE_PRICE_IDS에 붙여넣기
 // =====================================================
 
-const PAYMENT_LINKS = {
-  name_gen:     'https://link.tosspayments.com/NAME_GEN_LINK',     // ₩1,900
-  care_plan:    'https://link.tosspayments.com/CARE_PLAN_LINK',    // ₩3,900
-  quiz_unlock:  'https://link.tosspayments.com/QUIZ_UNLOCK_LINK',  // ₩3,900
-  subscription: 'https://link.tosspayments.com/SUBSCRIPTION_LINK', // ₩9,900/월
+const PADDLE_CLIENT_TOKEN = 'live_XXXXXXXXXXXXXXXXXXXXXXXXX'; // ← 여기 교체
+// 테스트 시: 'test_XXXXXXXXXXXXXXXXXXXXXXXXX'
+
+const PADDLE_PRICE_IDS = {
+  name_gen:     'pri_XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX', // ₩1,900 이름 생성기
+  care_plan:    'pri_XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX', // ₩3,900 케어 플랜
+  quiz_unlock:  'pri_XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX', // ₩3,900 TOP5 잠금해제
+  subscription: 'pri_XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX', // ₩9,900/월 구독
 };
 
 const STORAGE_KEYS = {
-  name_gen_uses:   'ya_name_gen_uses',    // 무료 사용 횟수
-  name_gen_paid:   'ya_name_gen_paid',    // 1회 결제 여부
-  care_plan_paid:  'ya_care_plan_paid',   // 케어플랜 결제 여부
-  quiz_paid:       'ya_quiz_paid',        // 퀴즈 TOP5 결제 여부
-  sub_expiry:      'ya_sub_expiry',       // 구독 만료 타임스탬프
+  name_gen_uses:   'ya_name_gen_uses',
+  name_gen_paid:   'ya_name_gen_paid',
+  care_plan_paid:  'ya_care_plan_paid',
+  quiz_paid:       'ya_quiz_paid',
+  sub_expiry:      'ya_sub_expiry',
 };
+
+// Paddle 초기화 (paddle.js 로드 후 실행)
+function initPaddle() {
+  if (typeof Paddle === 'undefined') return;
+  Paddle.Initialize({ token: PADDLE_CLIENT_TOKEN });
+}
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initPaddle);
+} else {
+  initPaddle();
+}
 
 const Paywall = {
 
@@ -26,7 +44,6 @@ const Paywall = {
     return expiry > Date.now();
   },
 
-  // ── 구독 남은 일수 ─────────────────────────────
   subDaysLeft() {
     const expiry = parseInt(localStorage.getItem(STORAGE_KEYS.sub_expiry) || '0');
     const diff = expiry - Date.now();
@@ -38,7 +55,7 @@ const Paywall = {
     if (this.isSubscribed()) return true;
     if (localStorage.getItem(STORAGE_KEYS.name_gen_paid) === '1') return true;
     const uses = parseInt(localStorage.getItem(STORAGE_KEYS.name_gen_uses) || '0');
-    return uses < 1; // 1회 무료
+    return uses < 1;
   },
   isNameGenFree() {
     if (this.isSubscribed()) return true;
@@ -63,20 +80,36 @@ const Paywall = {
     return localStorage.getItem(STORAGE_KEYS.quiz_paid) === '1';
   },
 
-  // ── 결제 페이지로 이동 ──────────────────────────
+  // ── Paddle 오버레이 결제창 열기 ─────────────────
   pay(type) {
-    const returnPath = encodeURIComponent(window.location.pathname + '?paid=' + type);
-    const link = PAYMENT_LINKS[type];
-    if (!link || link.includes('LINK')) {
-      alert('⚙️ 결제 링크가 아직 설정되지 않았어요.\nToss 대시보드에서 결제 링크를 생성 후\njs/paywall.js에 입력해주세요.');
+    const priceId = PADDLE_PRICE_IDS[type];
+
+    if (!priceId || priceId.includes('XXXX')) {
+      alert('⚙️ Paddle Price ID가 아직 설정되지 않았어요.\nPaddle 대시보드에서 Price ID를 생성 후\njs/paywall.js에 입력해주세요.');
       return;
     }
-    window.location.href = link;
+
+    if (typeof Paddle === 'undefined') {
+      alert('결제 모듈을 불러오는 중이에요. 잠시 후 다시 시도해주세요.');
+      return;
+    }
+
+    const successUrl = window.location.origin + '/success.html?type=' + type;
+
+    Paddle.Checkout.open({
+      items: [{ priceId: priceId, quantity: 1 }],
+      settings: {
+        displayMode: 'overlay',
+        theme: 'light',
+        locale: 'ko',
+        successUrl: successUrl,
+      },
+    });
   },
 
-  // ── 결제 성공 처리 (success.html → 각 페이지) ───
+  // ── 결제 성공 처리 (success.html에서 호출) ───────
   handleSuccess(type) {
-    switch(type) {
+    switch (type) {
       case 'name_gen':
         localStorage.setItem(STORAGE_KEYS.name_gen_paid, '1');
         break;
@@ -86,15 +119,14 @@ const Paywall = {
       case 'quiz_unlock':
         localStorage.setItem(STORAGE_KEYS.quiz_paid, '1');
         break;
-      case 'subscription':
-        // 30일 구독 설정
+      case 'subscription': {
         const expiry = Date.now() + (30 * 24 * 60 * 60 * 1000);
         localStorage.setItem(STORAGE_KEYS.sub_expiry, expiry);
-        // 구독은 모든 기능 포함
         localStorage.setItem(STORAGE_KEYS.name_gen_paid, '1');
         localStorage.setItem(STORAGE_KEYS.care_plan_paid, '1');
         localStorage.setItem(STORAGE_KEYS.quiz_paid, '1');
         break;
+      }
     }
   },
 
@@ -104,9 +136,7 @@ const Paywall = {
     const paid = params.get('paid');
     if (paid) {
       this.handleSuccess(paid);
-      // URL에서 파라미터 제거
-      const clean = window.location.pathname;
-      window.history.replaceState({}, '', clean);
+      window.history.replaceState({}, '', window.location.pathname);
       return paid;
     }
     return null;

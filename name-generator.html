@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>반려동물 이름 생성기 — YourAnimal</title>
-  <meta name="description" content="반려동물 종류와 성격을 입력하면 딱 맞는 이름을 추천해드려요. 강아지, 고양이, 토끼, 햄스터 등 10종 지원!" />
-  <meta name="keywords" content="반려동물 이름 추천, 강아지 이름, 고양이 이름, 토끼 이름, 햄스터 이름, 펫 이름 생성기" />
+  <title>Pet Name Generator — YourAnimal</title>
+  <meta name="description" content="Pick your pet type and personality, and we'll suggest 9 perfect names. Supports dogs, cats, rabbits, hamsters, and 6 more!" />
+  <meta name="keywords" content="pet name ideas, dog names, cat names, rabbit names, hamster names, pet name generator" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
@@ -118,11 +118,11 @@
       <div class="header-inner">
         <a href="index.html" class="logo"><span class="logo-emoji">🐾</span>YourAnimal</a>
         <nav style="display:flex;gap:16px;align-items:center;">
-          <a href="name-generator.html" style="font-size:0.88rem;font-weight:700;color:var(--primary);text-decoration:none;">이름 생성기</a>
-          <a href="care-plan.html" style="font-size:0.88rem;font-weight:600;color:var(--text-muted);text-decoration:none;">케어 플랜</a>
-          <a href="community.html" style="font-size:0.88rem;font-weight:600;color:var(--text-muted);text-decoration:none;">커뮤니티</a>
-          <a href="blog.html" style="font-size:0.88rem;font-weight:600;color:var(--text-muted);text-decoration:none;">블로그</a>
-          <a href="quiz.html" class="cta-btn" style="padding:10px 22px;font-size:0.85rem;">테스트</a>
+          <a href="name-generator.html" style="font-size:0.88rem;font-weight:700;color:var(--primary);text-decoration:none;">Name Generator</a>
+          <a href="care-plan.html" style="font-size:0.88rem;font-weight:600;color:var(--text-muted);text-decoration:none;">Care Plan</a>
+          <a href="community.html" style="font-size:0.88rem;font-weight:600;color:var(--text-muted);text-decoration:none;">Community</a>
+          <a href="blog.html" style="font-size:0.88rem;font-weight:600;color:var(--text-muted);text-decoration:none;">Blog</a>
+          <a href="quiz.html" class="cta-btn" style="padding:10px 22px;font-size:0.85rem;">Quiz</a>
         </nav>
       </div>
     </div>
@@ -130,9 +130,9 @@
 
   <section class="tool-hero">
     <div class="container">
-      <div class="hero-badge" style="background:rgba(255,255,255,0.2);color:white;border-color:rgba(255,255,255,0.3);">🎲 1회 무료 · 이후 ₩1,900</div>
-      <h1>반려동물 이름 생성기</h1>
-      <p>종류와 성격만 고르면 찰떡같은 이름 9개를 추천해드려요!</p>
+      <div class="hero-badge" style="background:rgba(255,255,255,0.2);color:white;border-color:rgba(255,255,255,0.3);">🎲 1 free use · then $1.99</div>
+      <h1>Pet Name Generator</h1>
+      <p>Pick a type and personality — we'll suggest 9 names that just fit!</p>
     </div>
   </section>
 
@@ -140,94 +140,94 @@
     <div class="container">
 
       <div class="tool-card">
-        <!-- 1. 동물 선택 -->
+        <!-- 1. Select pet type -->
         <div class="input-group">
-          <label class="input-label">1️⃣ 어떤 반려동물인가요?</label>
+          <label class="input-label">1️⃣ What kind of pet do you have?</label>
           <div class="pet-select-grid" id="pet-grid">
             <button class="pet-select-btn" data-pet="dog" onclick="selectPet('dog',this)">
-              <span class="btn-emoji">🐕</span><span class="btn-name">강아지</span>
+              <span class="btn-emoji">🐕</span><span class="btn-name">Dog</span>
             </button>
             <button class="pet-select-btn" data-pet="cat" onclick="selectPet('cat',this)">
-              <span class="btn-emoji">🐈</span><span class="btn-name">고양이</span>
+              <span class="btn-emoji">🐈</span><span class="btn-name">Cat</span>
             </button>
             <button class="pet-select-btn" data-pet="rabbit" onclick="selectPet('rabbit',this)">
-              <span class="btn-emoji">🐰</span><span class="btn-name">토끼</span>
+              <span class="btn-emoji">🐰</span><span class="btn-name">Rabbit</span>
             </button>
             <button class="pet-select-btn" data-pet="hamster" onclick="selectPet('hamster',this)">
-              <span class="btn-emoji">🐹</span><span class="btn-name">햄스터</span>
+              <span class="btn-emoji">🐹</span><span class="btn-name">Hamster</span>
             </button>
             <button class="pet-select-btn" data-pet="fish" onclick="selectPet('fish',this)">
-              <span class="btn-emoji">🐠</span><span class="btn-name">물고기</span>
+              <span class="btn-emoji">🐠</span><span class="btn-name">Fish</span>
             </button>
             <button class="pet-select-btn" data-pet="parrot" onclick="selectPet('parrot',this)">
-              <span class="btn-emoji">🦜</span><span class="btn-name">앵무새</span>
+              <span class="btn-emoji">🦜</span><span class="btn-name">Parrot</span>
             </button>
             <button class="pet-select-btn" data-pet="guinea_pig" onclick="selectPet('guinea_pig',this)">
-              <span class="btn-emoji">🐾</span><span class="btn-name">기니피그</span>
+              <span class="btn-emoji">🐾</span><span class="btn-name">Guinea Pig</span>
             </button>
             <button class="pet-select-btn" data-pet="turtle" onclick="selectPet('turtle',this)">
-              <span class="btn-emoji">🐢</span><span class="btn-name">거북이</span>
+              <span class="btn-emoji">🐢</span><span class="btn-name">Turtle</span>
             </button>
             <button class="pet-select-btn" data-pet="ferret" onclick="selectPet('ferret',this)">
-              <span class="btn-emoji">🦡</span><span class="btn-name">페렛</span>
+              <span class="btn-emoji">🦡</span><span class="btn-name">Ferret</span>
             </button>
             <button class="pet-select-btn" data-pet="hedgehog" onclick="selectPet('hedgehog',this)">
-              <span class="btn-emoji">🦔</span><span class="btn-name">고슴도치</span>
+              <span class="btn-emoji">🦔</span><span class="btn-name">Hedgehog</span>
             </button>
           </div>
         </div>
 
-        <!-- 2. 성격 선택 -->
+        <!-- 2. Select personality -->
         <div class="input-group">
-          <label class="input-label">2️⃣ 어떤 성격인가요? (예상 or 희망)</label>
+          <label class="input-label">2️⃣ What's their personality like? (actual or hoped for)</label>
           <div class="personality-grid" id="personality-grid">
-            <button class="personality-btn" data-p="active" onclick="selectPersonality('active',this)">⚡ 활발한</button>
-            <button class="personality-btn" data-p="calm" onclick="selectPersonality('calm',this)">🌊 차분한</button>
-            <button class="personality-btn" data-p="cute" onclick="selectPersonality('cute',this)">🍬 귀여운</button>
-            <button class="personality-btn" data-p="brave" onclick="selectPersonality('brave',this)">🦁 용감한</button>
-            <button class="personality-btn" data-p="smart" onclick="selectPersonality('smart',this)">🧠 영리한</button>
-            <button class="personality-btn" data-p="elegant" onclick="selectPersonality('elegant',this)">✨ 우아한</button>
+            <button class="personality-btn" data-p="active" onclick="selectPersonality('active',this)">⚡ Energetic</button>
+            <button class="personality-btn" data-p="calm" onclick="selectPersonality('calm',this)">🌊 Calm</button>
+            <button class="personality-btn" data-p="cute" onclick="selectPersonality('cute',this)">🍬 Adorable</button>
+            <button class="personality-btn" data-p="brave" onclick="selectPersonality('brave',this)">🦁 Bold</button>
+            <button class="personality-btn" data-p="smart" onclick="selectPersonality('smart',this)">🧠 Smart</button>
+            <button class="personality-btn" data-p="elegant" onclick="selectPersonality('elegant',this)">✨ Elegant</button>
           </div>
         </div>
 
-        <!-- 3. 언어 선택 -->
+        <!-- 3. Name style -->
         <div class="input-group">
-          <label class="input-label">3️⃣ 어떤 스타일의 이름을 원하나요?</label>
+          <label class="input-label">3️⃣ What style of name are you looking for?</label>
           <div class="lang-toggle">
-            <button class="lang-btn active" id="lang-ko" onclick="selectLang('ko')">🇰🇷 한국어</button>
-            <button class="lang-btn" id="lang-en" onclick="selectLang('en')">🌍 영어/외국어</button>
-            <button class="lang-btn" id="lang-mix" onclick="selectLang('mix')">🎲 랜덤 믹스</button>
+            <button class="lang-btn active" id="lang-ko" onclick="selectLang('ko')">🐾 Classic</button>
+            <button class="lang-btn" id="lang-en" onclick="selectLang('en')">🌍 English</button>
+            <button class="lang-btn" id="lang-mix" onclick="selectLang('mix')">🎲 Mix It Up</button>
           </div>
         </div>
 
         <button class="generate-btn" id="generate-btn" onclick="generateNames()" disabled>
-          ✨ 이름 추천받기
+          ✨ Generate Names
         </button>
       </div>
 
       <!-- Results -->
       <div class="tool-card results-wrap" id="results-wrap">
-        <h3 style="font-size:1.2rem;font-weight:800;margin-bottom:6px;">🎉 추천 이름이에요!</h3>
-        <p style="color:var(--text-muted);font-size:0.88rem;margin-bottom:20px;">마음에 드는 이름을 클릭하면 복사돼요</p>
+        <h3 style="font-size:1.2rem;font-weight:800;margin-bottom:6px;">🎉 Here are your name ideas!</h3>
+        <p style="color:var(--text-muted);font-size:0.88rem;margin-bottom:20px;">Click any name to copy it</p>
         <div class="names-grid" id="names-grid"></div>
-        <button class="regen-btn" onclick="generateNames()">🔄 다시 뽑기</button>
+        <button class="regen-btn" onclick="generateNames()">🔄 Generate Again</button>
 
         <div class="how-to">
-          <h4>💡 이름 고를 때 팁</h4>
+          <h4>💡 Tips for picking the perfect name</h4>
           <ul>
-            <li><span>🔊</span> 2~3음절이 부르기 편해요</li>
-            <li><span>📣</span> 끝이 모음으로 끝나면 반려동물이 더 잘 반응해요</li>
-            <li><span>❤️</span> 부르는 것이 즐거운 이름이 최고예요</li>
-            <li><span>🏥</span> 동물병원에서 부를 때 부끄럽지 않은 이름으로!</li>
+            <li><span>🔊</span> 2-syllable names are the easiest to call out</li>
+            <li><span>📣</span> Names ending in a vowel sound tend to get better responses from pets</li>
+            <li><span>❤️</span> The best name is one that makes you smile when you say it</li>
+            <li><span>🏥</span> Make sure it's a name you're comfortable saying at the vet!</li>
           </ul>
         </div>
       </div>
 
       <!-- CTA -->
       <div style="text-align:center;margin-top:32px;">
-        <p style="color:var(--text-muted);margin-bottom:16px;">아직 어떤 반려동물이 나와 맞는지 모른다면?</p>
+        <p style="color:var(--text-muted);margin-bottom:16px;">Not sure which pet is right for you?</p>
         <a href="quiz.html" class="cta-btn" style="background:linear-gradient(135deg,#f093fb,#f5576c);color:white;box-shadow:0 8px 24px rgba(245,87,108,0.3);">
-          나에게 맞는 반려동물 찾기 →
+          Find My Perfect Pet Match →
         </a>
       </div>
 
@@ -237,8 +237,11 @@
   <footer class="site-footer">
     <div class="footer-logo">🐾 YourAnimal</div>
     <div class="footer-links">
-      <a href="index.html">홈</a><a href="quiz.html">매칭 테스트</a>
-      <a href="care-plan.html">케어 플랜</a><a href="blog.html">블로그</a>
+      <a href="terms.html">Terms of Service</a>
+      <a href="privacy.html">Privacy Policy</a>
+      <a href="refund.html">Refund Policy</a>
+      <a href="pricing.html">Pricing</a>
+      <a href="mailto:support@mypetgenerator.com">Contact Us</a>
     </div>
     <p>© 2025 YourAnimal. All rights reserved.</p>
   </footer>
@@ -250,28 +253,29 @@
     <div style="background:white;border-radius:24px;padding:40px 32px;max-width:420px;width:100%;text-align:center;position:relative;animation:fadeSlideIn 0.3s ease;">
       <button onclick="document.getElementById('paywall-modal').style.display='none'" style="position:absolute;top:14px;right:18px;background:none;border:none;font-size:1.5rem;cursor:pointer;color:var(--text-muted);line-height:1;">✕</button>
       <div style="font-size:3rem;margin-bottom:12px;">🔒</div>
-      <h2 style="font-size:1.35rem;font-weight:900;margin-bottom:8px;">무료 사용 횟수를 다 쓰셨어요</h2>
-      <p style="color:var(--text-muted);font-size:0.9rem;margin-bottom:28px;">이름 생성기를 계속 이용하려면<br>아래 옵션 중 하나를 선택해주세요</p>
+      <h2 style="font-size:1.35rem;font-weight:900;margin-bottom:8px;">You've used your free generation</h2>
+      <p style="color:var(--text-muted);font-size:0.9rem;margin-bottom:28px;">To keep using the Name Generator,<br>choose one of the options below</p>
       <div style="display:flex;flex-direction:column;gap:12px;">
         <button onclick="Paywall.pay('name_gen')" style="padding:18px 24px;background:linear-gradient(135deg,#f093fb,#f5576c);color:white;border:none;border-radius:14px;font-size:1rem;font-weight:800;cursor:pointer;font-family:inherit;">
-          이름 생성기 잠금해제 — ₩1,900
-          <div style="font-size:0.78rem;font-weight:600;opacity:0.9;margin-top:4px;">일회성 결제 · 이후 무제한 사용</div>
+          Unlock Name Generator — $1.99
+          <div style="font-size:0.78rem;font-weight:600;opacity:0.9;margin-top:4px;">One-time payment · Unlimited use after</div>
         </button>
         <button onclick="Paywall.pay('subscription')" style="padding:18px 24px;background:linear-gradient(135deg,#667eea,#764ba2);color:white;border:none;border-radius:14px;font-size:1rem;font-weight:800;cursor:pointer;font-family:inherit;">
-          구독 — ₩9,900/월
-          <div style="font-size:0.78rem;font-weight:600;opacity:0.9;margin-top:4px;">이름 생성기 + 케어플랜 + 모든 기능</div>
+          Subscribe — $9.99/mo
+          <div style="font-size:0.78rem;font-weight:600;opacity:0.9;margin-top:4px;">Name Generator + Care Plan + all features</div>
         </button>
       </div>
       <div style="margin-top:16px;display:flex;justify-content:center;gap:14px;font-size:0.75rem;color:var(--text-muted);">
-        <span>🟡 카카오페이</span><span>🟢 네이버페이</span><span>💙 토스</span><span>💳 카드</span>
+        <span>💳 Visa/Mastercard</span><span>🅿️ PayPal</span><span>📱 Apple Pay</span>
       </div>
       <p style="margin-top:14px;font-size:0.75rem;color:#9CA3AF;line-height:1.6;background:#F9FAFB;border-radius:10px;padding:10px 12px;">
-        💡 결제 전 무료 1회 이용으로 먼저 확인해보세요.<br/>
-        디지털 콘텐츠 특성상 결제 완료 후 환불은 제공되지 않습니다.
+        💡 You get 1 free use to try it out first.<br/>
+        Due to the digital nature of this content, purchases are non-refundable once accessed.
       </p>
     </div>
   </div>
 
+  <script src="https://cdn.paddle.com/paddle/v2/paddle.js"></script>
   <script src="data/names.js"></script>
   <script src="js/paywall.js"></script>
   <script>
@@ -307,7 +311,7 @@
 
     window.addEventListener('DOMContentLoaded', function() {
       const paid = Paywall.checkReturnFromPayment();
-      if (paid) showToast('결제 완료! 이름 생성기를 마음껏 이용하세요 🎉');
+      if (paid) showToast('Payment complete! Enjoy unlimited name generation 🎉');
     });
 
     function showToast(msg) {
@@ -342,13 +346,13 @@
       }
 
       const selected = shuffle(pool).slice(0, 9);
-      const personalities = { active:'활발한', calm:'차분한', cute:'귀여운', brave:'용감한', smart:'영리한', elegant:'우아한' };
+      const personalities = { active:'Energetic', calm:'Calm', cute:'Adorable', brave:'Bold', smart:'Smart', elegant:'Elegant' };
       const grid = document.getElementById('names-grid');
       grid.innerHTML = selected.map(name => `
         <div class="name-card" onclick="copyName('${name}', this)">
           <div class="name-text">${name}</div>
           <div class="name-type">${personalities[selectedPersonality]}</div>
-          <div class="copy-hint">클릭하여 복사</div>
+          <div class="copy-hint">Click to copy</div>
         </div>
       `).join('');
       document.getElementById('results-wrap').classList.add('show');
@@ -357,15 +361,15 @@
       // Record free use after first generation
       if (isFree) {
         Paywall.recordNameGenUse();
-        showToast('이름이 생성되었어요! 다음 생성부터는 ₩1,900이 필요해요');
+        showToast('Names generated! Next generation requires $1.99');
       }
     }
 
     function copyName(name, el) {
       navigator.clipboard.writeText(name).then(() => {
         el.classList.add('copied');
-        el.querySelector('.copy-hint').textContent = '✓ 복사됨!';
-        setTimeout(() => { el.classList.remove('copied'); el.querySelector('.copy-hint').textContent = '클릭하여 복사'; }, 2000);
+        el.querySelector('.copy-hint').textContent = '✓ Copied!';
+        setTimeout(() => { el.classList.remove('copied'); el.querySelector('.copy-hint').textContent = 'Click to copy'; }, 2000);
       });
     }
   </script>

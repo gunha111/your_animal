@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>결과 — YourAnimal</title>
+  <title>Your Results — YourAnimal</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
@@ -20,7 +20,7 @@
           <span class="logo-emoji">🐾</span>
           YourAnimal
         </a>
-        <button class="retake-btn" onclick="retakeQuiz()" style="padding:8px 20px;font-size:0.85rem;">다시 하기</button>
+        <button class="retake-btn" onclick="retakeQuiz()" style="padding:8px 20px;font-size:0.85rem;">Retake Quiz</button>
       </div>
     </div>
   </header>
@@ -35,14 +35,12 @@
   <!-- TOAST -->
   <div class="toast" id="toast"></div>
 
+  <script src="https://cdn.paddle.com/paddle/v2/paddle.js"></script>
   <script src="data/questions.js"></script>
   <script src="data/pets.js"></script>
   <script src="js/scoring.js"></script>
+  <script src="js/paywall.js"></script>
   <script>
-    // 토스페이먼츠 Payment Link — 아래 설정 방법 참고 (SETUP.md)
-    // 토스페이먼츠 대시보드 → 결제 링크 생성 → ₩3,900 상품
-    // 성공 URL: https://mypetgenerator.com/success.html
-    const TOSS_PAYMENT_LINK = 'https://link.tosspayments.com/YOUR_LINK_HERE';
 
     const results = JSON.parse(sessionStorage.getItem('quizResults') || 'null');
     const urlParams = new URLSearchParams(window.location.search);
@@ -66,18 +64,18 @@
 
     function copyLink() {
       navigator.clipboard.writeText(window.location.origin + '/quiz.html')
-        .then(() => showToast('링크가 복사되었어요!'))
-        .catch(() => showToast('복사에 실패했어요. 직접 URL을 복사해주세요.'));
+        .then(() => showToast('Link copied!'))
+        .catch(() => showToast('Copy failed. Please copy the URL manually.'));
     }
 
     function shareTwitter(petName, pct) {
-      const text = encodeURIComponent(`나의 반려동물 성향 테스트 결과: ${petName}와 ${pct}% 매칭! 🐾 당신도 테스트해보세요 → `);
+      const text = encodeURIComponent(`My pet personality result: ${pct}% match with a ${petName}! 🐾 Take the quiz too → `);
       const url = encodeURIComponent(window.location.origin + '/quiz.html');
       window.open(`https://twitter.com/intent/tweet?text=${text}${url}`, '_blank');
     }
 
     function openPayment() {
-      window.location.href = TOSS_PAYMENT_LINK;
+      Paywall.pay('quiz_unlock');
     }
 
     function render() {
@@ -87,9 +85,9 @@
         container.innerHTML = `
           <div style="text-align:center;padding:80px 20px;">
             <div style="font-size:4rem;margin-bottom:16px;">😕</div>
-            <h2 style="margin-bottom:12px;">결과를 찾을 수 없어요</h2>
-            <p style="color:var(--text-muted);margin-bottom:28px;">테스트를 먼저 완료해주세요!</p>
-            <a href="quiz.html" class="cta-btn">테스트 시작하기 →</a>
+            <h2 style="margin-bottom:12px;">No results found</h2>
+            <p style="color:var(--text-muted);margin-bottom:28px;">Please complete the quiz first!</p>
+            <a href="quiz.html" class="cta-btn">Start the Quiz →</a>
           </div>
         `;
         return;
@@ -104,8 +102,8 @@
         <!-- Header -->
         <div class="results-header">
           <div class="trophy">🏆</div>
-          <h1>당신의 반려동물 매칭 결과</h1>
-          <p>25개 질문을 분석한 결과예요!</p>
+          <h1>Your Pet Match Results</h1>
+          <p>Based on your 25 answers!</p>
         </div>
 
         <!-- Winner Card -->
@@ -123,7 +121,7 @@
 
           <div class="match-bar-wrap">
             <div class="match-bar-label">
-              <span>매칭 점수</span>
+              <span>Match Score</span>
               <span class="pct">${winner.percentage}%</span>
             </div>
             <div class="match-bar-bg">
@@ -147,31 +145,31 @@
           </div>
 
           <div class="fun-fact-box">
-            <strong>💡 알고 계셨나요?</strong>
+            <strong>💡 Did you know?</strong>
             ${pet.fun_fact}
           </div>
 
           <div class="meta-grid">
             <div class="meta-item">
-              <div class="meta-label">케어 난이도</div>
+              <div class="meta-label">Care Level</div>
               <div class="meta-val">${pet.care_level}</div>
             </div>
             <div class="meta-item">
-              <div class="meta-label">필요 공간</div>
+              <div class="meta-label">Space Needed</div>
               <div class="meta-val">${pet.space_needed}</div>
             </div>
             <div class="meta-item">
-              <div class="meta-label">수명</div>
+              <div class="meta-label">Lifespan</div>
               <div class="meta-val">${pet.lifespan}</div>
             </div>
           </div>
 
           <!-- Share -->
           <div class="share-section">
-            <div class="share-label">이 결과 공유하기</div>
+            <div class="share-label">Share your result</div>
             <div class="share-btns">
-              <button class="share-btn share-twitter" onclick="shareTwitter('${pet.name}', ${winner.percentage})">𝕏 트위터</button>
-              <button class="share-btn share-copy" onclick="copyLink()">🔗 링크 복사</button>
+              <button class="share-btn share-twitter" onclick="shareTwitter('${pet.name}', ${winner.percentage})">𝕏 Twitter</button>
+              <button class="share-btn share-copy" onclick="copyLink()">🔗 Copy Link</button>
             </div>
           </div>
         </div>
@@ -181,7 +179,7 @@
 
         <!-- Retake -->
         <div class="retake-section">
-          <button class="retake-btn" onclick="retakeQuiz()">🔄 테스트 다시 하기</button>
+          <button class="retake-btn" onclick="retakeQuiz()">🔄 Retake the Quiz</button>
         </div>
       `;
 
@@ -205,8 +203,8 @@
       return `
         <div class="paywall-section">
           <div class="paywall-bg"></div>
-          <div class="paywall-title">🔒 나머지 TOP 4 결과도 궁금하지 않으세요?</div>
-          <p class="paywall-sub">당신과 잘 맞는 반려동물이 더 있을 수도 있어요. 전체 결과를 확인해보세요!</p>
+          <div class="paywall-title">🔒 Curious about your other TOP 4 matches?</div>
+          <p class="paywall-sub">There might be even more great pets waiting for you. Unlock the full results!</p>
 
           <div class="locked-pets-grid">
             ${top5.slice(1).map((r, i) => {
@@ -217,7 +215,7 @@
                   <div class="locked-pet-emoji">${p.emoji}</div>
                   <div class="locked-pet-info">
                     <div class="locked-pet-name">${p.name}</div>
-                    <div class="locked-pct">${r.percentage}% 매칭</div>
+                    <div class="locked-pct">${r.percentage}% match</div>
                   </div>
                   <div class="locked-overlay">🔒</div>
                 </div>
@@ -225,36 +223,36 @@
             }).join('')}
           </div>
 
-          <!-- 한국 결제 수단 아이콘 -->
+          <!-- Payment methods -->
           <div class="pay-methods">
-            <div class="pay-method kakao">
-              <span class="pay-icon">💛</span>카카오페이
-            </div>
-            <div class="pay-method naver">
-              <span class="pay-icon">🟢</span>네이버페이
+            <div class="pay-method card">
+              <span class="pay-icon">💳</span>Visa / Mastercard
             </div>
             <div class="pay-method toss">
-              <span class="pay-icon">🔵</span>토스페이
+              <span class="pay-icon">🅿️</span>PayPal
+            </div>
+            <div class="pay-method kakao">
+              <span class="pay-icon">📱</span>Apple Pay
             </div>
             <div class="pay-method card">
-              <span class="pay-icon">💳</span>신용·체크카드
+              <span class="pay-icon">💳</span>Credit / Debit Card
             </div>
           </div>
 
-          <div class="price-highlight">₩3,900 <span>일회성 결제</span></div>
-          <p class="price-note">TOP 2~5 결과 + 각 반려동물 상세 분석 + 케어 가이드</p>
+          <div class="price-highlight">$2.99 <span>one-time payment</span></div>
+          <p class="price-note">TOP 2–5 results + detailed analysis for each pet + care guide</p>
 
           <button class="unlock-btn" onclick="openPayment()">
-            🔓 전체 결과 잠금 해제하기
+            🔓 Unlock Full Results
           </button>
 
           <div class="unlock-features">
-            <span>🔐 토스페이먼츠 보안결제</span>
-            <span>⚡ 결제 즉시 확인</span>
+            <span>🔐 Secure payment via Paddle</span>
+            <span>⚡ Instant access after payment</span>
           </div>
           <p style="margin-top:14px;font-size:0.75rem;color:#9CA3AF;line-height:1.6;background:#F9FAFB;border-radius:10px;padding:10px 12px;text-align:left;">
-            💡 TOP 1 결과는 무료로 확인하셨죠? 만족하셨다면 결제해주세요.<br/>
-            디지털 콘텐츠 특성상 결제 완료 후 환불은 제공되지 않습니다.
+            💡 You already saw your #1 result for free — if you liked it, go ahead and unlock the rest!<br/>
+            Due to the digital nature of this content, purchases are non-refundable once accessed.
           </p>
         </div>
       `;
@@ -262,14 +260,14 @@
 
     function renderUnlocked(top5) {
       const rankColors = ['gold', 'silver', 'bronze', '', ''];
-      const rankEmojis = ['🥇', '🥈', '🥉', '4위', '5위'];
+      const rankEmojis = ['🥇', '🥈', '🥉', '#4', '#5'];
 
       return `
         <div class="unlocked-results">
           <div style="text-align:center;margin-bottom:28px;padding:20px;background:linear-gradient(135deg,#DCFCE7,#D1FAE5);border-radius:var(--radius);">
             <div style="font-size:2rem;margin-bottom:8px;">🎉</div>
-            <div style="font-weight:800;font-size:1.1rem;color:#15803D;">전체 결과가 잠금 해제됐어요!</div>
-            <div style="color:#16A34A;font-size:0.9rem;">TOP 5 반려동물과의 궁합을 모두 확인하세요</div>
+            <div style="font-weight:800;font-size:1.1rem;color:#15803D;">All results unlocked!</div>
+            <div style="color:#16A34A;font-size:0.9rem;">Check your compatibility with all TOP 5 pets</div>
           </div>
           <div class="result-cards-list">
             ${top5.map((r, i) => {
