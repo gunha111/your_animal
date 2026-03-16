@@ -6,8 +6,8 @@
 // 2. Settings → API → Project URL & anon key 복사
 // 3. 아래 값을 교체하세요
 
-const SUPABASE_URL = 'https://xbgrstqlcrttjeoszpet.supabase.co';         // 예: https://abcdefgh.supabase.co
-const SUPABASE_ANON_KEY = 'sb_publishable_tdPfKTEGd8_k2TA0jo5z3w_0RJbXoYA';
+const SUPABASE_URL = 'https://mdnidvcgcdkxacarcswx.supabase.co';
+const SUPABASE_ANON_KEY = 'sb_publishable_muq2wAfty0zGYUklDSVTyQ_58yLCEEM';
 
 // ===================================================
 // Supabase SQL — 아래 쿼리를 Supabase SQL Editor에서 실행하세요
