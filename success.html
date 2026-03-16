@@ -20,37 +20,51 @@
     </div>
   </main>
   <script src="https://cdn.paddle.com/paddle/v2/paddle.js"></script>
+  <script src="js/supabase-config.js"></script>
   <script src="js/paywall.js"></script>
   <script>
     const REDIRECT = {
-      name_gen:     { page: 'name-generator.html', title: 'Name Generator unlocked!', msg: 'You can now use the Name Generator as many times as you like.' },
-      care_plan:    { page: 'care-plan.html',       title: 'Care Plan unlocked!', msg: 'Access personalized care plans for all pets.' },
-      quiz_unlock:  { page: 'results.html',         title: 'Full TOP 5 results unlocked!', msg: 'Check out all your pet match results now.' },
-      subscription: { page: 'index.html',           title: 'Subscription active! 🌟', msg: 'Enjoy 30 days of unlimited access to the Name Generator, Care Plan, and Quiz TOP 5.' },
+      name_gen:     { page: 'name-generator.html', title: 'Name Generator unlocked! 🎲', msg: 'You can now generate names as many times as you like.' },
+      care_plan:    { page: 'care-plan.html',       title: 'Care Plan unlocked! 📋',      msg: 'Access personalized care plans for all pets.' },
+      quiz_unlock:  { page: 'results.html',         title: 'Full TOP 5 unlocked! 🏆',     msg: 'Your complete pet match results are ready.' },
+      subscription: { page: 'index.html',           title: 'Subscription active! 🌟',     msg: 'Enjoy 30 days of unlimited access to all features.' },
     };
 
     const params = new URLSearchParams(window.location.search);
     const type = params.get('type') || 'quiz_unlock';
-
-    // Process payment success
-    Paywall.handleSuccess(type);
-
-    // Update UI
     const info = REDIRECT[type] || REDIRECT['quiz_unlock'];
+
     document.getElementById('success-title').textContent = info.title;
-    document.getElementById('success-msg').textContent = info.msg;
     document.getElementById('go-btn').textContent =
       type === 'quiz_unlock' ? 'View Full Results →' : 'Get Started →';
 
-    function goNext() {
-      if (type === 'quiz_unlock') {
-        window.location.href = 'results.html?unlocked=1';
-      } else {
-        window.location.href = info.page;
+    // Verify with Supabase (webhook may take 1-3s), then unlock
+    async function init() {
+      const msgEl = document.getElementById('success-msg');
+      msgEl.textContent = 'Confirming your purchase...';
+
+      // Retry Supabase verification up to 5× (webhook latency)
+      let verified = false;
+      for (let i = 0; i < 5; i++) {
+        verified = await Paywall.verifyAndUnlock(type);
+        if (verified) break;
+        await new Promise(r => setTimeout(r, 1200));
       }
+
+      // Fallback: trust Paddle's successUrl regardless
+      if (!verified) Paywall.handleSuccess(type);
+
+      msgEl.textContent = info.msg;
+      setTimeout(goNext, 2500);
     }
 
-    setTimeout(goNext, 3000);
+    function goNext() {
+      window.location.href = type === 'quiz_unlock'
+        ? 'results.html?unlocked=1'
+        : info.page;
+    }
+
+    init();
   </script>
 </body>
 </html>

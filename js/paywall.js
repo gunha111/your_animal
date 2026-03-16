@@ -1,23 +1,24 @@
-// =====================================================
-// YourAnimal 결제 상태 관리 — Paddle Billing v2
-// 설정 방법:
-//   1. Paddle 대시보드 → Developer → Authentication
-//      → Client-side token 복사 → PADDLE_CLIENT_TOKEN에 붙여넣기
-//   2. Catalog → Products → 각 상품 Price 생성
-//      → Price ID (pri_xxx...) 복사 → PADDLE_PRICE_IDS에 붙여넣기
-// =====================================================
+// ================================================================
+// YourAnimal — Payment State Manager
+// Paddle Billing v2 + Supabase verification + localStorage cache
+//
+// Setup:
+//   1. Paddle dashboard → Developer → Client-side token → PADDLE_CLIENT_TOKEN
+//   2. Paddle dashboard → Catalog → Prices → PADDLE_PRICE_IDS
+//   3. Netlify env vars: PADDLE_WEBHOOK_SECRET, SUPABASE_URL, SUPABASE_SERVICE_KEY
+// ================================================================
 
-const PADDLE_CLIENT_TOKEN = 'live_XXXXXXXXXXXXXXXXXXXXXXXXX'; // ← 여기 교체
-// 테스트 시: 'test_XXXXXXXXXXXXXXXXXXXXXXXXX'
+const PADDLE_CLIENT_TOKEN = 'live_XXXXXXXXXXXXXXXXXXXXXXXXX'; // ← replace
 
 const PADDLE_PRICE_IDS = {
-  name_gen:     'pri_XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX', // ₩1,900 이름 생성기
-  care_plan:    'pri_XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX', // ₩3,900 케어 플랜
-  quiz_unlock:  'pri_XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX', // ₩3,900 TOP5 잠금해제
-  subscription: 'pri_XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX', // ₩9,900/월 구독
+  name_gen:     'pri_XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX', // $1.99
+  care_plan:    'pri_XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX', // $2.99
+  quiz_unlock:  'pri_XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX', // $2.99
+  subscription: 'pri_XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX', // $9.99/mo
 };
 
 const STORAGE_KEYS = {
+  session_id:      'ya_session_id',
   name_gen_uses:   'ya_name_gen_uses',
   name_gen_paid:   'ya_name_gen_paid',
   care_plan_paid:  'ya_care_plan_paid',
@@ -25,7 +26,17 @@ const STORAGE_KEYS = {
   sub_expiry:      'ya_sub_expiry',
 };
 
-// Paddle 초기화 (paddle.js 로드 후 실행)
+// ── Session ID (persists per browser, passed to Paddle as customData) ──
+function getSessionId() {
+  let sid = localStorage.getItem(STORAGE_KEYS.session_id);
+  if (!sid) {
+    sid = 'sess_' + Date.now() + '_' + Math.random().toString(36).slice(2, 9);
+    localStorage.setItem(STORAGE_KEYS.session_id, sid);
+  }
+  return sid;
+}
+
+// ── Paddle init ─────────────────────────────────────────────────
 function initPaddle() {
   if (typeof Paddle === 'undefined') return;
   Paddle.Initialize({ token: PADDLE_CLIENT_TOKEN });
@@ -36,21 +47,40 @@ if (document.readyState === 'loading') {
   initPaddle();
 }
 
+// ── Supabase anon query (frontend, read-only) ────────────────────
+async function queryPurchases(sessionId) {
+  if (typeof SUPABASE_URL === 'undefined' || typeof SUPABASE_ANON_KEY === 'undefined') {
+    return [];
+  }
+  try {
+    const url = `${SUPABASE_URL}/rest/v1/purchases?session_id=eq.${encodeURIComponent(sessionId)}&status=eq.active&select=product_type,expires_at`;
+    const res = await fetch(url, {
+      headers: {
+        'apikey': SUPABASE_ANON_KEY,
+        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+      },
+    });
+    if (!res.ok) return [];
+    return await res.json();
+  } catch {
+    return [];
+  }
+}
+
 const Paywall = {
 
-  // ── 구독 유효 여부 ─────────────────────────────
+  // ── Subscription ───────────────────────────────────────────────
   isSubscribed() {
     const expiry = parseInt(localStorage.getItem(STORAGE_KEYS.sub_expiry) || '0');
     return expiry > Date.now();
   },
-
   subDaysLeft() {
     const expiry = parseInt(localStorage.getItem(STORAGE_KEYS.sub_expiry) || '0');
     const diff = expiry - Date.now();
     return diff > 0 ? Math.ceil(diff / 86400000) : 0;
   },
 
-  // ── 이름 생성기 ────────────────────────────────
+  // ── Name Generator ─────────────────────────────────────────────
   canUseNameGen() {
     if (this.isSubscribed()) return true;
     if (localStorage.getItem(STORAGE_KEYS.name_gen_paid) === '1') return true;
@@ -60,54 +90,54 @@ const Paywall = {
   isNameGenFree() {
     if (this.isSubscribed()) return true;
     if (localStorage.getItem(STORAGE_KEYS.name_gen_paid) === '1') return true;
-    const uses = parseInt(localStorage.getItem(STORAGE_KEYS.name_gen_uses) || '0');
-    return uses === 0;
+    return parseInt(localStorage.getItem(STORAGE_KEYS.name_gen_uses) || '0') === 0;
   },
   recordNameGenUse() {
     const uses = parseInt(localStorage.getItem(STORAGE_KEYS.name_gen_uses) || '0');
     localStorage.setItem(STORAGE_KEYS.name_gen_uses, uses + 1);
   },
 
-  // ── 케어 플랜 ──────────────────────────────────
+  // ── Care Plan ──────────────────────────────────────────────────
   canUseCarePlan() {
     if (this.isSubscribed()) return true;
     return localStorage.getItem(STORAGE_KEYS.care_plan_paid) === '1';
   },
 
-  // ── 퀴즈 TOP5 ──────────────────────────────────
+  // ── Quiz TOP5 ──────────────────────────────────────────────────
   canSeeQuizFull() {
     if (this.isSubscribed()) return true;
     return localStorage.getItem(STORAGE_KEYS.quiz_paid) === '1';
   },
 
-  // ── Paddle 오버레이 결제창 열기 ─────────────────
+  // ── Open Paddle overlay checkout ───────────────────────────────
   pay(type) {
     const priceId = PADDLE_PRICE_IDS[type];
 
     if (!priceId || priceId.includes('XXXX')) {
-      alert('⚙️ Paddle Price ID가 아직 설정되지 않았어요.\nPaddle 대시보드에서 Price ID를 생성 후\njs/paywall.js에 입력해주세요.');
+      alert('⚙️ Paddle Price ID not set yet.\nAdd it to js/paywall.js → PADDLE_PRICE_IDS.');
       return;
     }
-
     if (typeof Paddle === 'undefined') {
-      alert('결제 모듈을 불러오는 중이에요. 잠시 후 다시 시도해주세요.');
+      alert('Payment module loading — please try again in a moment.');
       return;
     }
-
-    const successUrl = window.location.origin + '/success.html?type=' + type;
 
     Paddle.Checkout.open({
-      items: [{ priceId: priceId, quantity: 1 }],
+      items: [{ priceId, quantity: 1 }],
+      customData: {
+        session_id: getSessionId(),
+        product_type: type,
+      },
       settings: {
         displayMode: 'overlay',
         theme: 'light',
-        locale: 'ko',
-        successUrl: successUrl,
+        locale: 'en',
+        successUrl: `${window.location.origin}/success.html?type=${type}`,
       },
     });
   },
 
-  // ── 결제 성공 처리 (success.html에서 호출) ───────
+  // ── Apply unlocks to localStorage ──────────────────────────────
   handleSuccess(type) {
     switch (type) {
       case 'name_gen':
@@ -120,7 +150,7 @@ const Paywall = {
         localStorage.setItem(STORAGE_KEYS.quiz_paid, '1');
         break;
       case 'subscription': {
-        const expiry = Date.now() + (30 * 24 * 60 * 60 * 1000);
+        const expiry = Date.now() + 30 * 24 * 60 * 60 * 1000;
         localStorage.setItem(STORAGE_KEYS.sub_expiry, expiry);
         localStorage.setItem(STORAGE_KEYS.name_gen_paid, '1');
         localStorage.setItem(STORAGE_KEYS.care_plan_paid, '1');
@@ -130,7 +160,63 @@ const Paywall = {
     }
   },
 
-  // ── URL에서 결제 성공 파라미터 감지 ─────────────
+  // ── Verify purchase via Supabase (called on success.html) ───────
+  // Confirms the webhook wrote to DB before trusting the unlock
+  async verifyAndUnlock(type) {
+    const sessionId = getSessionId();
+    const rows = await queryPurchases(sessionId);
+
+    // Check if Supabase has record for this session
+    const found = rows.find(r => {
+      if (r.product_type === 'subscription') return true;
+      if (r.product_type === type) return true;
+      return false;
+    });
+
+    if (found) {
+      // Sync subscription expiry from DB
+      const sub = rows.find(r => r.product_type === 'subscription');
+      if (sub && sub.expires_at) {
+        localStorage.setItem(STORAGE_KEYS.sub_expiry, new Date(sub.expires_at).getTime());
+      }
+      this.handleSuccess(type);
+      return true;
+    }
+
+    // Webhook may be delayed — fall back to trusting success URL
+    // (Paddle's successUrl only fires after confirmed payment)
+    this.handleSuccess(type);
+    return false;
+  },
+
+  // ── Sync all active purchases from Supabase ─────────────────────
+  // Call on page load to keep localStorage in sync
+  async syncFromSupabase() {
+    const sessionId = getSessionId();
+    const rows = await queryPurchases(sessionId);
+    if (!rows.length) return;
+
+    for (const row of rows) {
+      if (row.status !== 'active') continue;
+      if (row.product_type === 'subscription' && row.expires_at) {
+        const expiry = new Date(row.expires_at).getTime();
+        if (expiry > Date.now()) {
+          localStorage.setItem(STORAGE_KEYS.sub_expiry, expiry);
+          localStorage.setItem(STORAGE_KEYS.name_gen_paid, '1');
+          localStorage.setItem(STORAGE_KEYS.care_plan_paid, '1');
+          localStorage.setItem(STORAGE_KEYS.quiz_paid, '1');
+        }
+      } else if (row.product_type === 'name_gen') {
+        localStorage.setItem(STORAGE_KEYS.name_gen_paid, '1');
+      } else if (row.product_type === 'care_plan') {
+        localStorage.setItem(STORAGE_KEYS.care_plan_paid, '1');
+      } else if (row.product_type === 'quiz_unlock') {
+        localStorage.setItem(STORAGE_KEYS.quiz_paid, '1');
+      }
+    }
+  },
+
+  // ── URL param check (legacy / fallback) ────────────────────────
   checkReturnFromPayment() {
     const params = new URLSearchParams(window.location.search);
     const paid = params.get('paid');
@@ -140,5 +226,5 @@ const Paywall = {
       return paid;
     }
     return null;
-  }
+  },
 };
