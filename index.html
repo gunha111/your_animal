@@ -128,41 +128,77 @@
   <section class="pricing-section">
     <div class="container">
       <h2 class="section-title">간단한 가격 정책</h2>
-      <p class="section-sub">부담 없이 시작하고, 더 알고 싶다면 풀 결과를 확인해보세요</p>
+      <p class="section-sub">무료로 충분히 체험하고, 더 필요하면 그때 결제하세요</p>
       <div class="pricing-cards">
+
+        <!-- 무료 -->
         <div class="pricing-card">
           <div class="pricing-tier">무료</div>
-          <div class="pricing-price">₩0 <span>/ 결과</span></div>
-          <div class="pricing-desc">테스트 완료 즉시 확인</div>
+          <div class="pricing-price">₩0</div>
+          <div class="pricing-desc">지금 바로 시작</div>
           <ul class="pricing-features">
-            <li><span class="check">✓</span> 25개 질문 테스트</li>
+            <li><span class="check">✓</span> 25개 질문 매칭 테스트</li>
             <li><span class="check">✓</span> <strong>TOP 1 결과</strong> 상세 분석</li>
-            <li><span class="check">✓</span> 궁합 점수 확인</li>
-            <li><span class="check">✓</span> 케어 가이드 기본</li>
+            <li><span class="check">✓</span> 이름 생성기 1회</li>
+            <li><span class="check">✓</span> 커뮤니티 자유 이용</li>
             <li><span class="lock">🔒</span> TOP 2~5 결과</li>
+            <li><span class="lock">🔒</span> 케어 플랜</li>
           </ul>
+          <a href="quiz.html" style="display:block;margin-top:24px;padding:14px;text-align:center;background:#F3F4F6;border-radius:100px;font-weight:800;font-size:0.9rem;color:var(--text);text-decoration:none;">무료 테스트 시작 →</a>
         </div>
+
+        <!-- 올인원 구독 (featured) -->
         <div class="pricing-card featured">
-          <div class="pricing-badge">추천</div>
-          <div class="pricing-tier">풀 결과</div>
-          <div class="pricing-price">₩3,900 <span>/ 결과</span></div>
-          <div class="pricing-desc">모든 분석 결과 확인</div>
+          <div class="pricing-badge">가장 인기</div>
+          <div class="pricing-tier">올인원 구독</div>
+          <div class="pricing-price">₩9,900 <span>/ 월</span></div>
+          <div class="pricing-desc">모든 기능 30일 무제한</div>
           <ul class="pricing-features">
-            <li><span class="check">✓</span> 25개 질문 테스트</li>
             <li><span class="check">✓</span> <strong>TOP 1~5 결과</strong> 모두</li>
-            <li><span class="check">✓</span> 각 반려동물 상세 분석</li>
-            <li><span class="check">✓</span> 궁합 포인트 & 케어 팁</li>
+            <li><span class="check">✓</span> 이름 생성기 무제한</li>
+            <li><span class="check">✓</span> 케어 플랜 무제한</li>
             <li><span class="check">✓</span> 추천 품종 가이드</li>
+            <li><span class="check">✓</span> 신규 기능 즉시 이용</li>
           </ul>
-          <!-- 결제 수단 -->
-          <div class="pay-methods" style="margin-top:20px;justify-content:flex-start;">
+          <div class="pay-methods" style="margin-top:18px;justify-content:flex-start;flex-wrap:wrap;gap:6px;">
             <div class="pay-method kakao"><span class="pay-icon">💛</span>카카오페이</div>
             <div class="pay-method naver"><span class="pay-icon">🟢</span>네이버페이</div>
             <div class="pay-method toss"><span class="pay-icon">🔵</span>토스</div>
             <div class="pay-method card"><span class="pay-icon">💳</span>카드</div>
           </div>
+          <a href="quiz.html" style="display:block;margin-top:18px;padding:14px;text-align:center;background:linear-gradient(135deg,var(--primary),var(--secondary));border-radius:100px;font-weight:800;font-size:0.9rem;color:white;text-decoration:none;">구독 시작하기 →</a>
         </div>
+
+        <!-- 단품 구매 -->
+        <div class="pricing-card">
+          <div class="pricing-tier">단품 구매</div>
+          <div class="pricing-price" style="font-size:1.5rem;">₩1,900~</div>
+          <div class="pricing-desc">필요한 기능만 골라서</div>
+          <ul class="pricing-features">
+            <li><span class="check">✓</span> TOP 2~5 결과 — <strong>₩3,900</strong></li>
+            <li><span class="check">✓</span> 이름 생성기 잠금해제 — <strong>₩1,900</strong></li>
+            <li><span class="check">✓</span> 케어 플랜 잠금해제 — <strong>₩3,900</strong></li>
+            <li style="color:var(--text-muted);font-size:0.82rem;"><span style="opacity:0.4;">→</span> 자주 쓴다면 구독이 더 저렴해요</li>
+          </ul>
+          <a href="quiz.html" style="display:block;margin-top:24px;padding:14px;text-align:center;background:#F3F4F6;border-radius:100px;font-weight:800;font-size:0.9rem;color:var(--text);text-decoration:none;">테스트 후 선택 →</a>
+        </div>
+
       </div>
+
+      <!-- 환불 정책 안내 -->
+      <div class="refund-notice">
+        <span class="refund-icon">💡</span>
+        <p>
+          <strong>결제 전 무료 기능으로 충분히 체험해보세요.</strong>
+          이름 생성기는 1회 무료, 매칭 테스트 TOP 1 결과는 무료로 확인할 수 있어요.
+          만족하신 후에 결제해주세요 😊<br/>
+          <span style="margin-top:6px;display:inline-block;font-size:0.8rem;">
+            디지털 콘텐츠 특성상 결제 완료 후에는 환불이 어렵습니다.
+            결제 전 꼭 무료 체험을 먼저 이용해주세요.
+          </span>
+        </p>
+      </div>
+
     </div>
   </section>
 

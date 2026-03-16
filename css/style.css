@@ -196,15 +196,15 @@ body {
 .pricing-section { padding: 80px 20px; background: white; }
 .pricing-cards {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 24px;
-  max-width: 680px;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  max-width: 960px;
   margin: 0 auto;
 }
-@media (max-width: 540px) { .pricing-cards { grid-template-columns: 1fr; } }
+@media (max-width: 860px) { .pricing-cards { grid-template-columns: 1fr; max-width: 440px; } }
 .pricing-card {
   border-radius: var(--radius);
-  padding: 36px 28px;
+  padding: 32px 24px;
   border: 2px solid var(--border);
   transition: var(--transition);
 }
@@ -213,7 +213,10 @@ body {
   background: linear-gradient(135deg, #EEF2FF, #F5F3FF);
   position: relative;
   overflow: hidden;
+  transform: scale(1.03);
+  box-shadow: 0 12px 40px rgba(99,102,241,0.18);
 }
+@media (max-width: 860px) { .pricing-card.featured { transform: none; } }
 .pricing-badge {
   position: absolute;
   top: 16px;
@@ -226,15 +229,30 @@ body {
   transform: rotate(45deg);
   transform-origin: center;
 }
-.pricing-tier { font-size: 0.85rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
-.pricing-price { font-size: 2.4rem; font-weight: 900; color: var(--text); margin-bottom: 4px; }
-.pricing-price span { font-size: 1rem; font-weight: 600; color: var(--text-muted); }
-.pricing-desc { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 24px; }
+.pricing-tier { font-size: 0.82rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
+.pricing-price { font-size: 2.2rem; font-weight: 900; color: var(--text); margin-bottom: 4px; line-height: 1.1; }
+.pricing-price span { font-size: 0.95rem; font-weight: 600; color: var(--text-muted); }
+.pricing-desc { color: var(--text-muted); font-size: 0.88rem; margin-bottom: 20px; line-height: 1.5; }
 .pricing-features { list-style: none; }
-.pricing-features li { padding: 8px 0; font-size: 0.9rem; display: flex; align-items: center; gap: 10px; border-bottom: 1px solid var(--border); }
+.pricing-features li { padding: 8px 0; font-size: 0.88rem; display: flex; align-items: flex-start; gap: 10px; border-bottom: 1px solid var(--border); line-height: 1.4; }
 .pricing-features li:last-child { border-bottom: none; }
-.pricing-features .check { color: #10B981; font-size: 1.1rem; }
-.pricing-features .lock { color: var(--text-muted); }
+.pricing-features .check { color: #10B981; font-size: 1.05rem; flex-shrink: 0; }
+.pricing-features .lock { color: var(--text-muted); flex-shrink: 0; }
+/* 환불 정책 안내 */
+.refund-notice {
+  max-width: 960px;
+  margin: 32px auto 0;
+  background: #F8FAFC;
+  border: 1.5px solid #E2E8F0;
+  border-radius: 14px;
+  padding: 18px 24px;
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+.refund-notice .refund-icon { font-size: 1.3rem; flex-shrink: 0; margin-top: 1px; }
+.refund-notice p { font-size: 0.84rem; color: var(--text-muted); line-height: 1.7; margin: 0; }
+.refund-notice strong { color: var(--text); font-weight: 700; }
 
 /* ===== QUIZ PAGE ===== */
 .quiz-page {
