@@ -4,19 +4,22 @@
 // ================================================================
 
 (function initYAAuth() {
-  // Wait for Supabase SDK + config
-  function waitFor(check, cb, tries) {
-    if (check()) return cb();
-    if ((tries || 0) > 30) return;
-    setTimeout(() => waitFor(check, cb, (tries || 0) + 1), 100);
+  function run() {
+    if (typeof window.supabase === 'undefined' ||
+        typeof SUPABASE_URL === 'undefined' ||
+        typeof SUPABASE_ANON_KEY === 'undefined') {
+      // SDK not loaded — still show Log in button
+      injectAuthButton(null);
+      return;
+    }
+    setup();
   }
 
-  waitFor(
-    () => typeof window.supabase !== 'undefined' &&
-          typeof SUPABASE_URL !== 'undefined' &&
-          typeof SUPABASE_ANON_KEY !== 'undefined',
-    setup
-  );
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', run);
+  } else {
+    run();
+  }
 
   let authClient = null;
   const isInBlogDir = window.location.pathname.includes('/blog/');
@@ -32,16 +35,20 @@
       getSession: () => authClient.auth.getSession(),
     };
 
+    // Show "Log in" immediately — update to "Account" once session is confirmed
+    injectAuthButton(null);
+
     authClient.auth.getSession().then(({ data: { session } }) => {
-      injectAuthButton(session?.user ?? null);
-      if (session?.user) restorePurchases(session.user.id, session.access_token);
-    });
+      if (session?.user) {
+        injectAuthButton(session.user);
+        restorePurchases(session.user.id, session.access_token);
+      }
+    }).catch(() => {});
 
     authClient.auth.onAuthStateChange(async (event, session) => {
       injectAuthButton(session?.user ?? null);
       if (event === 'SIGNED_IN' && session?.user) {
         await restorePurchases(session.user.id, session.access_token);
-        // Reload page to reflect unlocked features (skip on account page)
         if (!window.location.pathname.includes('account.html')) {
           window.location.reload();
         }
