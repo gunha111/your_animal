@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>How Much Does a Pet Actually Cost? A Full Breakdown by Type — YourAnimal Blog</title>
+  <meta name="description" content="From adoption fees to food, vet bills, and grooming — we break down the real monthly costs for all 10 pet types, honestly." />
+  <meta name="keywords" content="pet cost, how much does a dog cost, cat monthly cost, pet expenses breakdown, pet budget, cost of owning a pet" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐾</text></svg>" />
+  <style>
+    .article-hero { background: linear-gradient(135deg, #D1FAE5 0%, #A7F3D0 100%); padding: 60px 20px 50px; text-align: center; }
+    .article-hero .article-cat { display: inline-block; padding: 4px 14px; border-radius: 100px; background: white; font-size: 0.82rem; font-weight: 700; margin-bottom: 16px; color: #065F46; }
+    .article-hero h1 { font-size: clamp(1.6rem,4vw,2.4rem); font-weight: 900; color: #1F2937; margin-bottom: 12px; line-height: 1.3; }
+    .article-hero .meta { color: #065F46; font-size: 0.88rem; }
+    .article-body { max-width: 720px; margin: 0 auto; padding: 60px 20px 80px; }
+    .article-body h2 { font-size: 1.5rem; font-weight: 800; margin: 40px 0 16px; color: var(--text); }
+    .article-body h3 { font-size: 1.15rem; font-weight: 700; margin: 28px 0 12px; }
+    .article-body p { font-size: 1rem; line-height: 1.85; color: #374151; margin-bottom: 16px; }
+    .article-body ul, .article-body ol { padding-left: 24px; margin-bottom: 16px; }
+    .article-body li { font-size: 0.95rem; line-height: 1.75; color: #374151; margin-bottom: 8px; }
+    .cost-table { width: 100%; border-collapse: collapse; margin: 28px 0; border-radius: 16px; overflow: hidden; box-shadow: var(--shadow); }
+    .cost-table thead th { padding: 14px 16px; font-size: 0.85rem; font-weight: 800; background: #1F2937; color: white; text-align: left; }
+    .cost-table thead th:not(:first-child) { text-align: center; }
+    .cost-table td { padding: 13px 16px; font-size: 0.9rem; border-bottom: 1px solid #F3F4F6; }
+    .cost-table td:first-child { font-weight: 700; }
+    .cost-table td:not(:first-child) { text-align: center; color: var(--text-muted); }
+    .cost-table tr:last-child td { border-bottom: none; }
+    .cost-table tr:hover td { background: #F9FAFB; }
+    .cost-badge { display: inline-block; padding: 2px 10px; border-radius: 100px; font-size: 0.75rem; font-weight: 700; }
+    .badge-low { background: #DCFCE7; color: #166534; }
+    .badge-med { background: #FEF9C3; color: #713F12; }
+    .badge-high { background: #FEE2E2; color: #991B1B; }
+    .cost-card { background: white; border-radius: 16px; border: 2px solid var(--border); box-shadow: var(--shadow); padding: 24px; margin-bottom: 20px; }
+    .cost-card h3 { font-size: 1.1rem; font-weight: 800; margin: 0 0 12px; }
+    .cost-row { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid #F3F4F6; font-size: 0.9rem; }
+    .cost-row:last-child { border-bottom: none; font-weight: 800; color: var(--primary-dark); }
+    .cost-row span:last-child { font-weight: 700; }
+    .tip-box { background: #EFF6FF; border-left: 4px solid var(--primary); border-radius: 0 16px 16px 0; padding: 20px 24px; margin: 28px 0; }
+    .tip-box h4 { font-weight: 800; color: var(--primary-dark); margin-bottom: 8px; }
+    .warn-box { background: #FEF9C3; border-left: 4px solid #EAB308; border-radius: 0 16px 16px 0; padding: 20px 24px; margin: 28px 0; }
+    .warn-box h4 { font-weight: 800; color: #713F12; margin-bottom: 8px; }
+    .cta-inline { background: linear-gradient(135deg,var(--primary),var(--secondary)); border-radius: 20px; padding: 32px; text-align: center; margin: 40px 0; color: white; }
+    .cta-inline h3 { font-size: 1.3rem; font-weight: 800; margin-bottom: 8px; }
+    .cta-inline p { opacity: 0.88; margin-bottom: 20px; }
+    .cta-inline a { display: inline-block; background: white; color: var(--primary-dark); padding: 14px 36px; border-radius: 100px; font-weight: 800; text-decoration: none; }
+    @media(max-width:600px){ .cost-table { font-size: 0.8rem; } .cost-table td, .cost-table thead th { padding: 10px 10px; } }
+  </style>
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container">
+      <div class="header-inner">
+        <a href="../index.html" class="logo"><span class="logo-emoji">🐾</span>YourAnimal</a>
+        <nav style="display:flex;gap:16px;align-items:center;">
+          <a href="../name-generator.html" style="font-size:0.88rem;font-weight:600;color:var(--text-muted);text-decoration:none;">Name Generator</a>
+          <a href="../care-plan.html" style="font-size:0.88rem;font-weight:600;color:var(--text-muted);text-decoration:none;">Care Plan</a>
+          <a href="../community.html" style="font-size:0.88rem;font-weight:600;color:var(--text-muted);text-decoration:none;">Community</a>
+          <a href="../blog.html" style="font-size:0.88rem;font-weight:700;color:var(--primary);text-decoration:none;">Blog</a>
+          <a href="../quiz.html" class="cta-btn" style="padding:10px 22px;font-size:0.85rem;">Start Quiz</a>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <section class="article-hero">
+    <div class="container">
+      <span class="article-cat">💰 Cost Guide</span>
+      <h1>How Much Does a Pet Actually Cost?<br>A Full Breakdown by Type</h1>
+      <p class="meta">⏱ 6 min read &nbsp;·&nbsp; March 2026 &nbsp;·&nbsp; By YourAnimal Team</p>
+    </div>
+  </section>
+
+  <article class="article-body">
+
+    <p>Adopting a pet is one of the best decisions you'll ever make — but it comes with real financial responsibility. The upfront costs are just the beginning. Food, vet visits, grooming, supplies, and emergencies all add up in ways that can catch first-time owners off guard.</p>
+    <p>Here's an honest, no-fluff breakdown of what each pet type actually costs per month, including first-year setup costs.</p>
+
+    <h2>Quick Comparison: All Pets at a Glance</h2>
+
+    <table class="cost-table">
+      <thead>
+        <tr>
+          <th>Pet Type</th>
+          <th>Setup Cost</th>
+          <th>Monthly Cost</th>
+          <th>Budget Level</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>🐕 Dog (Small)</td>
+          <td>$500–1,200</td>
+          <td>$80–150</td>
+          <td><span class="cost-badge badge-med">Medium</span></td>
+        </tr>
+        <tr>
+          <td>🐕 Dog (Large)</td>
+          <td>$800–2,000</td>
+          <td>$130–250</td>
+          <td><span class="cost-badge badge-high">High</span></td>
+        </tr>
+        <tr>
+          <td>🐱 Cat</td>
+          <td>$300–800</td>
+          <td>$60–100</td>
+          <td><span class="cost-badge badge-med">Medium</span></td>
+        </tr>
+        <tr>
+          <td>🐹 Hamster</td>
+          <td>$100–200</td>
+          <td>$15–30</td>
+          <td><span class="cost-badge badge-low">Low</span></td>
+        </tr>
+        <tr>
+          <td>🐰 Rabbit</td>
+          <td>$200–400</td>
+          <td>$40–70</td>
+          <td><span class="cost-badge badge-low">Low–Med</span></td>
+        </tr>
+        <tr>
+          <td>🐠 Fish</td>
+          <td>$80–300</td>
+          <td>$10–20</td>
+          <td><span class="cost-badge badge-low">Very Low</span></td>
+        </tr>
+        <tr>
+          <td>🐦 Bird (Parakeet)</td>
+          <td>$150–350</td>
+          <td>$20–40</td>
+          <td><span class="cost-badge badge-low">Low</span></td>
+        </tr>
+        <tr>
+          <td>🐢 Turtle</td>
+          <td>$200–500</td>
+          <td>$20–35</td>
+          <td><span class="cost-badge badge-low">Low</span></td>
+        </tr>
+        <tr>
+          <td>🦎 Lizard (Gecko)</td>
+          <td>$200–400</td>
+          <td>$30–50</td>
+          <td><span class="cost-badge badge-low">Low–Med</span></td>
+        </tr>
+        <tr>
+          <td>🐍 Snake</td>
+          <td>$250–600</td>
+          <td>$15–40</td>
+          <td><span class="cost-badge badge-low">Low</span></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>Dog — The Most Expensive Pet</h2>
+
+    <div class="cost-card">
+      <h3>🐕 Large Dog Monthly Breakdown</h3>
+      <div class="cost-row"><span>Food (premium kibble)</span><span>$60–90</span></div>
+      <div class="cost-row"><span>Grooming (monthly or every 6 weeks)</span><span>$40–80</span></div>
+      <div class="cost-row"><span>Vet (routine, averaged monthly)</span><span>$30–50</span></div>
+      <div class="cost-row"><span>Flea/tick prevention</span><span>$10–20</span></div>
+      <div class="cost-row"><span>Toys & accessories</span><span>$10–20</span></div>
+      <div class="cost-row"><span><strong>Monthly Total</strong></span><span>$150–260</span></div>
+    </div>
+
+    <p>Dogs also come with hidden costs: dog walking services ($20–30/walk if you work long hours), pet boarding during vacations ($40–80/night), and emergency vet visits which can run $500–3,000. Pet insurance ($30–60/month) is strongly recommended for dogs.</p>
+
+    <h2>Cat — The Sweet Spot</h2>
+
+    <div class="cost-card">
+      <h3>🐱 Cat Monthly Breakdown</h3>
+      <div class="cost-row"><span>Food (wet + dry mix)</span><span>$30–50</span></div>
+      <div class="cost-row"><span>Litter (premium clumping)</span><span>$15–25</span></div>
+      <div class="cost-row"><span>Vet (routine, averaged)</span><span>$15–25</span></div>
+      <div class="cost-row"><span>Toys & enrichment</span><span>$5–10</span></div>
+      <div class="cost-row"><span><strong>Monthly Total</strong></span><span>$65–110</span></div>
+    </div>
+
+    <p>Cats are remarkably cost-efficient for the level of companionship they provide. Indoor cats are also healthier (longer lifespan, fewer vet emergencies), which keeps long-term costs lower.</p>
+
+    <h2>Small Pets — Surprisingly Affordable</h2>
+    <p>Hamsters, fish, and parakeets are genuinely budget-friendly once the initial setup is paid for. The recurring costs are minimal — mostly food, bedding, and an occasional vet check. Fish don't require any vet visits in most cases.</p>
+
+    <div class="tip-box">
+      <h4>💡 The Hidden Cost Nobody Mentions</h4>
+      <p><strong>Emergency vet visits.</strong> A single emergency visit can cost $300–2,000+ depending on the situation. This is the #1 financial shock for new pet owners. Set aside a small emergency fund ($500–1,000) when you adopt — or get pet insurance. It's not optional; it's responsible ownership.</p>
+    </div>
+
+    <h2>First-Year Costs Are Always the Highest</h2>
+    <p>The first year includes setup costs (cage, tank, supplies, bedding, toys, spay/neuter surgery) that don't repeat. Year 2+ is usually 30–50% cheaper. Here's what drives first-year costs:</p>
+    <ul>
+      <li><strong>Spay/neuter</strong>: $150–500 for dogs and cats — important for health and behavior</li>
+      <li><strong>Microchipping</strong>: $25–50 (one-time)</li>
+      <li><strong>Initial vaccinations</strong>: $80–200 for dogs and cats</li>
+      <li><strong>Crate, bed, carrier, bowls</strong>: $80–200 depending on quality</li>
+    </ul>
+
+    <div class="warn-box">
+      <h4>⚠️ Don't Underestimate These Ongoing Costs</h4>
+      <ul>
+        <li><strong>Dental cleanings</strong> for dogs and cats: $200–700/year under anesthesia</li>
+        <li><strong>Boarding or pet sitting</strong> every time you travel</li>
+        <li><strong>Prescription food</strong> if your pet develops allergies or health issues (2–3x normal food cost)</li>
+        <li><strong>Senior pet care</strong>: costs spike significantly after age 8–10</li>
+      </ul>
+    </div>
+
+    <h2>The Real Question: Can You Afford It?</h2>
+    <p>A good rule of thumb: if you can comfortably afford the monthly cost AND have $1,000 saved for emergencies, you're financially ready for most pets. If you can't do both, start with a lower-cost pet and build up from there. A fish that you genuinely care for is infinitely better than a dog you can't afford to keep healthy.</p>
+
+    <div class="cta-inline">
+      <h3>Not Sure Which Pet Fits Your Budget? 🐾</h3>
+      <p>Our quiz factors in lifestyle, space, and budget to recommend the best pet match for you — free.</p>
+      <a href="../quiz.html">Start Free Quiz →</a>
+    </div>
+
+  </article>
+
+  <footer class="site-footer">
+    <div class="footer-logo">🐾 YourAnimal</div>
+    <div class="footer-links">
+      <a href="../terms.html">Terms of Service</a>
+      <a href="../privacy.html">Privacy Policy</a>
+      <a href="../refund.html">Refund Policy</a>
+      <a href="../pricing.html">Pricing</a>
+    </div>
+    <div class="footer-copy">© 2026 YourAnimal. All rights reserved.</div>
+  </footer>
+
+</body>
+</html>
