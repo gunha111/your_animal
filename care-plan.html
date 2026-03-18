@@ -154,7 +154,8 @@
             <div class="total" id="done-total">/ 0 completed</div>
           </div>
 
-          <button class="print-btn" onclick="window.print()">🖨️ Print / Save as PDF</button>
+          <button class="print-btn" id="pdf-btn" onclick="downloadPDF()">📥 Download as PDF</button>
+          <button class="print-btn" onclick="window.print()" style="margin-top:8px;opacity:0.7;font-size:0.85rem;">🖨️ Print</button>
         </div>
 
         <!-- Weekly -->
@@ -228,6 +229,7 @@
   <div class="toast" id="toast"></div>
 
   <script src="https://cdn.paddle.com/paddle/v2/paddle.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
   <script src="data/pets.js"></script>
   <script src="data/care-plans.js"></script>
   <script src="js/paywall.js"></script>
@@ -283,6 +285,33 @@
           <div class="task-check" onclick="toggleTask(this)"></div>
         </div>
       `).join('');
+    }
+
+    function downloadPDF() {
+      const btn = document.getElementById('pdf-btn');
+      btn.textContent = '⏳ Generating PDF...';
+      btn.disabled = true;
+
+      const element = document.getElementById('plan-wrap');
+      const filename = `${selectedPetName || 'Pet'}_Care_Plan_YourAnimal.pdf`;
+
+      const opt = {
+        margin: [10, 10, 10, 10],
+        filename: filename,
+        image: { type: 'jpeg', quality: 0.95 },
+        html2canvas: { scale: 2, useCORS: true, logging: false },
+        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+        pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
+      };
+
+      html2pdf().set(opt).from(element).save().then(() => {
+        btn.textContent = '📥 Download as PDF';
+        btn.disabled = false;
+      }).catch(() => {
+        btn.textContent = '📥 Download as PDF';
+        btn.disabled = false;
+        alert('PDF generation failed. Please try the Print button instead.');
+      });
     }
 
     function generatePlan() {
