@@ -229,10 +229,11 @@
   <div class="toast" id="toast"></div>
 
   <script src="https://cdn.paddle.com/paddle/v2/paddle.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script src="data/pets.js"></script>
   <script src="data/care-plans.js"></script>
   <script src="js/paywall.js"></script>
+  <script src="js/pdf-generator.js"></script>
   <script>
     let selectedPet = null, selectedPetName = '', selectedPetEmoji = '';
     let doneCount = 0, totalTasks = 0;
@@ -288,30 +289,19 @@
     }
 
     function downloadPDF() {
+      if (!selectedPet || !CARE_PLANS[selectedPet]) return;
       const btn = document.getElementById('pdf-btn');
       btn.textContent = '⏳ Generating PDF...';
       btn.disabled = true;
-
-      const element = document.getElementById('plan-wrap');
-      const filename = `${selectedPetName || 'Pet'}_Care_Plan_YourAnimal.pdf`;
-
-      const opt = {
-        margin: [10, 10, 10, 10],
-        filename: filename,
-        image: { type: 'jpeg', quality: 0.95 },
-        html2canvas: { scale: 2, useCORS: true, logging: false },
-        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
-        pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
-      };
-
-      html2pdf().set(opt).from(element).save().then(() => {
+      setTimeout(() => {
+        try {
+          generateCarePlanPDF(selectedPetName, CARE_PLANS[selectedPet]);
+        } catch(e) {
+          alert('PDF generation failed. Please try the Print button instead.');
+        }
         btn.textContent = '📥 Download as PDF';
         btn.disabled = false;
-      }).catch(() => {
-        btn.textContent = '📥 Download as PDF';
-        btn.disabled = false;
-        alert('PDF generation failed. Please try the Print button instead.');
-      });
+      }, 50);
     }
 
     function generatePlan() {
