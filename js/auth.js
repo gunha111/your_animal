@@ -196,9 +196,13 @@
       submitBtn.disabled = true;
       submitBtn.style.opacity = '0.7';
 
+      const redirectTo = window.location.hostname === 'localhost'
+        ? window.location.origin
+        : 'https://mypetgenerator.com/';
+
       const { error } = await authClient.auth.signInWithOtp({
         email,
-        options: { emailRedirectTo: window.location.origin + window.location.pathname },
+        options: { emailRedirectTo: redirectTo },
       });
 
       if (error) {
