@@ -110,7 +110,7 @@ const Paywall = {
   },
 
   // ── Open Paddle overlay checkout ───────────────────────────────
-  pay(type) {
+  async pay(type) {
     const priceId = PADDLE_PRICE_IDS[type];
 
     if (!priceId || priceId.includes('XXXX')) {
@@ -122,12 +122,21 @@ const Paywall = {
       return;
     }
 
+    // Include user_id if logged in (for cross-device purchase restore)
+    const customData = {
+      session_id:   getSessionId(),
+      product_type: type,
+    };
+    if (window.YAAuth) {
+      try {
+        const { data: { session } } = await window.YAAuth.getSession();
+        if (session?.user?.id) customData.user_id = session.user.id;
+      } catch {}
+    }
+
     Paddle.Checkout.open({
       items: [{ priceId, quantity: 1 }],
-      customData: {
-        session_id: getSessionId(),
-        product_type: type,
-      },
+      customData,
       settings: {
         displayMode: 'overlay',
         theme: 'light',

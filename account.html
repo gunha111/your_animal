@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Account — YourAnimal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐾</text></svg>" />
+  <style>
+    .account-wrap { max-width: 640px; margin: 0 auto; padding: 48px 20px 80px; }
+    .account-card { background: white; border-radius: 20px; border: 2px solid var(--border); box-shadow: var(--shadow); padding: 28px; margin-bottom: 20px; }
+    .account-card h2 { font-size: 1rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin: 0 0 16px; }
+    .user-row { display: flex; align-items: center; gap: 14px; }
+    .user-avatar { width: 52px; height: 52px; border-radius: 50%; background: linear-gradient(135deg,var(--primary),var(--secondary)); display: flex; align-items: center; justify-content: center; font-size: 1.4rem; color: white; font-weight: 800; flex-shrink: 0; }
+    .user-email { font-weight: 700; color: var(--text); font-size: 1rem; }
+    .user-since { font-size: 0.82rem; color: var(--text-muted); margin-top: 2px; }
+    .sub-status { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+    .sub-badge { display: inline-flex; align-items: center; gap: 6px; padding: 6px 16px; border-radius: 100px; font-weight: 700; font-size: 0.88rem; }
+    .sub-active { background: #DCFCE7; color: #15803D; }
+    .sub-inactive { background: #F3F4F6; color: #6B7280; }
+    .sub-info { font-size: 0.88rem; color: var(--text-muted); margin-top: 8px; }
+    .purchase-row { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--border); }
+    .purchase-row:last-child { border-bottom: none; }
+    .purchase-name { font-weight: 600; font-size: 0.95rem; }
+    .purchase-date { font-size: 0.82rem; color: var(--text-muted); margin-top: 2px; }
+    .purchase-badge { padding: 3px 10px; border-radius: 100px; font-size: 0.75rem; font-weight: 700; }
+    .status-active { background: #DCFCE7; color: #15803D; }
+    .status-canceled { background: #FEE2E2; color: #991B1B; }
+    .status-refunded { background: #F3F4F6; color: #6B7280; }
+    .btn-danger { background: #FEE2E2; color: #DC2626; border: none; padding: 10px 20px; border-radius: 10px; font-weight: 700; font-size: 0.88rem; cursor: pointer; font-family: inherit; transition: background 0.2s; }
+    .btn-danger:hover { background: #FECACA; }
+    .btn-logout { background: none; border: 2px solid var(--border); color: var(--text-muted); padding: 10px 20px; border-radius: 10px; font-weight: 700; font-size: 0.88rem; cursor: pointer; font-family: inherit; transition: all 0.2s; }
+    .btn-logout:hover { border-color: var(--primary); color: var(--primary); }
+    .empty-state { text-align: center; padding: 20px 0; color: var(--text-muted); font-size: 0.9rem; }
+    .loading-spinner { text-align: center; padding: 20px; color: var(--text-muted); }
+    #cancel-msg { font-size: 0.85rem; margin-top: 10px; display: none; }
+  </style>
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container">
+      <div class="header-inner">
+        <a href="index.html" class="logo"><span class="logo-emoji">🐾</span>YourAnimal</a>
+        <nav style="display:flex;gap:16px;align-items:center;">
+          <a href="name-generator.html" style="font-size:0.88rem;font-weight:600;color:var(--text-muted);text-decoration:none;">Name Generator</a>
+          <a href="care-plan.html"      style="font-size:0.88rem;font-weight:600;color:var(--text-muted);text-decoration:none;">Care Plan</a>
+          <a href="community.html"      style="font-size:0.88rem;font-weight:600;color:var(--text-muted);text-decoration:none;">Community</a>
+          <a href="blog.html"           style="font-size:0.88rem;font-weight:600;color:var(--text-muted);text-decoration:none;">Blog</a>
+          <a href="quiz.html" class="cta-btn" style="padding:10px 24px;font-size:0.88rem;white-space:nowrap;">Start Quiz →</a>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <div style="background:var(--bg);min-height:80vh;padding-top:20px;">
+    <div class="account-wrap">
+
+      <h1 style="font-size:1.8rem;font-weight:900;margin-bottom:28px;">My Account</h1>
+
+      <!-- Loading -->
+      <div id="acct-loading" class="loading-spinner">Loading your account...</div>
+
+      <!-- Not logged in -->
+      <div id="acct-not-logged-in" style="display:none;text-align:center;padding:60px 0;">
+        <div style="font-size:3rem;margin-bottom:16px;">🔒</div>
+        <h2 style="font-size:1.3rem;font-weight:800;margin-bottom:8px;">You're not logged in</h2>
+        <p style="color:var(--text-muted);margin-bottom:24px;">Log in to view your purchases and manage your subscription.</p>
+        <button onclick="showAuthModal()" style="background:linear-gradient(135deg,var(--primary),var(--secondary));color:white;border:none;padding:14px 32px;border-radius:100px;font-size:1rem;font-weight:700;cursor:pointer;font-family:inherit;">Log in →</button>
+      </div>
+
+      <!-- Logged in content -->
+      <div id="acct-content" style="display:none;">
+
+        <!-- Profile -->
+        <div class="account-card">
+          <h2>Profile</h2>
+          <div class="user-row">
+            <div class="user-avatar" id="acct-avatar">?</div>
+            <div>
+              <div class="user-email" id="acct-email">—</div>
+              <div class="user-since" id="acct-since">—</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Subscription -->
+        <div class="account-card">
+          <h2>Subscription</h2>
+          <div id="sub-loading" class="loading-spinner" style="padding:10px 0;">Checking...</div>
+          <div id="sub-content" style="display:none;">
+            <div class="sub-status">
+              <div>
+                <span class="sub-badge" id="sub-badge">—</span>
+                <div class="sub-info" id="sub-info">—</div>
+              </div>
+              <button class="btn-danger" id="cancel-btn" style="display:none;" onclick="cancelSubscription()">
+                Cancel Plan
+              </button>
+            </div>
+            <div id="cancel-msg"></div>
+          </div>
+        </div>
+
+        <!-- Purchase History -->
+        <div class="account-card">
+          <h2>Purchase History</h2>
+          <div id="purchases-loading" class="loading-spinner" style="padding:10px 0;">Loading...</div>
+          <div id="purchases-list" style="display:none;"></div>
+        </div>
+
+        <!-- Actions -->
+        <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:8px;">
+          <button class="btn-logout" onclick="window.YAAuth.signOut()">Log out</button>
+          <a href="quiz.html" style="display:inline-block;background:linear-gradient(135deg,var(--primary),var(--secondary));color:white;padding:10px 24px;border-radius:10px;font-weight:700;font-size:0.88rem;text-decoration:none;">Take the Quiz Again →</a>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <div class="footer-logo">🐾 YourAnimal</div>
+    <div class="footer-links">
+      <a href="terms.html">Terms of Service</a>
+      <a href="privacy.html">Privacy Policy</a>
+      <a href="refund.html">Refund Policy</a>
+      <a href="pricing.html">Pricing</a>
+    </div>
+    <div class="footer-copy">© 2026 YourAnimal. All rights reserved.</div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+  <script src="js/supabase-config.js"></script>
+  <script src="js/auth.js"></script>
+
+  <script>
+    // ── Account page logic ──────────────────────────────────────
+    let currentUser = null;
+    let subscriptionId = null;
+
+    async function loadAccount() {
+      // Wait for YAAuth to be ready
+      let tries = 0;
+      while (!window.YAAuth && tries++ < 40) {
+        await new Promise(r => setTimeout(r, 100));
+      }
+
+      const { data: { session } } = await window.YAAuth.getSession();
+      document.getElementById('acct-loading').style.display = 'none';
+
+      if (!session) {
+        document.getElementById('acct-not-logged-in').style.display = 'block';
+        return;
+      }
+
+      currentUser = session.user;
+      document.getElementById('acct-content').style.display = 'block';
+
+      // Profile
+      const email = currentUser.email || '';
+      document.getElementById('acct-email').textContent = email;
+      document.getElementById('acct-avatar').textContent = email[0]?.toUpperCase() || '?';
+      const created = new Date(currentUser.created_at);
+      document.getElementById('acct-since').textContent =
+        'Member since ' + created.toLocaleDateString('en-US', { year: 'numeric', month: 'long' });
+
+      // Load purchases
+      await loadPurchases(session.access_token);
+    }
+
+    async function loadPurchases(accessToken) {
+      try {
+        const res = await fetch(
+          `${SUPABASE_URL}/rest/v1/purchases?user_id=eq.${currentUser.id}&order=created_at.desc&select=*`,
+          {
+            headers: {
+              'apikey': SUPABASE_ANON_KEY,
+              'Authorization': `Bearer ${accessToken}`,
+            },
+          }
+        );
+        const rows = res.ok ? await res.json() : [];
+
+        // Subscription section
+        const sub = rows.find(r => r.product_type === 'subscription' && r.status === 'active');
+        document.getElementById('sub-loading').style.display = 'none';
+        document.getElementById('sub-content').style.display = 'block';
+
+        if (sub) {
+          subscriptionId = sub.paddle_subscription_id;
+          const badge = document.getElementById('sub-badge');
+          badge.className = 'sub-badge sub-active';
+          badge.textContent = '✅ All-In-One Plan — Active';
+
+          const expiry = sub.expires_at ? new Date(sub.expires_at) : null;
+          document.getElementById('sub-info').textContent = expiry
+            ? `Next billing: ${expiry.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}`
+            : '$5.99 / month';
+
+          document.getElementById('cancel-btn').style.display = 'inline-block';
+        } else {
+          const badge = document.getElementById('sub-badge');
+          badge.className = 'sub-badge sub-inactive';
+          badge.textContent = '⭕ No active subscription';
+          document.getElementById('sub-info').textContent = 'Upgrade to All-In-One for $5.99/month';
+        }
+
+        // Purchase history
+        const list = document.getElementById('purchases-list');
+        document.getElementById('purchases-loading').style.display = 'none';
+        list.style.display = 'block';
+
+        if (rows.length === 0) {
+          list.innerHTML = '<div class="empty-state">No purchases yet.</div>';
+          return;
+        }
+
+        const labelMap = {
+          name_gen:     '🏷️ Pet Name Generator',
+          care_plan:    '📋 Care Plan',
+          quiz_unlock:  '🔓 Quiz TOP 5 Unlock',
+          subscription: '⭐ All-In-One Subscription',
+        };
+
+        list.innerHTML = rows.map(r => {
+          const date = new Date(r.created_at).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+          const label = labelMap[r.product_type] || r.product_type;
+          const statusClass = `status-${r.status}`;
+          return `
+            <div class="purchase-row">
+              <div>
+                <div class="purchase-name">${label}</div>
+                <div class="purchase-date">${date}</div>
+              </div>
+              <span class="purchase-badge ${statusClass}">${r.status}</span>
+            </div>
+          `;
+        }).join('');
+
+      } catch (e) {
+        console.error('Failed to load purchases:', e);
+        document.getElementById('sub-loading').style.display = 'none';
+        document.getElementById('purchases-loading').style.display = 'none';
+        document.getElementById('sub-content').style.display = 'block';
+        document.getElementById('purchases-list').style.display = 'block';
+        document.getElementById('purchases-list').innerHTML = '<div class="empty-state">Failed to load. Please refresh.</div>';
+      }
+    }
+
+    async function cancelSubscription() {
+      if (!subscriptionId) {
+        alert('Subscription ID not found. Please contact support at kunha0303@gmail.com');
+        return;
+      }
+
+      const confirmed = confirm(
+        'Are you sure you want to cancel your All-In-One subscription?\n\n' +
+        'Your access will continue until the end of the current billing period.'
+      );
+      if (!confirmed) return;
+
+      const btn = document.getElementById('cancel-btn');
+      btn.textContent = 'Canceling...';
+      btn.disabled = true;
+
+      try {
+        const { data: { session } } = await window.YAAuth.getSession();
+        const res = await fetch('/.netlify/functions/cancel-subscription', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${session.access_token}`,
+          },
+          body: JSON.stringify({ subscription_id: subscriptionId }),
+        });
+
+        const result = await res.json();
+        const msgEl = document.getElementById('cancel-msg');
+
+        if (res.ok) {
+          msgEl.style.display = 'block';
+          msgEl.style.color = '#15803D';
+          msgEl.textContent = '✅ Subscription canceled. Your access continues until the end of the billing period.';
+          btn.style.display = 'none';
+        } else {
+          msgEl.style.display = 'block';
+          msgEl.style.color = '#DC2626';
+          msgEl.textContent = `❌ ${result.error || 'Failed to cancel. Please email kunha0303@gmail.com'}`;
+          btn.textContent = 'Cancel Plan';
+          btn.disabled = false;
+        }
+      } catch (e) {
+        const msgEl = document.getElementById('cancel-msg');
+        msgEl.style.display = 'block';
+        msgEl.style.color = '#DC2626';
+        msgEl.textContent = '❌ Network error. Please try again or email kunha0303@gmail.com';
+        btn.textContent = 'Cancel Plan';
+        btn.disabled = false;
+      }
+    }
+
+    loadAccount();
+  </script>
+
+</body>
+</html>

@@ -101,13 +101,14 @@ export const handler = async (event) => {
         paddle_transaction_id: data.id,
         customer_email: data.customer?.email ?? null,
         session_id: customData.session_id ?? null,
+        user_id: customData.user_id ?? null,
         product_type: customData.product_type ?? null,
         status: 'active',
         expires_at: customData.product_type === 'subscription'
           ? new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString()
           : null,
       });
-      console.log(`✅ Purchase saved: ${customData.product_type} | session: ${customData.session_id}`);
+      console.log(`✅ Purchase saved: ${customData.product_type} | session: ${customData.session_id} | user: ${customData.user_id ?? 'guest'}`);
     }
 
     // ── subscription.activated ────────────────────────────────
@@ -117,6 +118,7 @@ export const handler = async (event) => {
         paddle_subscription_id: data.id,
         customer_email: data.customer?.email ?? null,
         session_id: customData.session_id ?? null,
+        user_id: customData.user_id ?? null,
         product_type: 'subscription',
         status: 'active',
         expires_at: data.next_billed_at ?? null,
