@@ -35,23 +35,10 @@
       getSession: () => authClient.auth.getSession(),
     };
 
-    // Show "Log in" immediately — update to "Account" once session is confirmed
-    injectAuthButton(null);
-
-    authClient.auth.getSession().then(({ data: { session } }) => {
-      if (session?.user) {
-        injectAuthButton(session.user);
-        restorePurchases(session.user.id, session.access_token);
-      }
-    }).catch(() => {});
-
     authClient.auth.onAuthStateChange(async (event, session) => {
       injectAuthButton(session?.user ?? null);
-      if (event === 'SIGNED_IN' && session?.user) {
+      if ((event === 'SIGNED_IN' || event === 'INITIAL_SESSION') && session?.user) {
         await restorePurchases(session.user.id, session.access_token);
-        if (!window.location.pathname.includes('account.html')) {
-          window.location.reload();
-        }
       }
     });
   }
