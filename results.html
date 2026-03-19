@@ -3,14 +3,95 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Your Results — YourAnimal</title>
+  <title>Your Pet Match Results | My Pet Generator</title>
+  <meta name="description" content="See which pet best matches your personality and lifestyle based on your quiz answers." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/style.css" />
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐾</text></svg>" />
+  <style>
+    /* ── Share Card Section ── */
+    .share-section { margin-top: 24px; }
+    .share-label { font-size: 0.85rem; font-weight: 700; color: #6b7280; text-align: center; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.05em; }
+    .share-btns { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+    .share-btn {
+      display: flex; align-items: center; gap: 6px;
+      padding: 11px 18px; border-radius: 12px; border: none; cursor: pointer;
+      font-size: 0.88rem; font-weight: 700; transition: transform 0.15s, box-shadow 0.15s;
+      min-height: 44px;
+    }
+    .share-btn:active { transform: scale(0.96); }
+    .share-native { background: linear-gradient(135deg, #4facfe, #00f2fe); color: #fff; box-shadow: 0 4px 12px rgba(79,172,254,0.35); }
+    .share-card-dl { background: #f3f4f6; color: #374151; }
+    .share-twitter { background: #000; color: #fff; }
+    .share-copy { background: #f3f4f6; color: #374151; }
+
+    /* ── Blurred Paywall Preview ── */
+    .locked-preview-list { display: flex; flex-direction: column; gap: 12px; margin: 20px 0; }
+    .locked-preview-item {
+      background: #fff;
+      border: 1.5px solid #e5e7eb;
+      border-radius: 16px;
+      padding: 16px;
+      position: relative;
+      overflow: hidden;
+    }
+    .locked-preview-item::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, rgba(255,255,255,0) 40%, rgba(255,255,255,0.97) 100%);
+      pointer-events: none;
+    }
+    .locked-preview-top { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+    .locked-preview-rank {
+      font-size: 0.72rem; font-weight: 800; color: #fff;
+      background: #6366f1; border-radius: 6px; padding: 3px 8px; white-space: nowrap;
+    }
+    .locked-preview-emoji { font-size: 2rem; }
+    .locked-preview-name { font-size: 1rem; font-weight: 800; color: #111827; }
+    .locked-preview-pct { font-size: 0.85rem; color: #6366f1; font-weight: 700; }
+    .locked-preview-gap {
+      display: inline-flex; align-items: center; gap: 4px;
+      font-size: 0.75rem; font-weight: 600; color: #f59e0b;
+      background: #fef3c7; border-radius: 99px; padding: 2px 8px;
+    }
+    .locked-preview-bar-bg { height: 6px; background: #e5e7eb; border-radius: 99px; overflow: hidden; margin-bottom: 10px; }
+    .locked-preview-bar-fill { height: 100%; border-radius: 99px; background: linear-gradient(90deg, #6366f1, #818cf8); }
+    .locked-preview-teaser { font-size: 0.82rem; color: #374151; line-height: 1.5; }
+    .locked-preview-teaser .teaser-blur { filter: blur(5px); user-select: none; pointer-events: none; display: inline; }
+    .locked-lock-btn {
+      position: absolute; bottom: 14px; right: 14px; z-index: 2;
+      background: #6366f1; color: #fff; border: none; border-radius: 10px;
+      font-size: 0.8rem; font-weight: 700; padding: 8px 14px; cursor: pointer;
+      display: flex; align-items: center; gap: 5px; min-height: 44px;
+    }
+
+    /* ── Upsell Header ── */
+    .upsell-headline {
+      text-align: center; margin-bottom: 6px;
+    }
+    .upsell-headline h3 {
+      font-size: 1.2rem; font-weight: 800; color: #111827; margin: 0 0 6px;
+    }
+    .upsell-headline p {
+      font-size: 0.9rem; color: #6b7280; margin: 0 0 20px; line-height: 1.5;
+    }
+    .upsell-gap-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: #fef3c7; color: #92400e; font-size: 0.82rem; font-weight: 700;
+      padding: 6px 14px; border-radius: 99px; margin-bottom: 20px;
+    }
+
+    /* Hidden canvas for share card */
+    #share-canvas { display: none; }
+  </style>
 </head>
 <body>
+
+  <!-- Hidden canvas for Instagram Story card generation -->
+  <canvas id="share-canvas"></canvas>
 
   <!-- HEADER -->
   <header class="site-header">
@@ -18,7 +99,7 @@
       <div class="header-inner">
         <a href="index.html" class="logo">
           <span class="logo-emoji">🐾</span>
-          YourAnimal
+          My Pet Generator
         </a>
         <button class="retake-btn" onclick="retakeQuiz()" style="padding:8px 20px;font-size:0.85rem;">Retake Quiz</button>
       </div>
@@ -66,21 +147,149 @@
     }
 
     function copyLink() {
-      navigator.clipboard.writeText(window.location.origin + '/quiz.html')
-        .then(() => showToast('Link copied!'))
-        .catch(() => showToast('Copy failed. Please copy the URL manually.'));
+      navigator.clipboard.writeText('https://mypetgenerator.com/quiz.html')
+        .then(() => showToast('Quiz link copied! Share it with friends 🐾'))
+        .catch(() => showToast('Copy failed. URL: mypetgenerator.com/quiz.html'));
     }
 
-    function shareTwitter(petName, pct) {
-      const text = encodeURIComponent(`My pet personality result: ${pct}% match with a ${petName}! 🐾 Take the quiz too → `);
-      const url = encodeURIComponent(window.location.origin + '/quiz.html');
+    function shareTwitter(petName, pct, emoji) {
+      const text = encodeURIComponent(`I'm a ${pct}% match with a ${emoji} ${petName}! 🐾 What's your perfect pet? Take the free quiz →`);
+      const url = encodeURIComponent('https://mypetgenerator.com/quiz.html');
       window.open(`https://twitter.com/intent/tweet?text=${text}${url}`, '_blank');
+    }
+
+    // ── Share Card (Instagram Story) ─────────────────────────
+    function generateShareCard(pet, result) {
+      const canvas = document.getElementById('share-canvas');
+      const W = 1080, H = 1920;
+      canvas.width = W;
+      canvas.height = H;
+      const ctx = canvas.getContext('2d');
+
+      // Background gradient
+      const grad = ctx.createLinearGradient(0, 0, W, H);
+      grad.addColorStop(0, '#3b82f6');
+      grad.addColorStop(0.5, '#8b5cf6');
+      grad.addColorStop(1, '#ec4899');
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, 0, W, H);
+
+      // Subtle noise overlay circle
+      ctx.fillStyle = 'rgba(255,255,255,0.06)';
+      ctx.beginPath();
+      ctx.arc(W * 0.8, H * 0.15, 500, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.beginPath();
+      ctx.arc(W * 0.2, H * 0.75, 380, 0, Math.PI * 2);
+      ctx.fill();
+
+      // White card panel
+      ctx.fillStyle = 'rgba(255,255,255,0.14)';
+      ctx.beginPath();
+      if (ctx.roundRect) {
+        ctx.roundRect(80, 350, W - 160, H - 500, 60);
+      } else {
+        ctx.rect(80, 350, W - 160, H - 500);
+      }
+      ctx.fill();
+
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+
+      // Brand
+      ctx.font = 'bold 52px sans-serif';
+      ctx.fillStyle = 'rgba(255,255,255,0.9)';
+      ctx.fillText('🐾 My Pet Generator', W / 2, 200);
+
+      ctx.font = '40px sans-serif';
+      ctx.fillStyle = 'rgba(255,255,255,0.65)';
+      ctx.fillText('mypetgenerator.com', W / 2, 280);
+
+      // Pet emoji
+      ctx.font = '340px sans-serif';
+      ctx.fillText(pet.emoji, W / 2, 630);
+
+      // Label
+      ctx.font = '500 52px sans-serif';
+      ctx.fillStyle = 'rgba(255,255,255,0.8)';
+      ctx.fillText('My perfect pet match is', W / 2, 900);
+
+      // Pet name
+      ctx.font = 'bold 150px sans-serif';
+      ctx.fillStyle = '#ffffff';
+      ctx.fillText(pet.name, W / 2, 1070);
+
+      // Match %
+      ctx.font = 'bold 80px sans-serif';
+      ctx.fillStyle = 'rgba(255,255,255,0.9)';
+      ctx.fillText(`${result.percentage}% compatibility`, W / 2, 1180);
+
+      // Divider
+      ctx.strokeStyle = 'rgba(255,255,255,0.3)';
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+      ctx.moveTo(W * 0.2, 1250);
+      ctx.lineTo(W * 0.8, 1250);
+      ctx.stroke();
+
+      // Traits
+      const traits = (pet.traits || []).slice(0, 3);
+      ctx.font = 'bold 55px sans-serif';
+      ctx.fillStyle = 'rgba(255,255,255,0.92)';
+      traits.forEach((trait, i) => {
+        ctx.fillText(`· ${trait}`, W / 2, 1340 + i * 90);
+      });
+
+      // Footer CTA
+      ctx.fillStyle = 'rgba(255,255,255,0.5)';
+      ctx.font = '48px sans-serif';
+      ctx.fillText('Take the free quiz ↓', W / 2, 1750);
+
+      ctx.font = 'bold 44px sans-serif';
+      ctx.fillStyle = 'rgba(255,255,255,0.75)';
+      ctx.fillText('mypetgenerator.com/quiz.html', W / 2, 1820);
+    }
+
+    async function shareResult(pet, result) {
+      generateShareCard(pet, result);
+      const canvas = document.getElementById('share-canvas');
+      const shareText = `I'm a ${result.percentage}% match with a ${pet.emoji} ${pet.name}! 🐾 What's your perfect pet?`;
+      const shareUrl = 'https://mypetgenerator.com/quiz.html';
+
+      if (navigator.share) {
+        try {
+          canvas.toBlob(async (blob) => {
+            const file = new File([blob], 'my-pet-match.png', { type: 'image/png' });
+            const shareData = { title: 'My Pet Generator', text: shareText, url: shareUrl };
+            if (navigator.canShare && navigator.canShare({ files: [file] })) {
+              await navigator.share({ ...shareData, files: [file] });
+            } else {
+              await navigator.share(shareData);
+            }
+          }, 'image/png');
+        } catch (err) {
+          if (err.name !== 'AbortError') copyLink();
+        }
+      } else {
+        copyLink();
+      }
+    }
+
+    function downloadShareCard(pet, result) {
+      generateShareCard(pet, result);
+      const canvas = document.getElementById('share-canvas');
+      const link = document.createElement('a');
+      link.download = `my-${pet.id}-match-card.png`;
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+      showToast('Story card downloaded! Share it on Instagram 📸');
     }
 
     function openPayment() {
       Paywall.pay('quiz_unlock');
     }
 
+    // ── Render ──────────────────────────────────────────────
     function render() {
       const container = document.getElementById('results-container');
 
@@ -171,8 +380,15 @@
           <div class="share-section">
             <div class="share-label">Share your result</div>
             <div class="share-btns">
-              <button class="share-btn share-twitter" onclick="shareTwitter('${pet.name}', ${winner.percentage})">𝕏 Twitter</button>
-              <button class="share-btn share-copy" onclick="copyLink()">🔗 Copy Link</button>
+              <button class="share-btn share-native" onclick="shareResult(PETS['${winner.pet}'], ${JSON.stringify(winner).replace(/'/g, '&#39;')})">
+                🔗 Share Result
+              </button>
+              <button class="share-btn share-card-dl" onclick="downloadShareCard(PETS['${winner.pet}'], ${JSON.stringify(winner).replace(/'/g, '&#39;')})">
+                📸 Story Card
+              </button>
+              <button class="share-btn share-twitter" onclick="shareTwitter('${pet.name}', ${winner.percentage}, '${pet.emoji}')">
+                𝕏 Twitter
+              </button>
             </div>
           </div>
         </div>
@@ -186,12 +402,11 @@
         </div>
       `;
 
-      // Animate bar
+      // Animate bars
       setTimeout(() => {
         document.getElementById('winner-bar').style.width = winner.percentage + '%';
       }, 300);
 
-      // Animate result bars if unlocked
       if (isUnlocked) {
         setTimeout(() => {
           document.querySelectorAll('[data-pct]').forEach(el => {
@@ -202,25 +417,68 @@
     }
 
     function renderPaywall(top5) {
-      const ranks = ['#2', '#3', '#4', '#5'];
+      const rankLabels = ['#2', '#3', '#4', '#5'];
+      const rankColors = ['#6366f1', '#3b82f6', '#10b981', '#f59e0b'];
+      const winner = top5[0];
+
+      // Teaser copy per pet type
+      const teasers = {
+        dog:        'perfect for active owners who want a daily workout partner',
+        cat:        'ideal if your lifestyle is busier than you let on',
+        rabbit:     'surprisingly social and great for smaller living spaces',
+        hamster:    'low effort, high reward — perfect for beginners',
+        fish:       'the most stress-reducing pet you can own',
+        parrot:     'will literally learn your name and call for you',
+        guinea_pig: 'one of the most gentle and kid-friendly pets',
+        turtle:     'outlives most pets — a companion for decades',
+        ferret:     'playful and mischievous in the best possible way',
+        hedgehog:   'unique, independent, and surprisingly affectionate',
+      };
+
+      const gap2 = winner.percentage - top5[1].percentage;
+
       return `
         <div class="paywall-section">
           <div class="paywall-bg"></div>
-          <div class="paywall-title">🔒 Curious about your other TOP 4 matches?</div>
-          <p class="paywall-sub">There might be even more great pets waiting for you. Unlock the full results!</p>
 
-          <div class="locked-pets-grid">
+          <div class="upsell-headline">
+            <h3>🔍 Your results don't end at #1</h3>
+            <p>You have 4 more matches — and they could change your decision.</p>
+            ${gap2 <= 8
+              ? `<div class="upsell-gap-badge">⚠️ Your #2 match ${PETS[top5[1].pet].emoji} ${PETS[top5[1].pet].name} is only ${gap2}% behind — that's very close</div>`
+              : `<div class="upsell-gap-badge">👀 Your #2 match is ${PETS[top5[1].pet].emoji} ${PETS[top5[1].pet].name} — ${top5[1].percentage}% compatibility</div>`
+            }
+          </div>
+
+          <!-- Blurred previews -->
+          <div class="locked-preview-list">
             ${top5.slice(1).map((r, i) => {
               const p = PETS[r.pet];
+              const gap = winner.percentage - r.percentage;
+              const teaser = teasers[r.pet] || 'a great alternative match for your lifestyle';
               return `
-                <div class="locked-pet-card">
-                  <div class="locked-pet-rank">${ranks[i]}</div>
-                  <div class="locked-pet-emoji">${p.emoji}</div>
-                  <div class="locked-pet-info">
-                    <div class="locked-pet-name">${p.name}</div>
-                    <div class="locked-pct">${r.percentage}% match</div>
+                <div class="locked-preview-item">
+                  <div class="locked-preview-top">
+                    <span class="locked-preview-rank" style="background:${rankColors[i]}">${rankLabels[i]}</span>
+                    <span class="locked-preview-emoji">${p.emoji}</span>
+                    <div>
+                      <div class="locked-preview-name">${p.name}</div>
+                      <div class="locked-preview-pct">${r.percentage}% match</div>
+                    </div>
+                    <div class="locked-preview-gap" style="margin-left:auto;">
+                      ${gap <= 6 ? '🔥 Very close' : `${gap}% gap`}
+                    </div>
                   </div>
-                  <div class="locked-overlay">🔒</div>
+                  <div class="locked-preview-bar-bg">
+                    <div class="locked-preview-bar-fill" style="width:${r.percentage}%;background:${rankColors[i]}"></div>
+                  </div>
+                  <div class="locked-preview-teaser">
+                    ${i === 0
+                      ? `This match is <strong>${teaser}</strong>. Your top trait match: <span class="teaser-blur">${p.traits[0]} · ${p.traits[1]}</span>`
+                      : `<span class="teaser-blur">${p.description.split('.')[0]}.</span>`
+                    }
+                  </div>
+                  <button class="locked-lock-btn" onclick="openPayment()">🔒 Unlock</button>
                 </div>
               `;
             }).join('')}
@@ -333,6 +591,24 @@
     }
 
     render();
+
+    // Record quiz completion for social proof counter + distribution chart
+    (function recordCompletion() {
+      if (!results || results.length === 0) return;
+      if (sessionStorage.getItem('mpg_completion_recorded')) return;
+      sessionStorage.setItem('mpg_completion_recorded', '1');
+      const topPet = results[0].pet;
+      fetch(`${SUPABASE_URL}/rest/v1/quiz_completions`, {
+        method: 'POST',
+        headers: {
+          'apikey': SUPABASE_ANON_KEY,
+          'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+          'Content-Type': 'application/json',
+          'Prefer': 'return=minimal',
+        },
+        body: JSON.stringify({ top_pet: topPet }),
+      }).catch(() => {}); // fail silently
+    })();
   </script>
 </body>
 </html>

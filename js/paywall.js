@@ -1,5 +1,5 @@
 // ================================================================
-// YourAnimal — Payment State Manager
+// My Pet Generator — Payment State Manager
 // Paddle Billing v2 + Supabase verification + localStorage cache
 //
 // Setup:

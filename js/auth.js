@@ -1,5 +1,5 @@
 // ================================================================
-// YourAnimal — Supabase Auth
+// My Pet Generator — Supabase Auth
 // Magic link login, purchase restore, nav button injection
 // ================================================================
 
@@ -134,7 +134,7 @@
           <button id="ya-auth-close" style="position:absolute;top:14px;right:16px;background:none;border:none;font-size:1.5rem;cursor:pointer;color:#9CA3AF;line-height:1;">×</button>
           <div style="text-align:center;margin-bottom:28px;">
             <div style="font-size:2.8rem;margin-bottom:10px;">🐾</div>
-            <h2 style="font-size:1.4rem;font-weight:800;color:#111827;margin:0 0 8px;">Log in to YourAnimal</h2>
+            <h2 style="font-size:1.4rem;font-weight:800;color:#111827;margin:0 0 8px;">Log in to My Pet Generator</h2>
             <p style="font-size:0.88rem;color:#6B7280;margin:0;">Enter your email — we'll send a magic link.<br>No password required.</p>
           </div>
           <div id="ya-auth-form">
