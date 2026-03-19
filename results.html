@@ -48,45 +48,87 @@
     .share-copy { background: #f3f4f6; color: #374151; }
 
     /* ── Blurred Paywall Preview ── */
-    .locked-preview-list { display: flex; flex-direction: column; gap: 12px; margin: 20px 0; }
-    .locked-preview-item {
+    /* ── Locked Dummy Cards ── */
+    .locked-preview-list { display: flex; flex-direction: column; gap: 10px; margin: 20px 0; }
+
+    .locked-card {
+      position: relative;
       background: #fff;
       border: 1.5px solid #e5e7eb;
       border-radius: 16px;
-      padding: 16px;
-      position: relative;
+      padding: 14px 16px;
+      cursor: pointer;
       overflow: hidden;
+      transition: transform 0.15s;
     }
-    .locked-preview-item::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(to bottom, rgba(255,255,255,0) 40%, rgba(255,255,255,0.97) 100%);
+    .locked-card:active { transform: scale(0.98); }
+
+    .locked-card-inner {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      filter: blur(4px);
+      user-select: none;
       pointer-events: none;
     }
-    .locked-preview-top { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
-    .locked-preview-rank {
+    .locked-card-rank {
       font-size: 0.72rem; font-weight: 800; color: #fff;
-      background: #6366f1; border-radius: 6px; padding: 3px 8px; white-space: nowrap;
+      border-radius: 6px; padding: 3px 8px; white-space: nowrap; flex-shrink: 0;
     }
-    .locked-preview-emoji { font-size: 2rem; }
-    .locked-preview-name { font-size: 1rem; font-weight: 800; color: #111827; }
-    .locked-preview-pct { font-size: 0.85rem; color: #6366f1; font-weight: 700; }
-    .locked-preview-gap {
-      display: inline-flex; align-items: center; gap: 4px;
-      font-size: 0.75rem; font-weight: 600; color: #f59e0b;
-      background: #fef3c7; border-radius: 99px; padding: 2px 8px;
+    .locked-card-emoji-wrap {
+      width: 44px; height: 44px; border-radius: 50%;
+      background: #e5e7eb; display: flex; align-items: center; justify-content: center;
+      font-size: 1.6rem; flex-shrink: 0;
     }
-    .locked-preview-bar-bg { height: 6px; background: #e5e7eb; border-radius: 99px; overflow: hidden; margin-bottom: 10px; }
-    .locked-preview-bar-fill { height: 100%; border-radius: 99px; background: linear-gradient(90deg, #6366f1, #818cf8); }
-    .locked-preview-teaser { font-size: 0.82rem; color: #374151; line-height: 1.5; }
-    .locked-preview-teaser .teaser-blur { filter: blur(5px); user-select: none; pointer-events: none; display: inline; }
-    .locked-lock-btn {
-      position: absolute; bottom: 14px; right: 14px; z-index: 2;
-      background: #6366f1; color: #fff; border: none; border-radius: 10px;
-      font-size: 0.8rem; font-weight: 700; padding: 8px 14px; cursor: pointer;
-      display: flex; align-items: center; gap: 5px; min-height: 44px;
+    .locked-card-emoji-blur { opacity: 0.3; }
+    .locked-card-info { flex: 1; }
+    .locked-card-name-bar {
+      height: 14px; background: #d1d5db; border-radius: 99px;
+      width: 70%; margin-bottom: 6px;
     }
+    .locked-card-sub-bar {
+      height: 10px; background: #e5e7eb; border-radius: 99px;
+      width: 45%; margin-bottom: 10px;
+    }
+    .locked-bar-bg { height: 6px; background: #e5e7eb; border-radius: 99px; overflow: hidden; }
+    .locked-bar-fill { height: 100%; border-radius: 99px; }
+    .locked-card-pct {
+      font-size: 1.1rem; font-weight: 900; flex-shrink: 0; opacity: 0.25;
+    }
+
+    /* Overlay */
+    .locked-card-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(17, 24, 39, 0.55);
+      backdrop-filter: blur(2px);
+      -webkit-backdrop-filter: blur(2px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      border-radius: 14px;
+    }
+    .locked-card-lock { font-size: 1.6rem; }
+    .locked-card-cta {
+      font-size: 0.8rem; font-weight: 700; color: #fff;
+      background: rgba(99,102,241,0.9);
+      border-radius: 99px; padding: 4px 14px;
+    }
+
+    /* Big unlock CTA */
+    .unlock-big-btn {
+      display: block; width: 100%;
+      background: linear-gradient(135deg, #6366f1, #818cf8);
+      color: #fff; border: none; border-radius: 14px;
+      font-size: 1.05rem; font-weight: 800;
+      padding: 16px; cursor: pointer;
+      margin: 4px 0 20px;
+      box-shadow: 0 4px 20px rgba(99,102,241,0.35);
+      min-height: 54px;
+    }
+    .unlock-big-btn:active { transform: scale(0.98); }
 
     /* ── Upsell Header ── */
     .upsell-headline {
@@ -194,7 +236,7 @@
     function shareTwitter(petName, pct, emoji) {
       const text = encodeURIComponent(`I'm a ${pct}% match with a ${emoji} ${petName}! 🐾 What's your perfect pet? Take the free quiz →`);
       const url = encodeURIComponent('https://mypetgenerator.com/quiz.html');
-      window.open(`https://twitter.com/intent/tweet?text=${text}${url}`, '_blank');
+      window.open(`https://twitter.com/intent/tweet?text=${text}&url=${url}`, '_blank');
     }
 
     // ── Share Card (Instagram Story) ─────────────────────────
@@ -349,6 +391,10 @@
       const pet = PETS[winner.pet];
       const matchInfo = getMatchLabel(winner.percentage);
 
+      // Store for share button onclick handlers (avoids JSON-in-attribute quoting issues)
+      window._sharePet = pet;
+      window._shareResult = winner;
+
       container.innerHTML = `
         <!-- Header -->
         <div class="results-header">
@@ -419,13 +465,13 @@
           <div class="share-section">
             <div class="share-label">Share your result</div>
             <div class="share-btns">
-              <button class="share-btn share-native" onclick="shareResult(PETS['${winner.pet}'], ${JSON.stringify(winner).replace(/'/g, '&#39;')})">
+              <button class="share-btn share-native" onclick="shareResult(window._sharePet, window._shareResult)">
                 🔗 Share Result
               </button>
-              <button class="share-btn share-card-dl" onclick="downloadShareCard(PETS['${winner.pet}'], ${JSON.stringify(winner).replace(/'/g, '&#39;')})">
+              <button class="share-btn share-card-dl" onclick="downloadShareCard(window._sharePet, window._shareResult)">
                 📸 Story Card
               </button>
-              <button class="share-btn share-twitter" onclick="shareTwitter('${pet.name}', ${winner.percentage}, '${pet.emoji}')">
+              <button class="share-btn share-twitter" onclick="shareTwitter(window._sharePet.name, window._shareResult.percentage, window._sharePet.emoji)">
                 𝕏 Twitter
               </button>
             </div>
@@ -465,69 +511,57 @@
       const rankLabels = ['#2', '#3', '#4', '#5'];
       const rankColors = ['#6366f1', '#3b82f6', '#10b981', '#f59e0b'];
       const winner = top5[0];
-
-      // Teaser copy per pet type
-      const teasers = {
-        dog:        'perfect for active owners who want a daily workout partner',
-        cat:        'ideal if your lifestyle is busier than you let on',
-        rabbit:     'surprisingly social and great for smaller living spaces',
-        hamster:    'low effort, high reward — perfect for beginners',
-        fish:       'the most stress-reducing pet you can own',
-        parrot:     'will literally learn your name and call for you',
-        guinea_pig: 'one of the most gentle and kid-friendly pets',
-        turtle:     'outlives most pets — a companion for decades',
-        ferret:     'playful and mischievous in the best possible way',
-        hedgehog:   'unique, independent, and surprisingly affectionate',
-      };
-
       const gap2 = winner.percentage - top5[1].percentage;
+
+      // Dummy data — completely hides real results
+      const dummies = [
+        { emoji: '?', bar: 82 },
+        { emoji: '?', bar: 74 },
+        { emoji: '?', bar: 67 },
+        { emoji: '?', bar: 58 },
+      ];
 
       return `
         <div class="paywall-section">
-          <div class="paywall-bg"></div>
 
           <div class="upsell-headline">
-            <h3>🔍 Your results don't end at #1</h3>
-            <p>You have 4 more matches — and they could change your decision.</p>
+            <h3>🔒 4 more matches are waiting</h3>
+            <p>Your quiz revealed a full Top 5 — but they're locked until you unlock.</p>
             ${gap2 <= 8
-              ? `<div class="upsell-gap-badge">⚠️ Your #2 match ${PETS[top5[1].pet].emoji} ${PETS[top5[1].pet].name} is only ${gap2}% behind — that's very close</div>`
-              : `<div class="upsell-gap-badge">👀 Your #2 match is ${PETS[top5[1].pet].emoji} ${PETS[top5[1].pet].name} — ${top5[1].percentage}% compatibility</div>`
+              ? `<div class="upsell-gap-badge">⚠️ Your #2 match is only ${gap2}% behind your #1 — it could be a better fit</div>`
+              : `<div class="upsell-gap-badge">👀 One of your hidden matches might surprise you</div>`
             }
           </div>
 
-          <!-- Blurred previews -->
+          <!-- Locked dummy cards -->
           <div class="locked-preview-list">
-            ${top5.slice(1).map((r, i) => {
-              const p = PETS[r.pet];
-              const gap = winner.percentage - r.percentage;
-              const teaser = teasers[r.pet] || 'a great alternative match for your lifestyle';
-              return `
-                <div class="locked-preview-item">
-                  <div class="locked-preview-top">
-                    <span class="locked-preview-rank" style="background:${rankColors[i]}">${rankLabels[i]}</span>
-                    <span class="locked-preview-emoji">${p.emoji}</span>
-                    <div>
-                      <div class="locked-preview-name">${p.name}</div>
-                      <div class="locked-preview-pct">${r.percentage}% match</div>
-                    </div>
-                    <div class="locked-preview-gap" style="margin-left:auto;">
-                      ${gap <= 6 ? '🔥 Very close' : `${gap}% gap`}
+            ${dummies.map((d, i) => `
+              <div class="locked-card" onclick="openPayment()">
+                <div class="locked-card-inner">
+                  <span class="locked-card-rank" style="background:${rankColors[i]}">${rankLabels[i]}</span>
+                  <div class="locked-card-emoji-wrap">
+                    <div class="locked-card-emoji-blur">🐾</div>
+                  </div>
+                  <div class="locked-card-info">
+                    <div class="locked-card-name-bar"></div>
+                    <div class="locked-card-sub-bar"></div>
+                    <div class="locked-bar-bg">
+                      <div class="locked-bar-fill" style="width:${d.bar}%;background:${rankColors[i]};opacity:0.35;"></div>
                     </div>
                   </div>
-                  <div class="locked-preview-bar-bg">
-                    <div class="locked-preview-bar-fill" style="width:${r.percentage}%;background:${rankColors[i]}"></div>
-                  </div>
-                  <div class="locked-preview-teaser">
-                    ${i === 0
-                      ? `This match is <strong>${teaser}</strong>. Your top trait match: <span class="teaser-blur">${p.traits[0]} · ${p.traits[1]}</span>`
-                      : `<span class="teaser-blur">${p.description.split('.')[0]}.</span>`
-                    }
-                  </div>
-                  <button class="locked-lock-btn" onclick="openPayment()">🔒 Unlock</button>
+                  <div class="locked-card-pct" style="color:${rankColors[i]}">${d.bar}%</div>
                 </div>
-              `;
-            }).join('')}
+                <div class="locked-card-overlay">
+                  <div class="locked-card-lock">🔒</div>
+                  <div class="locked-card-cta">Tap to reveal</div>
+                </div>
+              </div>
+            `).join('')}
           </div>
+
+          <button class="unlock-big-btn" onclick="openPayment()">
+            🔓 Unlock My Full Results
+          </button>
 
           <!-- Pricing Options -->
           <div class="pricing-options">
@@ -576,10 +610,9 @@
 
           <!-- Payment methods -->
           <div class="pay-methods" style="margin-top:16px;">
-            <div class="pay-method card"><span class="pay-icon">💳</span>Visa / Mastercard</div>
-            <div class="pay-method toss"><span class="pay-icon">🅿️</span>PayPal</div>
-            <div class="pay-method kakao"><span class="pay-icon">📱</span>Apple Pay</div>
             <div class="pay-method card"><span class="pay-icon">💳</span>Credit / Debit Card</div>
+            <div class="pay-method card"><span class="pay-icon">🏦</span>PayPal</div>
+            <div class="pay-method card"><span class="pay-icon">🔒</span>Secure via Paddle</div>
           </div>
 
           <div class="unlock-features" style="margin-top:16px;">
@@ -587,7 +620,7 @@
             <span>⚡ Instant access after payment</span>
           </div>
           <p style="margin-top:14px;font-size:0.75rem;color:#9CA3AF;line-height:1.6;background:#F9FAFB;border-radius:10px;padding:10px 12px;text-align:left;">
-            💡 You already saw your #1 result for free — if you liked it, go ahead and unlock the rest!<br/>
+            💡 You already saw your #1 result for free — unlock the rest to see your full picture.<br/>
             14-day refund available. See our <a href="refund.html" style="color:var(--primary);">Refund Policy</a>.
           </p>
         </div>

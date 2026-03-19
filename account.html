@@ -255,7 +255,7 @@
 
     async function cancelSubscription() {
       if (!subscriptionId) {
-        alert('Subscription ID not found. Please contact support at kunha0303@gmail.com');
+        alert('Subscription ID not found. Please contact support at hello@mypetgenerator.com');
         return;
       }
 
@@ -291,7 +291,7 @@
         } else {
           msgEl.style.display = 'block';
           msgEl.style.color = '#DC2626';
-          msgEl.textContent = `❌ ${result.error || 'Failed to cancel. Please email kunha0303@gmail.com'}`;
+          msgEl.textContent = `❌ ${result.error || 'Failed to cancel. Please email hello@mypetgenerator.com'}`;
           btn.textContent = 'Cancel Plan';
           btn.disabled = false;
         }
@@ -299,7 +299,7 @@
         const msgEl = document.getElementById('cancel-msg');
         msgEl.style.display = 'block';
         msgEl.style.color = '#DC2626';
-        msgEl.textContent = '❌ Network error. Please try again or email kunha0303@gmail.com';
+        msgEl.textContent = '❌ Network error. Please try again or email hello@mypetgenerator.com';
         btn.textContent = 'Cancel Plan';
         btn.disabled = false;
       }
