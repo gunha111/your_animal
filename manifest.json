@@ -1,0 +1,33 @@
+{
+  "name": "My Pet Generator",
+  "short_name": "Pet Quiz",
+  "description": "Find your perfect pet match in 5 minutes — free personality quiz",
+  "start_url": "/quiz.html?source=pwa",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#ffffff",
+  "theme_color": "#6366f1",
+  "lang": "en",
+  "categories": ["lifestyle", "entertainment", "education"],
+  "icons": [
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><rect width='512' height='512' rx='120' fill='%236366f1'/><text y='360' x='80' font-size='340'>🐾</text></svg>",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [],
+  "shortcuts": [
+    {
+      "name": "Take the Quiz",
+      "url": "/quiz.html",
+      "description": "Find your perfect pet match"
+    },
+    {
+      "name": "Name Generator",
+      "url": "/name-generator.html",
+      "description": "Generate pet names"
+    }
+  ]
+}

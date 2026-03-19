@@ -10,6 +10,26 @@
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/style.css" />
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐾</text></svg>" />
+  <meta property="og:title" content="Your Pet Match Results | My Pet Generator" />
+  <meta property="og:description" content="See which pet best matches your personality and lifestyle." />
+  <meta property="og:image" content="https://mypetgenerator.com/og-image.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="canonical" href="https://mypetgenerator.com/results.html" />
+  <!-- Google Analytics 4 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-0JS339QR6G"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-0JS339QR6G');
+  </script>
+  <!-- Microsoft Clarity -->
+  <script>
+    (function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+    t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+    y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window,document,"clarity","script","vydckg629a");
+  </script>
   <style>
     /* ── Share Card Section ── */
     .share-section { margin-top: 24px; }
@@ -146,10 +166,29 @@
       setTimeout(() => toast.classList.remove('show'), 3000);
     }
 
+    // Track referral source
+    (function() {
+      const params = new URLSearchParams(location.search);
+      const ref = params.get('ref');
+      if (ref) sessionStorage.setItem('mpg_ref', ref);
+    })();
+
     function copyLink() {
       navigator.clipboard.writeText('https://mypetgenerator.com/quiz.html')
         .then(() => showToast('Quiz link copied! Share it with friends 🐾'))
         .catch(() => showToast('Copy failed. URL: mypetgenerator.com/quiz.html'));
+    }
+
+    function sendToFriend() {
+      const url = 'https://mypetgenerator.com/quiz.html?ref=share';
+      const text = 'I just found my perfect pet match! 🐾 Take this free quiz to find yours →';
+      if (navigator.share) {
+        navigator.share({ title: 'My Pet Generator', text, url }).catch(() => {});
+      } else {
+        navigator.clipboard.writeText(url)
+          .then(() => showToast('Link copied — paste it to a friend! 🐾'))
+          .catch(() => showToast('Share link: mypetgenerator.com/quiz.html?ref=share'));
+      }
     }
 
     function shareTwitter(petName, pct, emoji) {
@@ -390,6 +429,12 @@
                 𝕏 Twitter
               </button>
             </div>
+            <div style="margin-top:14px;padding:14px;background:#f5f3ff;border-radius:12px;text-align:center;">
+              <p style="margin:0 0 10px;font-size:0.88rem;color:#4b5563;">🐾 Know a friend who should try this?</p>
+              <button class="share-btn" style="background:linear-gradient(135deg,#6366f1,#818cf8);color:#fff;border:none;" onclick="sendToFriend()">
+                💌 Send to a Friend
+              </button>
+            </div>
           </div>
         </div>
 
@@ -502,7 +547,9 @@
                 <li style="color:#9CA3AF;">✗ Care Plan Generator</li>
                 <li style="color:#9CA3AF;">✗ Unlimited retakes</li>
               </ul>
-              <button class="pricing-card-btn secondary-btn">Unlock Results</button>
+              <button class="pricing-card-btn secondary-btn"
+                data-ab-test="unlock-cta-copy"
+                data-ab-variants="A,B">Unlock Results</button>
             </div>
 
             <!-- Subscription option — highlighted -->
@@ -610,5 +657,7 @@
       }).catch(() => {}); // fail silently
     })();
   </script>
+  <script src="js/ab-test.js"></script>
+  <script src="js/analytics.js"></script>
 </body>
 </html>

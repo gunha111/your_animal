@@ -10,6 +10,50 @@
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/style.css" />
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐾</text></svg>" />
+  <link rel="manifest" href="/manifest.json" />
+  <meta name="theme-color" content="#6366f1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="Pet Quiz" />
+  <meta property="og:title" content="Find Your Perfect Pet Match | My Pet Generator" />
+  <meta property="og:description" content="Answer 25 quick questions and discover which pet perfectly matches your lifestyle." />
+  <meta property="og:url" content="https://mypetgenerator.com/quiz.html" />
+  <meta property="og:image" content="https://mypetgenerator.com/og-image.png" />
+  <link rel="canonical" href="https://mypetgenerator.com/quiz.html" />
+  <!-- Google Analytics 4 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-0JS339QR6G"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-0JS339QR6G');
+  </script>
+  <!-- Microsoft Clarity -->
+  <script>
+    (function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+    t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+    y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window,document,"clarity","script","vydckg629a");
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Quiz",
+    "name": "What Pet Should I Get? — My Pet Generator",
+    "description": "A 25-question personality quiz that matches you with your ideal pet based on your lifestyle, personality, and living situation.",
+    "url": "https://mypetgenerator.com/quiz.html",
+    "provider": {
+      "@type": "Organization",
+      "name": "My Pet Generator",
+      "url": "https://mypetgenerator.com"
+    },
+    "educationalLevel": "beginner",
+    "about": {
+      "@type": "Thing",
+      "name": "Pet ownership and animal care"
+    }
+  }
+  </script>
   <style>
     /* ── Sticky Progress Bar ── */
     .sticky-progress {
@@ -160,6 +204,18 @@
 </head>
 <body>
 
+  <script>
+    // Hide header/footer when embedded in an iframe
+    if (new URLSearchParams(location.search).get('embed') === '1') {
+      document.documentElement.classList.add('is-embedded');
+    }
+    // Track referral source
+    (function() {
+      const ref = new URLSearchParams(location.search).get('ref');
+      if (ref) sessionStorage.setItem('mpg_ref', ref);
+    })();
+  </script>
+
   <!-- Sticky Progress Bar (slides in after page header scrolls past) -->
   <div class="sticky-progress" id="sticky-progress" aria-hidden="true">
     <span class="sticky-progress-label" id="sticky-label">1 / 25</span>
@@ -202,6 +258,9 @@
           <div class="progress-bar-fill" id="progress-fill" style="width:4%"></div>
         </div>
       </div>
+
+      <!-- Swipe hint (shown once) -->
+      <div class="swipe-hint" id="swipe-hint">← swipe to navigate →</div>
 
       <!-- Question -->
       <div class="question-card" id="question-card">
@@ -519,6 +578,31 @@
       setTimeout(callback, 2600);
     }
 
+    // ── Swipe Gestures ──────────────────────────────────────
+    (function setupSwipe() {
+      let startX = 0, startY = 0;
+      const card = document.getElementById('question-card');
+      card.addEventListener('touchstart', e => {
+        startX = e.touches[0].clientX;
+        startY = e.touches[0].clientY;
+      }, { passive: true });
+      card.addEventListener('touchend', e => {
+        const dx = e.changedTouches[0].clientX - startX;
+        const dy = e.changedTouches[0].clientY - startY;
+        if (Math.abs(dx) < Math.abs(dy) || Math.abs(dx) < 48) return;
+        if (dx < 0 && answers[current] !== null) nextQuestion();
+        else if (dx > 0 && current > 0) prevQuestion();
+        // hide hint after first swipe
+        const hint = document.getElementById('swipe-hint');
+        if (hint) hint.style.display = 'none';
+      }, { passive: true });
+    })();
+
+    // ── PWA Service Worker ──────────────────────────────────
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/sw.js').catch(() => {});
+    }
+
     // ── Init ────────────────────────────────────────────────
     (function init() {
       const saved = loadSavedProgress();
@@ -537,5 +621,33 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
   <script src="js/supabase-config.js"></script>
   <script src="js/auth.js"></script>
+  <script src="js/analytics.js"></script>
+
+  <!-- PWA Install Banner -->
+  <div class="pwa-banner" id="pwaBanner" style="display:none;">
+    <span>📱 Add to Home Screen for quick access!</span>
+    <button class="pwa-install-btn" id="pwaInstallBtn">Install</button>
+    <button class="pwa-dismiss-btn" id="pwaDismissBtn" aria-label="Dismiss">✕</button>
+  </div>
+  <script>
+    let deferredPrompt = null;
+    window.addEventListener('beforeinstallprompt', e => {
+      e.preventDefault();
+      deferredPrompt = e;
+      const banner = document.getElementById('pwaBanner');
+      if (!sessionStorage.getItem('pwa_dismissed')) banner.style.display = 'flex';
+    });
+    document.getElementById('pwaInstallBtn').addEventListener('click', async () => {
+      if (!deferredPrompt) return;
+      deferredPrompt.prompt();
+      const { outcome } = await deferredPrompt.userChoice;
+      deferredPrompt = null;
+      document.getElementById('pwaBanner').style.display = 'none';
+    });
+    document.getElementById('pwaDismissBtn').addEventListener('click', () => {
+      document.getElementById('pwaBanner').style.display = 'none';
+      sessionStorage.setItem('pwa_dismissed', '1');
+    });
+  </script>
 </body>
 </html>

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Unsubscribe — My Pet Generator</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐾</text></svg>" />
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container">
+      <div class="header-inner">
+        <a href="index.html" class="logo">
+          <span class="logo-emoji">🐾</span>
+          My Pet Generator
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <div style="min-height:70vh;display:flex;align-items:center;justify-content:center;padding:40px 20px;">
+    <div style="max-width:440px;width:100%;text-align:center;">
+      <div style="font-size:3rem;margin-bottom:16px;">👋</div>
+      <h1 style="font-size:1.6rem;margin-bottom:12px;">Unsubscribe</h1>
+      <p id="status-msg" style="color:#6b7280;margin-bottom:28px;">
+        Click below to stop receiving emails from My Pet Generator.
+      </p>
+      <div id="email-display" style="background:#f3f4f6;border-radius:10px;padding:12px 16px;font-size:0.9rem;color:#374151;margin-bottom:24px;"></div>
+      <button id="unsub-btn" class="cta-btn" onclick="unsubscribe()" style="width:100%;max-width:280px;">
+        Confirm Unsubscribe
+      </button>
+      <p style="margin-top:24px;font-size:0.82rem;color:#9ca3af;">
+        Changed your mind? <a href="index.html" style="color:#6366f1;">Go back to My Pet Generator</a>
+      </p>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+  <script src="js/supabase-config.js"></script>
+  <script>
+    const params = new URLSearchParams(location.search);
+    const email = params.get('email') || '';
+
+    const display = document.getElementById('email-display');
+    if (email) {
+      display.textContent = email;
+    } else {
+      display.style.display = 'none';
+    }
+
+    async function unsubscribe() {
+      const btn = document.getElementById('unsub-btn');
+      const msg = document.getElementById('status-msg');
+      btn.disabled = true;
+      btn.textContent = 'Processing...';
+
+      try {
+        const { error } = await window._supabase
+          .from('leads')
+          .update({ subscribed: false })
+          .eq('email', email.toLowerCase().trim());
+
+        if (error) throw error;
+
+        msg.textContent = "You've been unsubscribed. You won't receive any more emails from us.";
+        btn.style.display = 'none';
+        display.style.display = 'none';
+        document.querySelector('[style*="Changed your mind"]').style.display = 'none';
+      } catch (e) {
+        msg.textContent = 'Something went wrong. Please email us at kunha0303@gmail.com to unsubscribe.';
+        btn.disabled = false;
+        btn.textContent = 'Try Again';
+      }
+    }
+  </script>
+</body>
+</html>

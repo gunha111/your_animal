@@ -8,11 +8,77 @@
   <meta property="og:title" content="My Pet Generator — Find Your Perfect Pet Match" />
   <meta property="og:description" content="Like a personality quiz, we analyze your vibe to recommend your ideal pet companion!" />
   <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://mypetgenerator.com/" />
+  <meta property="og:image" content="https://mypetgenerator.com/og-image.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="My Pet Generator — Find Your Perfect Pet Match" />
+  <meta name="twitter:description" content="Answer 25 questions and discover which pet matches your lifestyle. Free quiz!" />
+  <meta name="twitter:image" content="https://mypetgenerator.com/og-image.png" />
+  <link rel="canonical" href="https://mypetgenerator.com/" />
+  <!-- Google Analytics 4 — replace G-0JS339QR6G with your ID -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-0JS339QR6G"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-0JS339QR6G');
+  </script>
+  <!-- Microsoft Clarity — replace vydckg629a with your ID -->
+  <script>
+    (function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+    t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+    y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window,document,"clarity","script","vydckg629a");
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What pet should I get based on my personality?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "The best pet for your personality depends on factors like your activity level, home size, and how much time you have. Take the My Pet Generator quiz to get a personalized Top 5 list matched to your lifestyle."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How does the My Pet Generator quiz work?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "My Pet Generator asks 25 questions about your lifestyle, personality, living situation, and preferences. It scores your answers against 20+ pet profiles and returns your top 5 best-matched pets with compatibility percentages."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Is the pet personality quiz free?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes! The quiz is completely free. You get your #1 match for free. Unlock your full Top 5 results plus personalized care guides for a one-time fee of $5.99."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What pets are included in the quiz results?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "The quiz covers dogs, cats, rabbits, hamsters, guinea pigs, fish, birds, reptiles, ferrets, hedgehogs, and more — over 20 pet types in total."
+        }
+      }
+    ]
+  }
+  </script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/style.css" />
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐾</text></svg>" />
+  <link rel="manifest" href="/manifest.json" />
+  <meta name="theme-color" content="#6366f1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-title" content="My Pet Generator" />
 </head>
 <body>
 
@@ -43,7 +109,9 @@
       <p class="hero-desc">Answer 25 questions about your lifestyle, personality, and living situation — and we'll reveal your TOP 5 perfect pet matches</p>
       <div class="hero-animals">🐕 🐈 🐰 🐹 🐠 🦜 🐾 🐢 🦡 🦔</div>
       <div class="hero-cta-wrap">
-        <a href="quiz.html" class="cta-btn">
+        <a href="quiz.html" class="cta-btn"
+           data-ab-test="hero-cta-copy"
+           data-ab-variants="A,B">
           Take the Quiz Now <span class="arrow">→</span>
         </a>
       </div>
@@ -422,6 +490,7 @@
       <a href="privacy.html">Privacy Policy</a>
       <a href="refund.html">Refund Policy</a>
       <a href="pricing.html">Pricing</a>
+      <a href="embed.html">Embed Widget</a>
       <a href="mailto:kunha0303@gmail.com">Contact Us</a>
     </div>
     <p>© 2026 My Pet Generator. All rights reserved.</p>
@@ -430,5 +499,34 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
   <script src="js/supabase-config.js"></script>
   <script src="js/auth.js"></script>
+  <script src="js/ab-test.js"></script>
+  <script src="js/analytics.js"></script>
+
+  <!-- PWA Install Banner -->
+  <div class="pwa-banner" id="pwaBanner" style="display:none;">
+    <span>📱 Add to Home Screen for quick access!</span>
+    <button class="pwa-install-btn" id="pwaInstallBtn">Install</button>
+    <button class="pwa-dismiss-btn" id="pwaDismissBtn" aria-label="Dismiss">✕</button>
+  </div>
+  <script>
+    let deferredPrompt = null;
+    window.addEventListener('beforeinstallprompt', e => {
+      e.preventDefault();
+      deferredPrompt = e;
+      const banner = document.getElementById('pwaBanner');
+      if (!sessionStorage.getItem('pwa_dismissed')) banner.style.display = 'flex';
+    });
+    document.getElementById('pwaInstallBtn').addEventListener('click', async () => {
+      if (!deferredPrompt) return;
+      deferredPrompt.prompt();
+      const { outcome } = await deferredPrompt.userChoice;
+      deferredPrompt = null;
+      document.getElementById('pwaBanner').style.display = 'none';
+    });
+    document.getElementById('pwaDismissBtn').addEventListener('click', () => {
+      document.getElementById('pwaBanner').style.display = 'none';
+      sessionStorage.setItem('pwa_dismissed', '1');
+    });
+  </script>
 </body>
 </html>

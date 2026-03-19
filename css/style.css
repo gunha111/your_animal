@@ -1043,3 +1043,145 @@ body {
   .footer-links { gap: 14px; font-size: 0.82rem; flex-direction: column; align-items: center; gap: 10px; }
   .site-footer { padding: 36px 20px; }
 }
+
+/* ===== MOBILE UX — TAP TARGETS & TOUCH ===== */
+
+/* 44px minimum tap target for all interactive elements */
+.btn-prev, .btn-next {
+  min-height: 44px;
+}
+.option-btn {
+  min-height: 44px;
+}
+.share-btn {
+  min-height: 44px;
+}
+.cta-btn {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.pricing-card-btn {
+  min-height: 44px;
+}
+
+/* Prevent text size adjustment on iOS */
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+/* Smooth scroll */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Better touch feedback */
+@media (hover: none) {
+  .option-btn:hover {
+    transform: none;
+    border-color: var(--border);
+    background: #F9FAFB;
+  }
+  .option-btn:active {
+    transform: scale(0.98);
+    border-color: var(--primary);
+    background: #EEF2FF;
+  }
+  .btn-next:hover:not(:disabled) {
+    transform: none;
+    box-shadow: none;
+  }
+  .btn-next:active:not(:disabled) {
+    transform: scale(0.97);
+  }
+}
+
+/* Swipe hint animation on quiz page */
+@keyframes swipeHint {
+  0%   { transform: translateX(0); opacity: 1; }
+  50%  { transform: translateX(-12px); opacity: 0.4; }
+  100% { transform: translateX(0); opacity: 1; }
+}
+.swipe-hint {
+  text-align: center;
+  font-size: 0.75rem;
+  color: #9ca3af;
+  margin-top: 12px;
+  animation: swipeHint 2s ease 1.5s 2;
+}
+
+/* PWA install banner */
+.pwa-banner {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #fff;
+  border-top: 1px solid #e5e7eb;
+  padding: 16px;
+  align-items: center;
+  gap: 12px;
+  z-index: 300;
+  box-shadow: 0 -4px 24px rgba(0,0,0,0.10);
+  flex-wrap: wrap;
+}
+.pwa-install-btn {
+  background: linear-gradient(135deg, #6366f1, #818cf8);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 10px 16px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+  min-height: 44px;
+}
+.pwa-dismiss-btn {
+  background: none;
+  border: none;
+  color: #9ca3af;
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 4px;
+  min-height: 44px;
+  min-width: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.pwa-banner-icon { font-size: 2rem; flex-shrink: 0; }
+.pwa-banner-text { flex: 1; }
+.pwa-banner-text strong { display: block; font-size: 0.9rem; color: #111827; }
+.pwa-banner-text span { font-size: 0.78rem; color: #6b7280; }
+.pwa-banner-btn {
+  background: linear-gradient(135deg, #6366f1, #818cf8);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 10px 16px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+  min-height: 44px;
+}
+.pwa-banner-close {
+  background: none;
+  border: none;
+  color: #9ca3af;
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 4px;
+  min-height: 44px;
+  min-width: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Embed mode: hide site chrome */
+.is-embedded .site-header,
+.is-embedded .site-footer,
+.is-embedded .pwa-banner { display: none !important; }
