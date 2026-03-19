@@ -53,9 +53,9 @@ function calculateResults(answers) {
 }
 
 function getMatchLabel(percentage) {
-  if (percentage >= 90) return { label: "완벽한 매칭", color: "#10B981", star: "⭐⭐⭐⭐⭐" };
-  if (percentage >= 80) return { label: "매우 잘 맞아요", color: "#3B82F6", star: "⭐⭐⭐⭐" };
-  if (percentage >= 70) return { label: "잘 맞아요", color: "#8B5CF6", star: "⭐⭐⭐" };
-  if (percentage >= 60) return { label: "나쁘지 않아요", color: "#F59E0B", star: "⭐⭐" };
-  return { label: "고려해보세요", color: "#6B7280", star: "⭐" };
+  if (percentage >= 90) return { label: "Perfect Match", color: "#10B981", star: "⭐⭐⭐⭐⭐" };
+  if (percentage >= 80) return { label: "Great Match", color: "#3B82F6", star: "⭐⭐⭐⭐" };
+  if (percentage >= 70) return { label: "Good Match", color: "#8B5CF6", star: "⭐⭐⭐" };
+  if (percentage >= 60) return { label: "Decent Match", color: "#F59E0B", star: "⭐⭐" };
+  return { label: "Worth Considering", color: "#6B7280", star: "⭐" };
 }

@@ -81,5 +81,5 @@ const PET_NAMES = {
   }
 };
 
-const NAME_ADJECTIVES_KO = ["귀여운", "용감한", "신비로운", "사랑스러운", "영리한", "우아한", "활발한", "차분한", "포근한", "반짝이는"];
+const NAME_ADJECTIVES_KO = ["Lucky", "Brave", "Mystic", "Sweet", "Clever", "Elegant", "Lively", "Calm", "Cozy", "Sparkly"];
 const NAME_ADJECTIVES_EN = ["Lucky", "Happy", "Sunny", "Cozy", "Swift", "Brave", "Clever", "Gentle", "Mighty", "Fluffy"];

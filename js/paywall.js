@@ -159,7 +159,7 @@ const Paywall = {
         break;
       case 'subscription': {
         const expiry = Date.now() + 30 * 24 * 60 * 60 * 1000;
-        localStorage.setItem(STORAGE_KEYS.sub_expiry, expiry);
+        localStorage.setItem(STORAGE_KEYS.sub_expiry, String(expiry));
         localStorage.setItem(STORAGE_KEYS.name_gen_paid, '1');
         localStorage.setItem(STORAGE_KEYS.care_plan_paid, '1');
         localStorage.setItem(STORAGE_KEYS.quiz_paid, '1');
