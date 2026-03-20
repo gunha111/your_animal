@@ -474,61 +474,23 @@
           <p>Based on your 25 answers!</p>
         </div>
 
-        <!-- Winner Card -->
-        <div class="winner-card">
-          <div class="winner-ribbon">BEST MATCH</div>
+        <!-- Winner Card — Teaser only (free) -->
+        <div class="winner-card" style="text-align:center;">
+          <div class="winner-ribbon">YOUR #1 MATCH</div>
 
-          <div class="winner-top">
-            <div class="winner-emoji-wrap">${pet.emoji}</div>
-            <div class="winner-info">
-              <div class="match-badge">${matchInfo.label}</div>
-              <h2>${pet.name}</h2>
-              <p class="tagline">${pet.tagline}</p>
-            </div>
-          </div>
+          <div style="font-size:5rem;margin:16px 0 8px;">${pet.emoji}</div>
+          <div style="font-size:3rem;font-weight:900;color:var(--primary);line-height:1;">${winner.percentage}%</div>
+          <div class="match-badge" style="margin:8px auto;">${matchInfo.label}</div>
+          <h2 style="margin:10px 0 4px;">${pet.name}</h2>
+          <p style="font-size:0.9rem;color:#6b7280;margin:0 0 18px;">${pet.traits[0]}</p>
 
-          <div class="match-bar-wrap">
+          <div class="match-bar-wrap" style="max-width:280px;margin:0 auto 20px;">
             <div class="match-bar-label">
               <span>Match Score</span>
               <span class="pct">${winner.percentage}%</span>
             </div>
             <div class="match-bar-bg">
               <div class="match-bar-fill" id="winner-bar" style="width:0%"></div>
-            </div>
-          </div>
-
-          <p class="winner-desc">${pet.description}</p>
-
-          <div class="traits-wrap">
-            ${pet.traits.map(t => `<span class="trait-tag">${t}</span>`).join('')}
-          </div>
-
-          <div class="compat-list">
-            ${pet.compatibility_points.map(p => `
-              <div class="compat-item">
-                <span class="compat-icon">✓</span>
-                <span>${p}</span>
-              </div>
-            `).join('')}
-          </div>
-
-          <div class="fun-fact-box">
-            <strong>💡 Did you know?</strong>
-            ${pet.fun_fact}
-          </div>
-
-          <div class="meta-grid">
-            <div class="meta-item">
-              <div class="meta-label">Care Level</div>
-              <div class="meta-val">${pet.care_level}</div>
-            </div>
-            <div class="meta-item">
-              <div class="meta-label">Space Needed</div>
-              <div class="meta-val">${pet.space_needed}</div>
-            </div>
-            <div class="meta-item">
-              <div class="meta-label">Lifespan</div>
-              <div class="meta-val">${pet.lifespan}</div>
             </div>
           </div>
 
@@ -582,29 +544,53 @@
       const rankLabels = ['#2', '#3', '#4', '#5'];
       const rankColors = ['#6366f1', '#3b82f6', '#10b981', '#f59e0b'];
       const winner = top5[0];
+      const pet = PETS[winner.pet];
       const gap2 = winner.percentage - top5[1].percentage;
 
-      // Dummy data — completely hides real results
       const dummies = [
-        { emoji: '?', bar: 82 },
-        { emoji: '?', bar: 74 },
-        { emoji: '?', bar: 67 },
-        { emoji: '?', bar: 58 },
+        { bar: 82 }, { bar: 74 }, { bar: 67 }, { bar: 58 },
       ];
 
       return `
         <div class="paywall-section">
 
+          <!-- Locked #1 full analysis -->
+          <div style="border-radius:16px;border:2px dashed #e5e7eb;overflow:hidden;margin-bottom:24px;background:#fafafa;">
+            <div style="background:linear-gradient(135deg,#6366f1,#818cf8);color:#fff;padding:10px 16px;font-size:0.8rem;font-weight:700;letter-spacing:0.05em;text-align:center;">
+              🔒 FULL ANALYSIS LOCKED
+            </div>
+            <div style="padding:16px;position:relative;">
+              <!-- Blurred preview of real description -->
+              <div style="filter:blur(5px);pointer-events:none;user-select:none;color:#374151;font-size:0.88rem;line-height:1.6;margin-bottom:12px;">
+                ${pet.description}
+              </div>
+              <!-- Blurred traits -->
+              <div style="filter:blur(4px);pointer-events:none;user-select:none;display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px;">
+                ${pet.traits.slice(0,3).map(t => `<span style="background:#ede9fe;color:#6366f1;padding:4px 10px;border-radius:20px;font-size:0.78rem;font-weight:600;">${t}</span>`).join('')}
+              </div>
+              <!-- Blurred compat points -->
+              <div style="filter:blur(4px);pointer-events:none;user-select:none;">
+                ${pet.compatibility_points.slice(0,3).map(p => `<div style="display:flex;gap:8px;margin-bottom:6px;font-size:0.83rem;color:#374151;"><span style="color:#10b981;">✓</span><span>${p}</span></div>`).join('')}
+              </div>
+              <!-- Overlay CTA -->
+              <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(255,255,255,0.7);backdrop-filter:blur(2px);">
+                <div style="font-size:1.6rem;margin-bottom:6px;">🔒</div>
+                <div style="font-weight:800;font-size:0.95rem;color:#111;margin-bottom:4px;">Why are you ${winner.percentage}% matched?</div>
+                <div style="font-size:0.8rem;color:#6b7280;">Unlock to see your full ${pet.name} analysis</div>
+              </div>
+            </div>
+          </div>
+
           <div class="upsell-headline">
-            <h3>🔒 4 more matches are waiting</h3>
-            <p>Your quiz revealed a full Top 5 — but they're locked until you unlock.</p>
+            <h3>🔒 Your full results are waiting</h3>
+            <p>See <strong>why</strong> you matched ${pet.name}, your complete compatibility analysis, and 4 more hidden matches.</p>
             ${gap2 <= 8
-              ? `<div class="upsell-gap-badge">⚠️ Your #2 match is only ${gap2}% behind your #1 — it could be a better fit</div>`
+              ? `<div class="upsell-gap-badge">⚠️ Your #2 match is only ${gap2}% behind — it could be an even better fit</div>`
               : `<div class="upsell-gap-badge">👀 One of your hidden matches might surprise you</div>`
             }
           </div>
 
-          <!-- Locked dummy cards -->
+          <!-- Locked dummy cards #2-5 -->
           <div class="locked-preview-list">
             ${dummies.map((d, i) => `
               <div class="locked-card" onclick="openPayment()">
@@ -637,7 +623,6 @@
           <!-- Pricing Options -->
           <div class="pricing-options">
 
-            <!-- One-time option -->
             <div class="pricing-card" onclick="openPayment()">
               <div class="pricing-card-header">
                 <div class="pricing-card-title">One-Time Unlock</div>
@@ -645,9 +630,9 @@
                 <div class="pricing-card-period">single purchase</div>
               </div>
               <ul class="pricing-card-features">
-                <li>✓ TOP 2–5 results revealed</li>
-                <li>✓ Detailed analysis for each pet</li>
-                <li>✓ One quiz unlock only</li>
+                <li>✓ Full ${pet.name} analysis revealed</li>
+                <li>✓ Why you matched at ${winner.percentage}%</li>
+                <li>✓ TOP 2–5 matches revealed</li>
                 <li style="color:#9CA3AF;">✗ Name Generator</li>
                 <li style="color:#9CA3AF;">✗ Care Plan Generator</li>
                 <li style="color:#9CA3AF;">✗ Unlimited retakes</li>
@@ -657,7 +642,6 @@
                 data-ab-variants="A,B">Unlock Results</button>
             </div>
 
-            <!-- Subscription option — highlighted -->
             <div class="pricing-card pricing-card-featured" onclick="Paywall.pay('subscription')">
               <div class="pricing-card-badge">⭐ BEST VALUE</div>
               <div class="pricing-card-header">
@@ -666,8 +650,8 @@
                 <div class="pricing-card-period">per month</div>
               </div>
               <ul class="pricing-card-features">
-                <li>✓ TOP 2–5 results revealed</li>
-                <li>✓ Detailed analysis for each pet</li>
+                <li>✓ Full ${pet.name} analysis revealed</li>
+                <li>✓ TOP 2–5 matches revealed</li>
                 <li>✓ <strong>Unlimited quiz retakes</strong></li>
                 <li>✓ <strong>Name Generator</strong> (worth $1.99)</li>
                 <li>✓ <strong>Care Plan Generator</strong> (worth $2.99)</li>
@@ -679,7 +663,6 @@
 
           </div>
 
-          <!-- Payment methods -->
           <div class="pay-methods" style="margin-top:16px;">
             <div class="pay-method card"><span class="pay-icon">💳</span>Credit / Debit Card</div>
             <div class="pay-method card"><span class="pay-icon">🏦</span>PayPal</div>
@@ -691,7 +674,6 @@
             <span>⚡ Instant access after payment</span>
           </div>
           <p style="margin-top:14px;font-size:0.75rem;color:#9CA3AF;line-height:1.6;background:#F9FAFB;border-radius:10px;padding:10px 12px;text-align:left;">
-            💡 You already saw your #1 result for free — unlock the rest to see your full picture.<br/>
             14-day refund available. See our <a href="refund.html" style="color:var(--primary);">Refund Policy</a>.
           </p>
         </div>
@@ -699,39 +681,55 @@
     }
 
     function renderUnlocked(top5) {
-      const rankColors = ['gold', 'silver', 'bronze', '', ''];
       const rankEmojis = ['🥇', '🥈', '🥉', '#4', '#5'];
+      const gradients = [
+        'linear-gradient(90deg,#6366F1,#EC4899)',
+        'linear-gradient(90deg,#3B82F6,#6366F1)',
+        'linear-gradient(90deg,#10B981,#3B82F6)',
+        'linear-gradient(90deg,#F59E0B,#10B981)',
+        'linear-gradient(90deg,#9CA3AF,#F59E0B)',
+      ];
 
       return `
         <div class="unlocked-results">
           <div style="text-align:center;margin-bottom:28px;padding:20px;background:linear-gradient(135deg,#DCFCE7,#D1FAE5);border-radius:var(--radius);">
             <div style="font-size:2rem;margin-bottom:8px;">🎉</div>
-            <div style="font-weight:800;font-size:1.1rem;color:#15803D;">All results unlocked!</div>
-            <div style="color:#16A34A;font-size:0.9rem;">Check your compatibility with all TOP 5 pets</div>
+            <div style="font-weight:800;font-size:1.1rem;color:#15803D;">Full results unlocked!</div>
+            <div style="color:#16A34A;font-size:0.9rem;">Your complete TOP 5 pet matches with full analysis</div>
           </div>
           <div class="result-cards-list">
             ${top5.map((r, i) => {
               const p = PETS[r.pet];
-              const gradients = [
-                'linear-gradient(90deg,#6366F1,#EC4899)',
-                'linear-gradient(90deg,#3B82F6,#6366F1)',
-                'linear-gradient(90deg,#10B981,#3B82F6)',
-                'linear-gradient(90deg,#F59E0B,#10B981)',
-                'linear-gradient(90deg,#9CA3AF,#F59E0B)',
-              ];
               return `
-                <div class="result-card" style="animation-delay:${i * 0.1}s">
-                  <div class="result-rank ${rankColors[i]}">${rankEmojis[i]}</div>
-                  <div class="result-emoji">${p.emoji}</div>
-                  <div class="result-info">
-                    <h3>${p.name}</h3>
-                    <div class="result-tagline">${p.tagline}</div>
-                    <div class="result-bar-row">
-                      <div class="result-bar-bg">
-                        <div class="result-bar-fill" data-pct="${r.percentage}" style="width:0%;background:${gradients[i]}"></div>
+                <div class="result-card" style="animation-delay:${i * 0.1}s;padding:20px;">
+                  <div style="display:flex;align-items:center;gap:14px;margin-bottom:14px;">
+                    <div class="result-rank">${rankEmojis[i]}</div>
+                    <div style="font-size:2.8rem;">${p.emoji}</div>
+                    <div style="flex:1;">
+                      <h3 style="margin:0 0 2px;">${p.name}</h3>
+                      <div class="result-tagline">${p.tagline}</div>
+                      <div class="result-bar-row">
+                        <div class="result-bar-bg">
+                          <div class="result-bar-fill" data-pct="${r.percentage}" style="width:0%;background:${gradients[i]}"></div>
+                        </div>
+                        <div class="result-pct">${r.percentage}%</div>
                       </div>
-                      <div class="result-pct">${r.percentage}%</div>
                     </div>
+                  </div>
+                  <p style="font-size:0.88rem;color:#4b5563;margin:0 0 12px;line-height:1.6;">${p.description}</p>
+                  <div class="traits-wrap" style="margin-bottom:12px;">
+                    ${p.traits.map(t => `<span class="trait-tag">${t}</span>`).join('')}
+                  </div>
+                  <div class="compat-list" style="margin-bottom:12px;">
+                    ${p.compatibility_points.map(cp => `
+                      <div class="compat-item"><span class="compat-icon">✓</span><span>${cp}</span></div>
+                    `).join('')}
+                  </div>
+                  <div class="fun-fact-box"><strong>💡 Did you know?</strong> ${p.fun_fact}</div>
+                  <div class="meta-grid" style="margin-top:12px;">
+                    <div class="meta-item"><div class="meta-label">Care Level</div><div class="meta-val">${p.care_level}</div></div>
+                    <div class="meta-item"><div class="meta-label">Space Needed</div><div class="meta-val">${p.space_needed}</div></div>
+                    <div class="meta-item"><div class="meta-label">Lifespan</div><div class="meta-val">${p.lifespan}</div></div>
                   </div>
                 </div>
               `;
