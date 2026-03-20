@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://mypetgenerator.com/sitemap.xml
+
+Disallow: /.netlify/
+Disallow: /success.html
+Disallow: /unsubscribe.html

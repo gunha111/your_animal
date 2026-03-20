@@ -26,7 +26,6 @@ const BLOG_POSTS = [
   '/blog/pet-cost-guide.html',
   '/blog/pet-health-check.html',
   '/blog/small-pet-guide.html',
-  '/blog/best-pets-for-small-apartments.html',
   '/blog/dog-vs-cat.html',
 ];
 

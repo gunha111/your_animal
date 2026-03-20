@@ -11,6 +11,13 @@
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/style.css" />
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐾</text></svg>" />
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-0JS339QR6G"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-0JS339QR6G');
+  </script>
 </head>
 <body>
   <main class="success-page">
@@ -57,6 +64,12 @@
 
       // Fallback: trust Paddle's successUrl regardless
       if (!verified) Paywall.handleSuccess(type);
+
+      // Track purchase in GA4
+      const prices = { quiz_unlock: 5.99, care_plan: 5.99, name_gen: 2.99, subscription: 5.99 };
+      if (typeof gtag === 'function') {
+        gtag('event', 'purchase_completed', { plan: type, value: prices[type] || 0, currency: 'USD' });
+      }
 
       msgEl.textContent = info.msg;
       setTimeout(goNext, 2500);

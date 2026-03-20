@@ -315,6 +315,7 @@
   <script src="data/questions.js"></script>
   <script src="data/pets.js"></script>
   <script src="js/scoring.js"></script>
+  <script src="js/analytics.js"></script>
   <script>
     const CATEGORY_LABELS = {
       lifestyle:   { label: 'Lifestyle',   cls: 'cat-lifestyle'   },
@@ -486,6 +487,7 @@
       });
       document.getElementById('btn-next').disabled = false;
       saveProgress(); // save on every answer
+      if (typeof trackQuizAnswer === 'function') trackQuizAnswer(current, idx);
 
       setTimeout(() => {
         if (answers[current] !== null) nextQuestion();
@@ -530,6 +532,9 @@
         const results = calculateResults(answerData);
         sessionStorage.setItem('quizResults', JSON.stringify(results));
         sessionStorage.setItem('quizAnswers', JSON.stringify(answerData));
+        if (typeof trackQuizCompleted === 'function' && results[0]) {
+          trackQuizCompleted(results[0].pet, results[0].percentage);
+        }
         window.location.href = 'results.html';
       });
     }
@@ -544,6 +549,9 @@
         const results = calculateResults(answerData);
         sessionStorage.setItem('quizResults', JSON.stringify(results));
         sessionStorage.setItem('quizAnswers', JSON.stringify(answerData));
+        if (typeof trackQuizCompleted === 'function' && results[0]) {
+          trackQuizCompleted(results[0].pet, results[0].percentage);
+        }
         window.location.href = 'results.html';
       });
     }
@@ -603,6 +611,13 @@
       navigator.serviceWorker.register('/sw.js').catch(() => {});
     }
 
+    // ── Referral Tracking ───────────────────────────────────
+    (function trackReferral() {
+      const params = new URLSearchParams(window.location.search);
+      const ref = params.get('ref');
+      if (ref) sessionStorage.setItem('mpg_ref', ref);
+    })();
+
     // ── Init ────────────────────────────────────────────────
     (function init() {
       const saved = loadSavedProgress();
@@ -621,7 +636,6 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
   <script src="js/supabase-config.js"></script>
   <script src="js/auth.js"></script>
-  <script src="js/analytics.js"></script>
 
   <!-- PWA Install Banner -->
   <div class="pwa-banner" id="pwaBanner" style="display:none;">

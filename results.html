@@ -148,12 +148,53 @@
 
     /* Hidden canvas for share card */
     #share-canvas { display: none; }
+
+    /* Challenge modal */
+    #challenge-modal {
+      display: none; position: fixed; inset: 0; z-index: 1000;
+      background: rgba(0,0,0,0.55); align-items: center; justify-content: center; padding: 20px;
+    }
+    #challenge-modal.open { display: flex; }
+    .challenge-box {
+      background: #fff; border-radius: 24px; padding: 36px 28px; max-width: 420px; width: 100%;
+      text-align: center; box-shadow: 0 20px 60px rgba(0,0,0,0.2); position: relative;
+      animation: popIn 0.3s cubic-bezier(0.34,1.56,0.64,1);
+    }
+    @keyframes popIn { from { transform: scale(0.85); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+    .challenge-close {
+      position: absolute; top: 14px; right: 18px; background: none; border: none;
+      font-size: 1.4rem; cursor: pointer; color: #9ca3af; line-height: 1;
+    }
+    .challenge-btns { display: flex; flex-direction: column; gap: 10px; margin-top: 20px; }
+    .challenge-btn {
+      padding: 13px 20px; border-radius: 12px; border: none; font-size: 0.92rem;
+      font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;
+    }
+    .btn-whatsapp { background: #25d366; color: #fff; }
+    .btn-copy-link { background: #f3f4f6; color: #1f2937; }
+    .btn-sms { background: #6366f1; color: #fff; }
   </style>
 </head>
 <body>
 
   <!-- Hidden canvas for Instagram Story card generation -->
   <canvas id="share-canvas"></canvas>
+
+  <!-- Challenge a Friend Modal -->
+  <div id="challenge-modal" role="dialog" aria-modal="true">
+    <div class="challenge-box">
+      <button class="challenge-close" onclick="closeChallenge()">×</button>
+      <div style="font-size:2.8rem;margin-bottom:10px;">🐾</div>
+      <h2 style="font-size:1.3rem;margin:0 0 8px;">Challenge a Friend!</h2>
+      <p style="color:#6b7280;font-size:0.9rem;margin:0 0 4px;">Dare them to find their perfect pet match.</p>
+      <p id="challenge-sub" style="color:#6366f1;font-weight:700;font-size:0.88rem;margin:0;"></p>
+      <div class="challenge-btns">
+        <button class="challenge-btn btn-whatsapp" onclick="challengeWhatsApp()">💬 Send on WhatsApp</button>
+        <button class="challenge-btn btn-sms" onclick="challengeSMS()">📱 Send via SMS</button>
+        <button class="challenge-btn btn-copy-link" onclick="challengeCopyLink()">🔗 Copy challenge link</button>
+      </div>
+    </div>
+  </div>
 
   <!-- HEADER -->
   <header class="site-header">
@@ -332,38 +373,68 @@
     }
 
     async function shareResult(pet, result) {
-      generateShareCard(pet, result);
-      const canvas = document.getElementById('share-canvas');
       const shareText = `I'm a ${result.percentage}% match with a ${pet.emoji} ${pet.name}! 🐾 What's your perfect pet?`;
-      const shareUrl = 'https://mypetgenerator.com/quiz.html';
-
+      const shareUrl = 'https://mypetgenerator.com/quiz.html?ref=share';
       if (navigator.share) {
         try {
-          canvas.toBlob(async (blob) => {
-            const file = new File([blob], 'my-pet-match.png', { type: 'image/png' });
-            const shareData = { title: 'My Pet Generator', text: shareText, url: shareUrl };
-            if (navigator.canShare && navigator.canShare({ files: [file] })) {
-              await navigator.share({ ...shareData, files: [file] });
-            } else {
-              await navigator.share(shareData);
-            }
-          }, 'image/png');
+          await navigator.share({ title: 'My Pet Generator', text: shareText, url: shareUrl });
         } catch (err) {
           if (err.name !== 'AbortError') copyLink();
         }
       } else {
         copyLink();
       }
+      setTimeout(() => openChallenge(pet, result), 600);
+    }
+
+    function openChallenge(pet, result) {
+      const sub = document.getElementById('challenge-sub');
+      if (sub && pet) sub.textContent = `You matched ${pet.emoji} ${pet.name} at ${result.percentage}% — can they beat it?`;
+      document.getElementById('challenge-modal').classList.add('open');
+    }
+    function closeChallenge() {
+      document.getElementById('challenge-modal').classList.remove('open');
+    }
+    function _challengeText() {
+      const pet = window._sharePet, res = window._shareResult;
+      const pct = res ? res.percentage : '??';
+      const emoji = pet ? pet.emoji : '🐾';
+      const name = pet ? pet.name : 'a pet';
+      return `I matched ${pct}% with ${emoji} ${name} on My Pet Generator! Can you beat my score? 🐾 Try it free →`;
+    }
+    function challengeWhatsApp() {
+      const text = encodeURIComponent(_challengeText() + ' https://mypetgenerator.com/quiz.html?ref=challenge');
+      window.open(`https://wa.me/?text=${text}`, '_blank');
+      closeChallenge();
+    }
+    function challengeSMS() {
+      const text = encodeURIComponent(_challengeText() + ' https://mypetgenerator.com/quiz.html?ref=challenge');
+      window.open(`sms:?body=${text}`, '_blank');
+      closeChallenge();
+    }
+    function challengeCopyLink() {
+      const msg = _challengeText() + ' https://mypetgenerator.com/quiz.html?ref=challenge';
+      navigator.clipboard.writeText(msg)
+        .then(() => showToast('Challenge message copied! Paste it anywhere 🐾'))
+        .catch(() => showToast('Link: mypetgenerator.com/quiz.html?ref=challenge'));
+      closeChallenge();
     }
 
     function downloadShareCard(pet, result) {
-      generateShareCard(pet, result);
-      const canvas = document.getElementById('share-canvas');
-      const link = document.createElement('a');
-      link.download = `my-${pet.id}-match-card.png`;
-      link.href = canvas.toDataURL('image/png');
-      link.click();
-      showToast('Story card downloaded! Share it on Instagram 📸');
+      try {
+        generateShareCard(pet, result);
+        const canvas = document.getElementById('share-canvas');
+        const dataUrl = canvas.toDataURL('image/png');
+        const link = document.createElement('a');
+        link.download = `my-${pet.id}-match-card.png`;
+        link.href = dataUrl;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        showToast('Story card downloaded! Share it on Instagram 📸');
+      } catch (e) {
+        showToast('Download failed — try again or screenshot your results!');
+      }
     }
 
     function openPayment() {
@@ -687,7 +758,7 @@
           'Content-Type': 'application/json',
           'Prefer': 'return=minimal',
         },
-        body: JSON.stringify({ top_pet: topPet }),
+        body: JSON.stringify({ top_pet: topPet, ref_source: sessionStorage.getItem('mpg_ref') || null }),
       }).catch(() => {}); // fail silently
     })();
   </script>

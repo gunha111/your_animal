@@ -6,6 +6,11 @@
 (function() {
   'use strict';
 
+  // Ensure session ID exists for this browser session
+  if (!sessionStorage.getItem('mpg_session')) {
+    sessionStorage.setItem('mpg_session', Math.random().toString(36).slice(2) + Date.now().toString(36));
+  }
+
   const STORAGE_KEY = 'mpg_ab_variants';
 
   // Load existing variant assignments
