@@ -559,7 +559,7 @@
     // ── Lead Saving ─────────────────────────────────────────
     async function saveLead(email, source) {
       try {
-        await fetch('/.netlify/functions/save-lead', {
+        await fetch('/api/save-lead', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ email, source })
