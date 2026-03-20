@@ -1,5 +1,5 @@
 // My Pet Generator — Service Worker
-const CACHE = 'mpg-v3';
+const CACHE = 'mpg-v2';
 const STATIC = [
   '/',
   '/index.html',
