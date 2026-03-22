@@ -41,10 +41,15 @@
     .danger-box li { color: #7F1D1D; }
     .tip-box { background: #EFF6FF; border-left: 4px solid var(--primary); border-radius: 0 16px 16px 0; padding: 20px 24px; margin: 28px 0; }
     .tip-box h4 { font-weight: 800; color: var(--primary-dark); margin-bottom: 8px; }
-    .cta-inline { background: linear-gradient(135deg,var(--primary),var(--secondary)); border-radius: 20px; padding: 32px; text-align: center; margin: 40px 0; color: white; }
-    .cta-inline h3 { font-size: 1.3rem; font-weight: 800; margin-bottom: 8px; }
-    .cta-inline p { opacity: 0.88; margin-bottom: 20px; }
-    .cta-inline a { display: inline-block; background: white; color: var(--primary-dark); padding: 14px 36px; border-radius: 100px; font-weight: 800; text-decoration: none; }
+    .quiz-widget { background: linear-gradient(135deg,#6366f1,#818cf8); border-radius: 20px; padding: 28px 24px; margin: 40px 0; color: #fff; text-align: center; }
+    .quiz-widget-badge { display: inline-block; background: rgba(255,255,255,0.2); border-radius: 20px; padding: 4px 14px; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.06em; margin-bottom: 14px; }
+    .quiz-widget h3 { font-size: 1.2rem; font-weight: 800; margin-bottom: 6px; }
+    .quiz-widget-q { font-size: 0.95rem; opacity: 0.9; margin-bottom: 18px; }
+    .quiz-widget-opts { display: flex; flex-direction: column; gap: 10px; max-width: 380px; margin: 0 auto 16px; }
+    .quiz-widget-opt { background: rgba(255,255,255,0.15); border: 2px solid rgba(255,255,255,0.3); border-radius: 12px; padding: 12px 18px; color: #fff; font-size: 0.9rem; font-weight: 600; cursor: pointer; transition: all 0.2s; text-align: left; }
+    .quiz-widget-opt:hover { background: rgba(255,255,255,0.28); border-color: rgba(255,255,255,0.6); transform: translateX(4px); }
+    .quiz-widget-opt.selected { background: #fff; color: #6366f1; border-color: #fff; }
+    .quiz-widget-note { font-size: 0.78rem; opacity: 0.7; }
     .cost-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; margin: 20px 0; }
     @media(max-width:480px){ .cost-grid { grid-template-columns: 1fr; } }
     .cost-card { background: #F9FAFB; border-radius: 12px; padding: 16px; text-align: center; border: 2px solid var(--border); }
@@ -141,11 +146,24 @@
     <p>Yes, owning a pet takes real work and real responsibility — but the joy and love you get back is completely worth it. The first few weeks can feel bumpy, but before you know it, you'll have a creature that genuinely can't imagine life without you.</p>
     <p>The most important thing is <strong>to prepare properly and commit fully</strong>. If you have that intention, you're already going to be a great pet owner. 🐾</p>
 
-    <div class="cta-inline">
-      <h3>Still not sure which pet is the right fit for you?</h3>
-      <p>Take our 5-minute quiz and find the pet that matches your lifestyle perfectly</p>
-      <a href="../quiz.html">Take the Free Quiz →</a>
+    <div class="quiz-widget">
+      <div class="quiz-widget-badge">✨ FREE QUIZ</div>
+      <h3>Which pet is actually right for you?</h3>
+      <p class="quiz-widget-q">Quick question: How much time do you spend at home each day?</p>
+      <div class="quiz-widget-opts">
+        <button class="quiz-widget-opt" onclick="pickOpt(this)">🏠 Most of the day — I work from home or stay in</button>
+        <button class="quiz-widget-opt" onclick="pickOpt(this)">🚶 About half the day — balanced mix</button>
+        <button class="quiz-widget-opt" onclick="pickOpt(this)">💼 Out most of the day — busy schedule</button>
+      </div>
+      <p class="quiz-widget-note">Free · 2 minutes · Instant results</p>
     </div>
+    <script>
+      function pickOpt(el) {
+        el.classList.add('selected');
+        el.closest('.quiz-widget-opts').querySelectorAll('.quiz-widget-opt').forEach(b => { if(b!==el) b.disabled=true; b.style.opacity=b===el?'1':'0.4'; });
+        setTimeout(() => { window.location.href = '../quiz.html?ref=blog-first-pet'; }, 600);
+      }
+    </script>
 
   </article>
 

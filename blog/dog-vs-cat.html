@@ -54,11 +54,15 @@
     .verdict-emoji { font-size: 3rem; margin-bottom: 12px; }
     .verdict-title { font-size: 1.05rem; font-weight: 800; margin-bottom: 8px; }
     .verdict-desc { font-size: 0.85rem; color: var(--text-muted); line-height: 1.65; }
-    .cta-inline { background: linear-gradient(135deg,var(--primary),var(--secondary)); border-radius: 20px; padding: 32px; text-align: center; margin: 40px 0; color: white; }
-    .cta-inline h3 { font-size: 1.3rem; font-weight: 800; margin-bottom: 8px; }
-    .cta-inline p { opacity: 0.88; margin-bottom: 20px; }
-    .cta-inline a { display: inline-block; background: white; color: var(--primary-dark); padding: 14px 36px; border-radius: 100px; font-weight: 800; text-decoration: none; transition: var(--transition); }
-    .cta-inline a:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.15); }
+    .quiz-widget { background: linear-gradient(135deg,#6366f1,#818cf8); border-radius: 20px; padding: 28px 24px; margin: 40px 0; color: #fff; text-align: center; }
+    .quiz-widget-badge { display: inline-block; background: rgba(255,255,255,0.2); border-radius: 20px; padding: 4px 14px; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.06em; margin-bottom: 14px; }
+    .quiz-widget h3 { font-size: 1.2rem; font-weight: 800; margin-bottom: 6px; }
+    .quiz-widget-q { font-size: 0.95rem; opacity: 0.9; margin-bottom: 18px; }
+    .quiz-widget-opts { display: flex; flex-direction: column; gap: 10px; max-width: 380px; margin: 0 auto 16px; }
+    .quiz-widget-opt { background: rgba(255,255,255,0.15); border: 2px solid rgba(255,255,255,0.3); border-radius: 12px; padding: 12px 18px; color: #fff; font-size: 0.9rem; font-weight: 600; cursor: pointer; transition: all 0.2s; text-align: left; }
+    .quiz-widget-opt:hover { background: rgba(255,255,255,0.28); border-color: rgba(255,255,255,0.6); transform: translateX(4px); }
+    .quiz-widget-opt.selected { background: #fff; color: #6366f1; border-color: #fff; }
+    .quiz-widget-note { font-size: 0.78rem; opacity: 0.7; }
   </style>
 </head>
 <body>
@@ -166,11 +170,24 @@
 
     <p>A dog is your <strong>most enthusiastic life partner</strong>. A cat is your <strong>most sophisticated roommate</strong>. Both are great — they just suit different people in different ways.</p>
 
-    <div class="cta-inline">
-      <h3>Curious about pets beyond dogs and cats?</h3>
-      <p>Our 25-question quiz matches you with the best of 10 different animals</p>
-      <a href="../quiz.html">Take the Free Quiz →</a>
+    <div class="quiz-widget">
+      <div class="quiz-widget-badge">✨ FREE QUIZ</div>
+      <h3>Are you actually a dog or cat person?</h3>
+      <p class="quiz-widget-q">Quick question: Which sounds more like you?</p>
+      <div class="quiz-widget-opts">
+        <button class="quiz-widget-opt" onclick="pickOpt(this)">🐕 I love going out, being active, and sharing everything</button>
+        <button class="quiz-widget-opt" onclick="pickOpt(this)">🐈 I value my alone time and prefer low-drama companionship</button>
+        <button class="quiz-widget-opt" onclick="pickOpt(this)">🤔 Honestly, I'm not sure — maybe neither?</button>
+      </div>
+      <p class="quiz-widget-note">Free · 2 minutes · Instant results</p>
     </div>
+    <script>
+      function pickOpt(el) {
+        el.classList.add('selected');
+        el.closest('.quiz-widget-opts').querySelectorAll('.quiz-widget-opt').forEach(b => { if(b!==el) b.disabled=true; b.style.opacity=b===el?'1':'0.4'; });
+        setTimeout(() => { window.location.href = '../quiz.html?ref=blog-dog-vs-cat'; }, 600);
+      }
+    </script>
 
   </article>
 
