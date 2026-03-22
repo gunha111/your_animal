@@ -76,9 +76,9 @@
     }
 
     function goNext() {
-      window.location.href = type === 'quiz_unlock'
-        ? 'results.html?unlocked=1'
-        : info.page;
+      // Clear server-verify cache so results.html re-checks after payment
+      sessionStorage.removeItem('mpg_sv_quiz');
+      window.location.href = type === 'quiz_unlock' ? 'results.html' : info.page;
     }
 
     init();

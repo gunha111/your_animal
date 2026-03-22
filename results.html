@@ -230,15 +230,14 @@
   <script>
 
     const results = JSON.parse(sessionStorage.getItem('quizResults') || 'null');
-    const urlParams = new URLSearchParams(window.location.search);
-    const isUnlocked = urlParams.get('unlocked') === '1' || sessionStorage.getItem('unlocked') === '1';
 
-    if (isUnlocked) sessionStorage.setItem('unlocked', '1');
+    // isUnlocked is determined ONLY after server verification — never trust localStorage alone
+    let isUnlocked = false;
 
     function retakeQuiz() {
       sessionStorage.removeItem('quizResults');
       sessionStorage.removeItem('quizAnswers');
-      sessionStorage.removeItem('unlocked');
+      sessionStorage.removeItem('mpg_sv_quiz');
       window.location.href = 'quiz.html';
     }
 
@@ -739,7 +738,28 @@
       `;
     }
 
-    render();
+    // ── Server-gated render ─────────────────────────────────────
+    // Show loading, verify server-side, then render.
+    // Bypassing localStorage (ya_quiz_paid=1) has no effect here.
+    (async function init() {
+      const container = document.getElementById('results-container');
+
+      // Show loading spinner while verifying
+      container.innerHTML = `
+        <div style="text-align:center;padding:80px 20px;">
+          <div style="font-size:3rem;margin-bottom:16px;animation:spin 1s linear infinite;display:inline-block;">🐾</div>
+          <p style="color:#6b7280;font-size:0.95rem;">Loading your results...</p>
+        </div>
+        <style>@keyframes spin{to{transform:rotate(360deg)}}</style>
+      `;
+
+      // Server verification (uses SUPABASE_SERVICE_KEY, cannot be faked client-side)
+      if (typeof Paywall !== 'undefined') {
+        isUnlocked = await Paywall.verifyServer();
+      }
+
+      render();
+    })();
 
     // Record quiz completion for social proof counter + distribution chart
     (function recordCompletion() {

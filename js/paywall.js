@@ -224,6 +224,62 @@ const Paywall = {
     }
   },
 
+  // ── Server-side access verification ────────────────────────────
+  // Hits /api/verify-access with SERVICE_KEY — cannot be bypassed via DevTools.
+  // Result is cached in sessionStorage for the current tab session only.
+  async verifyServer() {
+    const SESSION_CACHE_KEY = 'mpg_sv_quiz';
+
+    // Reuse within same tab session (sessionStorage clears on tab close)
+    const cached = sessionStorage.getItem(SESSION_CACHE_KEY);
+    if (cached !== null) return cached === '1';
+
+    const sessionId = localStorage.getItem(STORAGE_KEYS.session_id);
+    let userId = null;
+    if (window.YAAuth) {
+      try {
+        const { data: { session } } = await window.YAAuth.getSession();
+        userId = session?.user?.id || null;
+      } catch {}
+    }
+
+    // Nothing to verify against
+    if (!sessionId && !userId) {
+      sessionStorage.setItem(SESSION_CACHE_KEY, '0');
+      return false;
+    }
+
+    try {
+      const res = await fetch('/api/verify-access', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ session_id: sessionId, user_id: userId }),
+      });
+      if (!res.ok) throw new Error('non-ok');
+      const { valid, products } = await res.json();
+
+      // Sync localStorage from authoritative server response
+      if (valid && products) {
+        if (products.includes('subscription')) {
+          localStorage.setItem(STORAGE_KEYS.name_gen_paid, '1');
+          localStorage.setItem(STORAGE_KEYS.care_plan_paid, '1');
+          localStorage.setItem(STORAGE_KEYS.quiz_paid, '1');
+        }
+        if (products.includes('quiz_unlock'))  localStorage.setItem(STORAGE_KEYS.quiz_paid, '1');
+        if (products.includes('name_gen'))     localStorage.setItem(STORAGE_KEYS.name_gen_paid, '1');
+        if (products.includes('care_plan'))    localStorage.setItem(STORAGE_KEYS.care_plan_paid, '1');
+      }
+
+      sessionStorage.setItem(SESSION_CACHE_KEY, valid ? '1' : '0');
+      return valid;
+    } catch {
+      // Network error — fall back to localStorage (fail-open, not fail-closed)
+      const localSays = this.canSeeQuizFull();
+      sessionStorage.setItem(SESSION_CACHE_KEY, localSays ? '1' : '0');
+      return localSays;
+    }
+  },
+
   // ── URL param check (legacy / fallback) ────────────────────────
   checkReturnFromPayment() {
     const params = new URLSearchParams(window.location.search);
