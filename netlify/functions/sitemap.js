@@ -9,7 +9,8 @@ const STATIC_PAGES = [
   { url: '/results.html',      priority: '0.7', changefreq: 'monthly' },
   { url: '/blog.html',         priority: '0.8', changefreq: 'weekly'  },
   { url: '/pricing.html',      priority: '0.7', changefreq: 'monthly' },
-  { url: '/name-generator.html', priority: '0.7', changefreq: 'monthly' },
+  { url: '/name-generator.html',    priority: '0.7', changefreq: 'monthly' },
+  { url: '/symptom-checker.html',   priority: '0.8', changefreq: 'monthly' },
   { url: '/care-plan.html',    priority: '0.6', changefreq: 'monthly' },
   { url: '/community.html',    priority: '0.6', changefreq: 'weekly'  },
   { url: '/embed.html',        priority: '0.5', changefreq: 'monthly' },
@@ -27,6 +28,20 @@ const BLOG_POSTS = [
   '/blog/pet-health-check.html',
   '/blog/small-pet-guide.html',
   '/blog/dog-vs-cat.html',
+];
+
+const SYMPTOM_PAGES = [
+  { url: '/symptoms/dog-vomiting.html',        priority: '0.8', changefreq: 'monthly' },
+  { url: '/symptoms/dog-not-eating.html',      priority: '0.8', changefreq: 'monthly' },
+  { url: '/symptoms/dog-lethargic.html',       priority: '0.8', changefreq: 'monthly' },
+  { url: '/symptoms/dog-diarrhea.html',        priority: '0.8', changefreq: 'monthly' },
+  { url: '/symptoms/dog-limping.html',         priority: '0.8', changefreq: 'monthly' },
+  { url: '/symptoms/dog-breathing-heavy.html', priority: '0.8', changefreq: 'monthly' },
+  { url: '/symptoms/cat-not-eating.html',      priority: '0.8', changefreq: 'monthly' },
+  { url: '/symptoms/cat-vomiting.html',        priority: '0.8', changefreq: 'monthly' },
+  { url: '/symptoms/cat-lethargic.html',       priority: '0.8', changefreq: 'monthly' },
+  { url: '/symptoms/rabbit-not-eating.html',   priority: '0.8', changefreq: 'monthly' },
+  { url: '/symptoms/hamster-not-moving.html',  priority: '0.8', changefreq: 'monthly' },
 ];
 
 export default async () => {
@@ -48,10 +63,19 @@ export default async () => {
     <priority>0.6</priority>
   </url>`).join('');
 
+  const symptomUrls = SYMPTOM_PAGES.map(p => `
+  <url>
+    <loc>${BASE}${p.url}</loc>
+    <lastmod>${now}</lastmod>
+    <changefreq>${p.changefreq}</changefreq>
+    <priority>${p.priority}</priority>
+  </url>`).join('');
+
   const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${staticUrls}
 ${blogUrls}
+${symptomUrls}
 </urlset>`;
 
   return new Response(xml, {

@@ -1,0 +1,1392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pet Symptom Checker — Is My Pet OK? | My Pet Generator</title>
+  <meta name="description" content="Describe your pet's symptoms and get an instant triage assessment. Find out if you need an emergency vet visit — free." />
+  <meta property="og:title" content="Pet Symptom Checker — Is My Pet OK?" />
+  <meta property="og:description" content="Enter your pet's symptoms and get an AI triage response in seconds. Emergency, warning, or all clear." />
+  <meta property="og:image" content="https://mypetgenerator.com/og-image.png" />
+  <meta property="og:url" content="https://mypetgenerator.com/symptom-checker.html" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="canonical" href="https://mypetgenerator.com/symptom-checker.html" />
+
+  <!-- Analytics (same IDs as existing site) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-0JS339QR6G"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-0JS339QR6G');
+  </script>
+  <script>
+    (function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+    t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+    y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window,document,"clarity","script","vydckg629a");
+  </script>
+
+  <!-- Paddle (same pattern as existing site) -->
+  <script src="https://cdn.paddle.com/paddle/v2/paddle.js"></script>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
+
+  <!-- Shared site CSS -->
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>ð¥</text></svg>" />
+
+  <style>
+    /* âââ PAGE-SPECIFIC STYLES âââââââââââââââââââââââââââ */
+
+    .sc-hero {
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+      padding: 80px 20px 60px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .sc-hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at 30% 50%, rgba(239,68,68,0.15) 0%, transparent 60%),
+        radial-gradient(ellipse at 70% 50%, rgba(99,102,241,0.15) 0%, transparent 60%);
+    }
+    .sc-hero .container { position: relative; }
+    .sc-hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.2);
+      color: #fff;
+      padding: 6px 18px;
+      border-radius: 100px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      margin-bottom: 24px;
+      backdrop-filter: blur(10px);
+    }
+    .sc-hero h1 {
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      font-weight: 900;
+      color: #fff;
+      margin-bottom: 16px;
+      line-height: 1.15;
+    }
+    .sc-hero h1 span {
+      background: linear-gradient(135deg, #f87171, #fb923c);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .sc-hero p {
+      color: rgba(255,255,255,0.75);
+      font-size: 1.05rem;
+      max-width: 520px;
+      margin: 0 auto 36px;
+      line-height: 1.65;
+    }
+    .sc-trust-pills {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .sc-trust-pill {
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.15);
+      color: rgba(255,255,255,0.85);
+      padding: 5px 14px;
+      border-radius: 100px;
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+
+    /* Main wrapper */
+    .sc-main {
+      background: linear-gradient(180deg, #f0f4ff 0%, #fafafa 100%);
+      padding: 60px 20px 100px;
+      min-height: 60vh;
+    }
+    .sc-card {
+      background: #fff;
+      border-radius: 24px;
+      box-shadow: 0 8px 48px rgba(0,0,0,0.10);
+      max-width: 660px;
+      margin: 0 auto;
+      overflow: hidden;
+    }
+
+    /* Step Header */
+    .sc-step-header {
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      padding: 28px 36px;
+      color: #fff;
+    }
+    @media (max-width:540px) { .sc-step-header { padding: 22px 20px; } }
+    .sc-step-pills {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+    .sc-step-pill {
+      height: 6px;
+      flex: 1;
+      border-radius: 100px;
+      background: rgba(255,255,255,0.25);
+      transition: background 0.3s;
+    }
+    .sc-step-pill.active { background: #fff; }
+    .sc-step-pill.done { background: rgba(255,255,255,0.55); }
+    .sc-step-title { font-size: 1.1rem; font-weight: 800; margin: 0 0 4px; }
+    .sc-step-sub { font-size: 0.84rem; opacity: 0.8; margin: 0; }
+
+    /* Step Body */
+    .sc-step-body { padding: 36px; }
+    @media (max-width:540px) { .sc-step-body { padding: 24px 20px; } }
+
+    /* Animal grid */
+    .animal-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+    @media (max-width:480px) { .animal-grid { grid-template-columns: repeat(3, 1fr); } }
+    .animal-btn {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      padding: 16px 8px;
+      background: #f9fafb;
+      border: 2px solid #e5e7eb;
+      border-radius: 16px;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: inherit;
+    }
+    .animal-btn:hover { border-color: #6366f1; background: #eef2ff; transform: translateY(-2px); }
+    .animal-btn.selected {
+      border-color: #6366f1;
+      background: linear-gradient(135deg, #eef2ff, #f5f3ff);
+      box-shadow: 0 4px 16px rgba(99,102,241,0.2);
+      transform: translateY(-2px);
+    }
+    .animal-btn .a-emoji { font-size: 1.9rem; }
+    .animal-btn .a-label { font-size: 0.76rem; font-weight: 700; color: #374151; }
+    .animal-btn.selected .a-label { color: #4f46e5; }
+
+    /* Form fields */
+    .sc-input-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    @media (max-width:480px) { .sc-input-row { grid-template-columns: 1fr; } }
+    .sc-field label {
+      display: block;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: #374151;
+      margin-bottom: 7px;
+      letter-spacing: 0.2px;
+    }
+    .sc-field select,
+    .sc-field input[type="text"] {
+      width: 100%;
+      padding: 13px 16px;
+      border: 2px solid #e5e7eb;
+      border-radius: 12px;
+      font-size: 0.92rem;
+      font-family: inherit;
+      background: #f9fafb;
+      color: #111827;
+      outline: none;
+      transition: border-color 0.2s, background 0.2s;
+      box-sizing: border-box;
+      -webkit-appearance: none;
+      appearance: none;
+    }
+    .sc-field select {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath stroke='%236b7280' stroke-width='1.5' fill='none' d='M1 1l5 5 5-5'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 14px center;
+      padding-right: 38px;
+    }
+    .sc-field select:focus,
+    .sc-field input[type="text"]:focus {
+      border-color: #6366f1;
+      background: #fff;
+    }
+
+    /* Symptom chips */
+    .sc-section-label {
+      font-size: 0.74rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #9ca3af;
+      margin: 22px 0 10px;
+    }
+    .sc-section-label:first-child { margin-top: 0; }
+    .symptom-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+    @media (max-width:480px) { .symptom-grid { grid-template-columns: 1fr; } }
+    .symptom-chip {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      padding: 10px 13px;
+      background: #f9fafb;
+      border: 2px solid #e5e7eb;
+      border-radius: 11px;
+      cursor: pointer;
+      font-size: 0.83rem;
+      font-weight: 600;
+      color: #374151;
+      font-family: inherit;
+      text-align: left;
+      transition: all 0.15s;
+    }
+    .symptom-chip:hover { border-color: #6366f1; background: #eef2ff; }
+    .symptom-chip.selected {
+      border-color: #6366f1;
+      background: linear-gradient(135deg, #eef2ff, #f5f3ff);
+      color: #4f46e5;
+    }
+    .chip-icon { font-size: 1rem; flex-shrink: 0; }
+    .chip-check {
+      width: 18px; height: 18px;
+      border: 2px solid #d1d5db;
+      border-radius: 5px;
+      margin-left: auto;
+      flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      transition: all 0.15s;
+    }
+    .symptom-chip.selected .chip-check {
+      background: #6366f1;
+      border-color: #6366f1;
+    }
+    .symptom-chip.selected .chip-check::after {
+      content: 'â';
+      color: #fff;
+      font-size: 0.65rem;
+      font-weight: 900;
+    }
+
+    /* Textarea */
+    .sc-textarea {
+      width: 100%;
+      padding: 14px 16px;
+      border: 2px solid #e5e7eb;
+      border-radius: 13px;
+      font-size: 0.9rem;
+      font-family: inherit;
+      line-height: 1.6;
+      resize: vertical;
+      min-height: 84px;
+      outline: none;
+      background: #f9fafb;
+      color: #111827;
+      transition: border-color 0.2s, background 0.2s;
+      box-sizing: border-box;
+    }
+    .sc-textarea:focus { border-color: #6366f1; background: #fff; }
+    .sc-textarea::placeholder { color: #9ca3af; }
+
+    /* Duration grid */
+    .duration-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    .duration-btn {
+      padding: 15px 16px;
+      background: #f9fafb;
+      border: 2px solid #e5e7eb;
+      border-radius: 14px;
+      cursor: pointer;
+      font-family: inherit;
+      text-align: left;
+      transition: all 0.2s;
+    }
+    .duration-btn:hover { border-color: #6366f1; background: #eef2ff; }
+    .duration-btn.selected {
+      border-color: #6366f1;
+      background: linear-gradient(135deg, #eef2ff, #f5f3ff);
+    }
+    .d-label {
+      font-size: 0.9rem;
+      font-weight: 800;
+      color: #111827;
+      display: block;
+      margin-bottom: 3px;
+    }
+    .duration-btn.selected .d-label { color: #4f46e5; }
+    .d-sub { font-size: 0.76rem; color: #6b7280; }
+
+    /* Nav buttons */
+    .sc-nav { display: flex; gap: 12px; margin-top: 32px; }
+    .sc-btn-back {
+      padding: 14px 22px;
+      border: 2px solid #e5e7eb;
+      border-radius: 12px;
+      background: #fff;
+      color: #6b7280;
+      font-size: 0.92rem;
+      font-weight: 700;
+      font-family: inherit;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .sc-btn-back:hover { border-color: #9ca3af; color: #374151; }
+    .sc-btn-next {
+      flex: 1;
+      padding: 15px 24px;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: #fff;
+      border: none;
+      border-radius: 12px;
+      font-size: 1rem;
+      font-weight: 800;
+      font-family: inherit;
+      cursor: pointer;
+      transition: all 0.2s;
+      box-shadow: 0 4px 16px rgba(102,126,234,0.35);
+    }
+    .sc-btn-next:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(102,126,234,0.45); }
+    .sc-btn-next:disabled { opacity: 0.42; cursor: not-allowed; transform: none; box-shadow: none; }
+
+    /* Symptom count badge */
+    .sc-count-badge {
+      display: inline-block;
+      background: rgba(255,255,255,0.25);
+      border-radius: 100px;
+      padding: 2px 9px;
+      font-size: 0.78rem;
+      margin-left: 6px;
+    }
+
+    /* Loading */
+    .sc-loading { display: none; text-align: center; padding: 64px 36px; }
+    .sc-loading.active { display: block; }
+    .sc-loading-emoji {
+      font-size: 3.2rem;
+      display: block;
+      margin-bottom: 20px;
+      animation: pulse 1.6s ease-in-out infinite;
+    }
+    @keyframes pulse { 0%,100%{transform:scale(1);} 50%{transform:scale(1.12);} }
+    .sc-loading h3 { font-size: 1.2rem; font-weight: 800; color: #111827; margin: 0 0 8px; }
+    .sc-loading p { color: #6b7280; font-size: 0.88rem; }
+    .sc-spinner {
+      width: 52px; height: 52px;
+      border: 4px solid #e5e7eb;
+      border-top-color: #6366f1;
+      border-radius: 50%;
+      animation: spin 0.85s linear infinite;
+      margin: 20px auto 0;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Result */
+    .sc-result { display: none; }
+    .sc-result.active { display: block; }
+
+    .urgency-banner {
+      padding: 32px 36px;
+      text-align: center;
+    }
+    .urgency-banner.emergency { background: linear-gradient(135deg, #7f1d1d, #b91c1c); }
+    .urgency-banner.warning   { background: linear-gradient(135deg, #78350f, #b45309); }
+    .urgency-banner.ok        { background: linear-gradient(135deg, #14532d, #15803d); }
+    .urgency-icon { font-size: 3rem; display: block; margin-bottom: 12px; }
+    .urgency-badge {
+      display: inline-block;
+      padding: 4px 14px;
+      border-radius: 100px;
+      font-size: 0.73rem;
+      font-weight: 800;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+      background: rgba(255,255,255,0.18);
+      color: rgba(255,255,255,0.9);
+    }
+    .urgency-headline {
+      font-size: 1.3rem;
+      font-weight: 900;
+      color: #fff;
+      margin: 0 0 8px;
+      line-height: 1.3;
+    }
+    .urgency-sub { color: rgba(255,255,255,0.78); font-size: 0.88rem; margin: 0; }
+
+    .sc-result-body { padding: 32px 36px; }
+    @media (max-width:540px) { .sc-result-body { padding: 24px 20px; } .urgency-banner { padding: 24px 20px; } }
+
+    /* Immediate action box */
+    .ia-box {
+      border-radius: 16px;
+      padding: 20px 24px;
+      margin-bottom: 24px;
+    }
+    .ia-box.ok        { background: #f0fdf4; border: 2px solid #bbf7d0; }
+    .ia-box.warning   { background: #fffbeb; border: 2px solid #fde68a; }
+    .ia-box.emergency { background: #fff1f2; border: 2px solid #fecdd3; }
+    .ia-label {
+      font-size: 0.73rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #6b7280;
+      margin-bottom: 8px;
+    }
+    .ia-text { font-size: 0.97rem; font-weight: 700; color: #111827; line-height: 1.55; margin: 0; }
+
+    /* Paywall */
+    .sc-paywall { border: 2px dashed #e5e7eb; border-radius: 20px; overflow: hidden; }
+    .sc-paywall-preview { padding: 20px 24px; position: relative; min-height: 160px; }
+    .sc-paywall-blur {
+      filter: blur(5px);
+      user-select: none;
+      pointer-events: none;
+      opacity: 0.55;
+    }
+    .sc-paywall-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, transparent 0%, rgba(255,255,255,0.97) 45%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-end;
+      padding: 16px 20px 20px;
+      text-align: center;
+    }
+    .sc-paywall-cta { background: #fff; border-top: 2px solid #e5e7eb; padding: 26px 32px; text-align: center; }
+    .sc-paywall-cta h3 { font-size: 1.1rem; font-weight: 900; color: #111827; margin: 0 0 6px; }
+    .sc-paywall-cta p  { font-size: 0.84rem; color: #6b7280; margin: 0 0 18px; line-height: 1.5; }
+    .sc-feature-list {
+      list-style: none;
+      padding: 0; margin: 0 0 20px;
+      display: flex; flex-direction: column; gap: 8px;
+      text-align: left;
+    }
+    .sc-feature-list li {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.87rem;
+      color: #374151;
+      font-weight: 600;
+    }
+    .sc-feat-check {
+      width: 20px; height: 20px;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      color: #fff; font-size: 0.62rem; font-weight: 900;
+      flex-shrink: 0;
+    }
+    .sc-unlock-btn {
+      width: 100%;
+      padding: 16px;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: #fff;
+      border: none;
+      border-radius: 14px;
+      font-size: 1rem;
+      font-weight: 800;
+      font-family: inherit;
+      cursor: pointer;
+      transition: all 0.2s;
+      box-shadow: 0 4px 20px rgba(102,126,234,0.35);
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+    }
+    .sc-unlock-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(102,126,234,0.45); }
+    .sc-price-pill {
+      background: rgba(255,255,255,0.2);
+      border-radius: 100px;
+      padding: 3px 10px;
+      font-size: 0.82rem;
+    }
+
+    /* Full report (unlocked) */
+    .report-section { margin-bottom: 28px; }
+    .report-section h4 {
+      font-size: 0.78rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #6366f1;
+      margin: 0 0 12px;
+    }
+    .report-list {
+      list-style: none; padding: 0; margin: 0;
+      display: flex; flex-direction: column; gap: 8px;
+    }
+    .report-list li {
+      display: flex; align-items: flex-start; gap: 10px;
+      font-size: 0.88rem; color: #374151; line-height: 1.5;
+      padding: 10px 14px;
+      background: #f9fafb;
+      border-radius: 10px;
+    }
+    .li-icon { font-size: 0.95rem; flex-shrink: 0; margin-top: 1px; }
+
+    /* Vet checklist */
+    .vet-item {
+      display: flex; align-items: flex-start; gap: 12px;
+      padding: 12px 16px;
+      border: 1.5px solid #e5e7eb;
+      border-radius: 12px;
+      margin-bottom: 8px;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .vet-item:hover { border-color: #6366f1; background: #f5f3ff; }
+    .vet-cb {
+      width: 20px; height: 20px; min-width: 20px;
+      border: 2px solid #d1d5db;
+      border-radius: 6px;
+      margin-top: 1px;
+      transition: all 0.15s;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .vet-item.checked .vet-cb { background: #6366f1; border-color: #6366f1; }
+    .vet-item.checked .vet-cb::after { content: 'â'; color: #fff; font-size: 0.65rem; font-weight: 900; }
+    .vet-cb-text { font-size: 0.87rem; color: #374151; line-height: 1.4; }
+    .vet-item.checked .vet-cb-text { text-decoration: line-through; color: #9ca3af; }
+
+    /* Bottom actions */
+    .sc-actions-row {
+      display: flex; gap: 12px; margin-top: 28px; flex-wrap: wrap;
+    }
+    .sc-action-btn {
+      flex: 1; min-width: 130px;
+      padding: 13px 18px;
+      border: 2px solid #e5e7eb;
+      border-radius: 12px;
+      background: #fff;
+      color: #374151;
+      font-size: 0.87rem;
+      font-weight: 700;
+      font-family: inherit;
+      cursor: pointer;
+      text-align: center;
+      text-decoration: none;
+      display: flex; align-items: center; justify-content: center;
+      transition: all 0.2s;
+    }
+    .sc-action-btn:hover { border-color: #6366f1; color: #4f46e5; }
+
+    /* Disclaimer */
+    .sc-disclaimer {
+      background: #f9fafb;
+      border-left: 4px solid #d1d5db;
+      border-radius: 0 10px 10px 0;
+      padding: 14px 18px;
+      margin-top: 24px;
+      font-size: 0.77rem;
+      color: #9ca3af;
+      line-height: 1.65;
+    }
+
+    /* Error */
+    .sc-error { display: none; text-align: center; padding: 56px 36px; }
+    .sc-error.active { display: block; }
+    .sc-error-emoji { font-size: 3rem; margin-bottom: 16px; display: block; }
+    .sc-error h3 { font-size: 1.1rem; font-weight: 800; color: #111827; margin: 0 0 8px; }
+    .sc-error p { color: #6b7280; font-size: 0.9rem; margin: 0 0 24px; }
+
+    /* Validation warning */
+    .sc-warning {
+      display: none;
+      color: #dc2626;
+      font-size: 0.8rem;
+      font-weight: 700;
+      margin-top: 10px;
+    }
+    .sc-warning.visible { display: block; }
+
+    /* Step animation */
+    .sc-step { animation: fadeUp 0.3s ease; }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(14px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ââ HEADER ââââââââââââââââââââââââââââââââââââââââââââ -->
+  <header class="site-header">
+    <div class="container">
+      <div class="header-inner">
+        <a href="index.html" class="logo">
+          <span class="logo-emoji">ð¾</span>
+          My Pet Generator
+        </a>
+        <nav style="display:flex;gap:20px;align-items:center;">
+          <a href="name-generator.html" style="font-size:0.88rem;font-weight:600;color:var(--text-muted);text-decoration:none;white-space:nowrap;">Name Generator</a>
+          <a href="care-plan.html" style="font-size:0.88rem;font-weight:600;color:var(--text-muted);text-decoration:none;white-space:nowrap;">Care Plan</a>
+          <a href="quiz.html" class="cta-btn" style="padding:10px 24px;font-size:0.88rem;white-space:nowrap;">Pet Quiz â</a>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <!-- ââ HERO âââââââââââââââââââââââââââââââââââââââââââââ -->
+  <section class="sc-hero">
+    <div class="container">
+      <div class="sc-hero-badge">ð¥ Free Triage Tool</div>
+      <h1>Is my pet <span>OK right now</span>?</h1>
+      <p>Describe your pet's symptoms and get an instant AI-assisted triage â so you know whether to rush to the vet, monitor at home, or relax.</p>
+      <div class="sc-trust-pills">
+        <span class="sc-trust-pill">ð Dogs</span>
+        <span class="sc-trust-pill">ð Cats</span>
+        <span class="sc-trust-pill">ð° Rabbits</span>
+        <span class="sc-trust-pill">ð¹ Small Pets</span>
+        <span class="sc-trust-pill">ð¦ Birds</span>
+        <span class="sc-trust-pill">ð¢ Reptiles</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ââ MAIN âââââââââââââââââââââââââââââââââââââââââââââ -->
+  <main class="sc-main">
+    <div class="sc-card" id="sc-card">
+
+      <!-- ââââââââââââââââââââââââââââââââââââââââââââââââ
+           STEP 1: Animal Type
+      ââââââââââââââââââââââââââââââââââââââââââââââââââââ -->
+      <div id="step-1" class="sc-step">
+        <div class="sc-step-header">
+          <div class="sc-step-pills">
+            <div class="sc-step-pill active"></div>
+            <div class="sc-step-pill"></div>
+            <div class="sc-step-pill"></div>
+            <div class="sc-step-pill"></div>
+          </div>
+          <p class="sc-step-title">Step 1 of 4 â What type of pet?</p>
+          <p class="sc-step-sub">Select the animal you're concerned about</p>
+        </div>
+        <div class="sc-step-body">
+          <div class="animal-grid">
+            <button class="animal-btn" data-animal="dog"       onclick="selectAnimal(this)"><span class="a-emoji">ð</span><span class="a-label">Dog</span></button>
+            <button class="animal-btn" data-animal="cat"       onclick="selectAnimal(this)"><span class="a-emoji">ð</span><span class="a-label">Cat</span></button>
+            <button class="animal-btn" data-animal="rabbit"    onclick="selectAnimal(this)"><span class="a-emoji">ð°</span><span class="a-label">Rabbit</span></button>
+            <button class="animal-btn" data-animal="hamster"   onclick="selectAnimal(this)"><span class="a-emoji">ð¹</span><span class="a-label">Hamster</span></button>
+            <button class="animal-btn" data-animal="guinea pig" onclick="selectAnimal(this)"><span class="a-emoji">ð¾</span><span class="a-label">Guinea Pig</span></button>
+            <button class="animal-btn" data-animal="bird"      onclick="selectAnimal(this)"><span class="a-emoji">ð¦</span><span class="a-label">Bird</span></button>
+            <button class="animal-btn" data-animal="reptile"   onclick="selectAnimal(this)"><span class="a-emoji">ð¢</span><span class="a-label">Reptile</span></button>
+            <button class="animal-btn" data-animal="other"     onclick="selectAnimal(this)"><span class="a-emoji">ð¾</span><span class="a-label">Other</span></button>
+          </div>
+          <div class="sc-nav">
+            <button class="sc-btn-next" id="btn-next-1" onclick="goToStep(2)" disabled>Continue â</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ââââââââââââââââââââââââââââââââââââââââââââââââ
+           STEP 2: Pet Info
+      ââââââââââââââââââââââââââââââââââââââââââââââââââââ -->
+      <div id="step-2" class="sc-step" style="display:none;">
+        <div class="sc-step-header">
+          <div class="sc-step-pills">
+            <div class="sc-step-pill done"></div>
+            <div class="sc-step-pill active"></div>
+            <div class="sc-step-pill"></div>
+            <div class="sc-step-pill"></div>
+          </div>
+          <p class="sc-step-title">Step 2 of 4 â About your pet</p>
+          <p class="sc-step-sub">Helps us give a more accurate assessment</p>
+        </div>
+        <div class="sc-step-body">
+          <div class="sc-input-row">
+            <div class="sc-field">
+              <label>Pet's name (optional)</label>
+              <input type="text" id="pet-name" placeholder="e.g. Buddy" />
+            </div>
+            <div class="sc-field">
+              <label>Age *</label>
+              <select id="pet-age" onchange="checkStep2()">
+                <option value="">Select age</option>
+                <option value="under 1 year (puppy/kitten)">Under 1 year</option>
+                <option value="1â3 years (young adult)">1â3 years</option>
+                <option value="3â7 years (adult)">3â7 years</option>
+                <option value="7â10 years (mature)">7â10 years</option>
+                <option value="over 10 years (senior)">Over 10 years</option>
+                <option value="unknown age">Unknown</option>
+              </select>
+            </div>
+          </div>
+          <div class="sc-input-row" style="margin-top:16px;">
+            <div class="sc-field">
+              <label>Approximate weight *</label>
+              <select id="pet-weight" onchange="checkStep2()">
+                <option value="">Select weight</option>
+                <option value="under 1 kg (tiny)">Under 1 kg</option>
+                <option value="1â5 kg (small)">1â5 kg</option>
+                <option value="5â15 kg (medium)">5â15 kg</option>
+                <option value="15â30 kg (large)">15â30 kg</option>
+                <option value="over 30 kg (extra large)">Over 30 kg</option>
+                <option value="unknown weight">Unknown</option>
+              </select>
+            </div>
+            <div class="sc-field">
+              <label>Sex *</label>
+              <select id="pet-sex" onchange="checkStep2()">
+                <option value="">Select sex</option>
+                <option value="male (intact)">Male (intact)</option>
+                <option value="male (neutered)">Male (neutered)</option>
+                <option value="female (intact)">Female (intact)</option>
+                <option value="female (spayed)">Female (spayed)</option>
+                <option value="unknown sex">Unknown</option>
+              </select>
+            </div>
+          </div>
+          <div class="sc-nav">
+            <button class="sc-btn-back" onclick="goToStep(1)">â Back</button>
+            <button class="sc-btn-next" id="btn-next-2" onclick="goToStep(3)" disabled>Continue â</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ââââââââââââââââââââââââââââââââââââââââââââââââ
+           STEP 3: Symptoms
+      ââââââââââââââââââââââââââââââââââââââââââââââââââââ -->
+      <div id="step-3" class="sc-step" style="display:none;">
+        <div class="sc-step-header">
+          <div class="sc-step-pills">
+            <div class="sc-step-pill done"></div>
+            <div class="sc-step-pill done"></div>
+            <div class="sc-step-pill active"></div>
+            <div class="sc-step-pill"></div>
+          </div>
+          <p class="sc-step-title">Step 3 of 4 â What symptoms do you see?</p>
+          <p class="sc-step-sub">Select all that apply, then add any extra detail below</p>
+        </div>
+        <div class="sc-step-body">
+
+          <p class="sc-section-label">ð¨ Urgent / Emergency signs</p>
+          <div class="symptom-grid">
+            <button class="symptom-chip" data-symptom="collapse or loss of consciousness" onclick="toggleSymptom(this)">
+              <span class="chip-icon">ðµ</span>Collapse / unconscious<div class="chip-check"></div>
+            </button>
+            <button class="symptom-chip" data-symptom="difficulty breathing or gasping" onclick="toggleSymptom(this)">
+              <span class="chip-icon">ð®âð¨</span>Trouble breathing<div class="chip-check"></div>
+            </button>
+            <button class="symptom-chip" data-symptom="seizures or convulsions" onclick="toggleSymptom(this)">
+              <span class="chip-icon">â¡</span>Seizures / tremors<div class="chip-check"></div>
+            </button>
+            <button class="symptom-chip" data-symptom="severe bleeding that won't stop" onclick="toggleSymptom(this)">
+              <span class="chip-icon">ð©¸</span>Severe bleeding<div class="chip-check"></div>
+            </button>
+            <button class="symptom-chip" data-symptom="suspected poisoning or toxic ingestion" onclick="toggleSymptom(this)">
+              <span class="chip-icon">â ï¸</span>Possible poisoning<div class="chip-check"></div>
+            </button>
+            <button class="symptom-chip" data-symptom="swollen or hard and distended abdomen" onclick="toggleSymptom(this)">
+              <span class="chip-icon">ð«</span>Swollen abdomen<div class="chip-check"></div>
+            </button>
+          </div>
+
+          <p class="sc-section-label">ð¤¢ Digestive / GI</p>
+          <div class="symptom-grid">
+            <button class="symptom-chip" data-symptom="vomiting" onclick="toggleSymptom(this)">
+              <span class="chip-icon">ð¤¢</span>Vomiting<div class="chip-check"></div>
+            </button>
+            <button class="symptom-chip" data-symptom="diarrhea" onclick="toggleSymptom(this)">
+              <span class="chip-icon">ð©</span>Diarrhea<div class="chip-check"></div>
+            </button>
+            <button class="symptom-chip" data-symptom="not eating or loss of appetite" onclick="toggleSymptom(this)">
+              <span class="chip-icon">ð½ï¸</span>Not eating<div class="chip-check"></div>
+            </button>
+            <button class="symptom-chip" data-symptom="blood in stool or vomit" onclick="toggleSymptom(this)">
+              <span class="chip-icon">ð´</span>Blood in stool/vomit<div class="chip-check"></div>
+            </button>
+            <button class="symptom-chip" data-symptom="excessive drooling" onclick="toggleSymptom(this)">
+              <span class="chip-icon">ð§</span>Excessive drooling<div class="chip-check"></div>
+            </button>
+            <button class="symptom-chip" data-symptom="straining or unable to defecate" onclick="toggleSymptom(this)">
+              <span class="chip-icon">ð£</span>Straining to poop<div class="chip-check"></div>
+            </button>
+          </div>
+
+          <p class="sc-section-label">ð Behavior / Movement</p>
+          <div class="symptom-grid">
+            <button class="symptom-chip" data-symptom="lethargy or extreme tiredness" onclick="toggleSymptom(this)">
+              <span class="chip-icon">ð´</span>Very lethargic<div class="chip-check"></div>
+            </button>
+            <button class="symptom-chip" data-symptom="limping or difficulty walking" onclick="toggleSymptom(this)">
+              <span class="chip-icon">ð¦µ</span>Limping<div class="chip-check"></div>
+            </button>
+            <button class="symptom-chip" data-symptom="hiding or unusual withdrawal from family" onclick="toggleSymptom(this)">
+              <span class="chip-icon">ð«¥</span>Hiding / withdrawn<div class="chip-check"></div>
+            </button>
+            <button class="symptom-chip" data-symptom="crying whimpering or vocalizing pain" onclick="toggleSymptom(this)">
+              <span class="chip-icon">ð¢</span>Crying / whimpering<div class="chip-check"></div>
+            </button>
+            <button class="symptom-chip" data-symptom="sudden aggression or personality change" onclick="toggleSymptom(this)">
+              <span class="chip-icon">ð¡</span>Sudden aggression<div class="chip-check"></div>
+            </button>
+            <button class="symptom-chip" data-symptom="head tilt or loss of balance" onclick="toggleSymptom(this)">
+              <span class="chip-icon">ð</span>Head tilt / off-balance<div class="chip-check"></div>
+            </button>
+          </div>
+
+          <p class="sc-section-label">ðï¸ Eyes / Ears / Skin</p>
+          <div class="symptom-grid">
+            <button class="symptom-chip" data-symptom="redness or discharge from eyes" onclick="toggleSymptom(this)">
+              <span class="chip-icon">ðï¸</span>Eye redness / discharge<div class="chip-check"></div>
+            </button>
+            <button class="symptom-chip" data-symptom="scratching ears or constant head shaking" onclick="toggleSymptom(this)">
+              <span class="chip-icon">ð</span>Ear scratching / shaking<div class="chip-check"></div>
+            </button>
+            <button class="symptom-chip" data-symptom="hair loss or skin rash or sores" onclick="toggleSymptom(this)">
+              <span class="chip-icon">ð§´</span>Hair loss / rash<div class="chip-check"></div>
+            </button>
+            <button class="symptom-chip" data-symptom="lump bump or swelling on body" onclick="toggleSymptom(this)">
+              <span class="chip-icon">ðµ</span>Lump / swelling<div class="chip-check"></div>
+            </button>
+          </div>
+
+          <p class="sc-section-label">ð¬ Describe in your own words (optional)</p>
+          <textarea
+            class="sc-textarea"
+            id="symptom-description"
+            placeholder="e.g. My dog vomited twice this morning and seems very tired. He ate something from the trash last night..."
+            rows="3"
+          ></textarea>
+
+          <div class="sc-warning" id="no-symptom-warning">
+            â ï¸ Please select at least one symptom, or describe what's happening in the text box
+          </div>
+
+          <div class="sc-nav">
+            <button class="sc-btn-back" onclick="goToStep(2)">â Back</button>
+            <button class="sc-btn-next" id="btn-next-3" onclick="validateStep3()">
+              Continue
+              <span class="sc-count-badge" id="symptom-count" style="display:none;">0</span>
+              â
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ââââââââââââââââââââââââââââââââââââââââââââââââ
+           STEP 4: Duration
+      ââââââââââââââââââââââââââââââââââââââââââââââââââââ -->
+      <div id="step-4" class="sc-step" style="display:none;">
+        <div class="sc-step-header">
+          <div class="sc-step-pills">
+            <div class="sc-step-pill done"></div>
+            <div class="sc-step-pill done"></div>
+            <div class="sc-step-pill done"></div>
+            <div class="sc-step-pill active"></div>
+          </div>
+          <p class="sc-step-title">Step 4 of 4 â How long has this been going on?</p>
+          <p class="sc-step-sub">Duration helps us assess severity accurately</p>
+        </div>
+        <div class="sc-step-body">
+          <div class="duration-grid">
+            <button class="duration-btn" data-duration="just started within the last hour" onclick="selectDuration(this)">
+              <span class="d-label">â¡ Just started</span>
+              <span class="d-sub">Within the last hour</span>
+            </button>
+            <button class="duration-btn" data-duration="started today, a few hours ago" onclick="selectDuration(this)">
+              <span class="d-label">ð Today</span>
+              <span class="d-sub">A few hours ago</span>
+            </button>
+            <button class="duration-btn" data-duration="1â2 days" onclick="selectDuration(this)">
+              <span class="d-label">ð 1â2 days</span>
+              <span class="d-sub">Started yesterday or before</span>
+            </button>
+            <button class="duration-btn" data-duration="3â6 days" onclick="selectDuration(this)">
+              <span class="d-label">ðï¸ 3â6 days</span>
+              <span class="d-sub">Ongoing for a few days</span>
+            </button>
+            <button class="duration-btn" data-duration="1 week or longer" onclick="selectDuration(this)">
+              <span class="d-label">ð 1 week or more</span>
+              <span class="d-sub">Chronic or recurring issue</span>
+            </button>
+            <button class="duration-btn" data-duration="unsure when it started" onclick="selectDuration(this)">
+              <span class="d-label">ð¤ Not sure</span>
+              <span class="d-sub">Hard to tell when it began</span>
+            </button>
+          </div>
+          <div class="sc-nav">
+            <button class="sc-btn-back" onclick="goToStep(3)">â Back</button>
+            <button class="sc-btn-next" id="btn-next-4" onclick="runCheck()" disabled>
+              ð Check My Pet Now
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ââââââââââââââââââââââââââââââââââââââââââââââââ
+           LOADING
+      ââââââââââââââââââââââââââââââââââââââââââââââââââââ -->
+      <div id="sc-loading" class="sc-loading">
+        <span class="sc-loading-emoji" id="loading-emoji">ð</span>
+        <h3 id="loading-title">Analyzing symptoms...</h3>
+        <p id="loading-sub">Checking against veterinary triage guidelines</p>
+        <div class="sc-spinner"></div>
+      </div>
+
+      <!-- ââââââââââââââââââââââââââââââââââââââââââââââââ
+           RESULT
+      ââââââââââââââââââââââââââââââââââââââââââââââââââââ -->
+      <div id="sc-result" class="sc-result">
+
+        <div class="urgency-banner" id="urgency-banner">
+          <span class="urgency-icon" id="urgency-icon">â ï¸</span>
+          <div class="urgency-badge" id="urgency-badge">Assessing...</div>
+          <h2 class="urgency-headline" id="urgency-headline"></h2>
+          <p class="urgency-sub" id="urgency-sub"></p>
+        </div>
+
+        <div class="sc-result-body">
+
+          <!-- Free: Immediate Action -->
+          <div class="ia-box ok" id="ia-box">
+            <div class="ia-label">â What to do right now â free</div>
+            <p class="ia-text" id="ia-text">Loading...</p>
+          </div>
+
+          <!-- Paywall -->
+          <div class="sc-paywall" id="paywall-section">
+            <div class="sc-paywall-preview">
+              <div class="sc-paywall-blur">
+                <p style="font-size:0.74rem;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:#9ca3af;margin:0 0 10px;">ð¬ Possible Causes</p>
+                <div style="background:#f9fafb;border-radius:10px;padding:10px 14px;margin-bottom:7px;font-size:0.86rem;color:#374151;">â¢ Gastroenteritis (stomach inflammation)</div>
+                <div style="background:#f9fafb;border-radius:10px;padding:10px 14px;margin-bottom:7px;font-size:0.86rem;color:#374151;">â¢ Dietary indiscretion â ate something unusual</div>
+                <div style="background:#f9fafb;border-radius:10px;padding:10px 14px;margin-bottom:14px;font-size:0.86rem;color:#374151;">â¢ Intestinal parasite or bacterial infection</div>
+                <p style="font-size:0.74rem;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:#9ca3af;margin:0 0 10px;">ð  Home Care Steps</p>
+                <div style="background:#f9fafb;border-radius:10px;padding:10px 14px;margin-bottom:7px;font-size:0.86rem;color:#374151;">â¢ Withhold food for 12â24 hours</div>
+                <div style="background:#f9fafb;border-radius:10px;padding:10px 14px;font-size:0.86rem;color:#374151;">â¢ Offer small amounts of water every 2 hours</div>
+              </div>
+              <div class="sc-paywall-overlay">
+                <p style="font-size:0.84rem;color:#374151;font-weight:700;margin:0 0 2px;">Full report hidden</p>
+                <p style="font-size:0.77rem;color:#6b7280;margin:0;">Unlock to see causes, home care & vet checklist</p>
+              </div>
+            </div>
+            <div class="sc-paywall-cta">
+              <h3>Unlock the Full Report</h3>
+              <p>Get a complete breakdown â causes, home care steps, and a printable vet visit checklist.</p>
+              <ul class="sc-feature-list">
+                <li><div class="sc-feat-check">â</div> 3â5 likely causes in plain language</li>
+                <li><div class="sc-feat-check">â</div> At-home care steps ranked by priority</li>
+                <li><div class="sc-feat-check">â</div> Interactive vet visit checklist (tap to check off)</li>
+                <li><div class="sc-feat-check">â</div> Red-flag signs to watch for in the next 24 hrs</li>
+              </ul>
+              <button class="sc-unlock-btn" onclick="unlockReport()">
+                Unlock Full Report
+                <span class="sc-price-pill">$2.99</span>
+              </button>
+              <p style="font-size:0.74rem;color:#9ca3af;margin-top:10px;">
+                One-time payment Â· Instant access Â· 100% money-back guarantee
+              </p>
+            </div>
+          </div>
+
+          <!-- Full unlocked report (hidden until paid) -->
+          <div id="full-report" style="display:none;">
+            <div class="report-section">
+              <h4>ð¬ Possible Causes</h4>
+              <ul class="report-list" id="report-causes"></ul>
+            </div>
+            <div class="report-section">
+              <h4>ð  Home Care Steps</h4>
+              <ul class="report-list" id="report-homecare"></ul>
+            </div>
+            <div class="report-section">
+              <h4>ð Vet Visit Checklist â tap to check off</h4>
+              <div id="report-vet-checklist"></div>
+            </div>
+            <div class="report-section">
+              <h4>ð© Go to the vet immediately if you also see:</h4>
+              <ul class="report-list" id="report-red-flags"></ul>
+            </div>
+          </div>
+
+          <!-- Action buttons -->
+          <div class="sc-actions-row">
+            <button class="sc-action-btn" onclick="startOver()">ð Check Again</button>
+            <a href="care-plan.html" class="sc-action-btn">ð Care Plan</a>
+            <a href="quiz.html"      class="sc-action-btn">ð¾ Pet Quiz</a>
+          </div>
+
+          <div class="sc-disclaimer">
+            <strong>âï¸ Disclaimer:</strong> This tool provides general information only and is not a substitute for professional veterinary advice, diagnosis, or treatment. If your pet is in distress or you are concerned, contact a licensed veterinarian or emergency animal hospital immediately. Always consult a vet before making medical decisions for your pet.
+          </div>
+        </div>
+      </div>
+
+      <!-- ââââââââââââââââââââââââââââââââââââââââââââââââ
+           ERROR
+      ââââââââââââââââââââââââââââââââââââââââââââââââââââ -->
+      <div id="sc-error" class="sc-error">
+        <span class="sc-error-emoji">ð</span>
+        <h3>Something went wrong</h3>
+        <p>We couldn't analyze the symptoms right now. Please try again in a moment.</p>
+        <button class="sc-btn-next" style="max-width:220px;margin:0 auto;" onclick="startOver()">Try Again</button>
+      </div>
+
+    </div><!-- /sc-card -->
+
+    <p style="text-align:center;color:#9ca3af;font-size:0.77rem;margin-top:20px;max-width:480px;margin-left:auto;margin-right:auto;line-height:1.65;padding:0 20px;">
+      AI-assisted information only â not a replacement for a licensed veterinarian.
+      In an emergency, contact your nearest animal hospital immediately.
+    </p>
+  </main>
+
+  <!-- ââ FOOTER âââââââââââââââââââââââââââââââââââââââââââ -->
+  <footer class="site-footer">
+    <div class="footer-logo">ð¾ My Pet Generator</div>
+    <div class="footer-links">
+      <a href="terms.html">Terms of Service</a>
+      <a href="privacy.html">Privacy Policy</a>
+      <a href="refund.html">Refund Policy</a>
+      <a href="pricing.html">Pricing</a>
+      <a href="symptom-checker.html">Symptom Checker</a>
+      <a href="mailto:hello@mypetgenerator.com">Contact Us</a>
+    </div>
+    <p>© 2026 My Pet Generator. All rights reserved.</p>
+  </footer>
+
+  <!-- ââââââââââââââââââââââââââââââââââââââââââââââââââââââ
+       JAVASCRIPT
+  âââââââââââââââââââââââââââââââââââââââââââââââââââââââ -->
+  <script>
+    // ââ State âââââââââââââââââââââââââââââââââââââââââââââ
+    const state = {
+      animal:      null,
+      petName:     '',
+      petAge:      '',
+      petWeight:   '',
+      petSex:      '',
+      symptoms:    [],
+      description: '',
+      duration:    null,
+      sessionId:   newSessionId(),
+      unlocked:    false,
+      resultData:  null,
+    };
+
+    function newSessionId() {
+      return 'sc_' + Date.now() + '_' + Math.random().toString(36).slice(2, 8);
+    }
+
+    // ââ Step Navigation âââââââââââââââââââââââââââââââââââ
+    function goToStep(n) {
+      for (let i = 1; i <= 4; i++) {
+        const el = document.getElementById('step-' + i);
+        if (el) el.style.display = (i === n) ? 'block' : 'none';
+      }
+      document.getElementById('sc-card').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    // ââ Step 1: Animal ââââââââââââââââââââââââââââââââââââ
+    function selectAnimal(btn) {
+      document.querySelectorAll('.animal-btn').forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+      state.animal = btn.dataset.animal;
+      document.getElementById('btn-next-1').disabled = false;
+    }
+
+    // ââ Step 2: Pet Info ââââââââââââââââââââââââââââââââââ
+    function checkStep2() {
+      const age    = document.getElementById('pet-age').value;
+      const weight = document.getElementById('pet-weight').value;
+      const sex    = document.getElementById('pet-sex').value;
+      document.getElementById('btn-next-2').disabled = !(age && weight && sex);
+    }
+
+    // ââ Step 3: Symptoms ââââââââââââââââââââââââââââââââââ
+    function toggleSymptom(btn) {
+      btn.classList.toggle('selected');
+      const s = btn.dataset.symptom;
+      if (btn.classList.contains('selected')) {
+        if (!state.symptoms.includes(s)) state.symptoms.push(s);
+      } else {
+        state.symptoms = state.symptoms.filter(x => x !== s);
+      }
+      const n = state.symptoms.length;
+      const countEl = document.getElementById('symptom-count');
+      countEl.textContent = n;
+      countEl.style.display = n > 0 ? 'inline-block' : 'none';
+      document.getElementById('no-symptom-warning').classList.remove('visible');
+    }
+
+    function validateStep3() {
+      const desc = document.getElementById('symptom-description').value.trim();
+      if (state.symptoms.length === 0 && !desc) {
+        document.getElementById('no-symptom-warning').classList.add('visible');
+        return;
+      }
+      document.getElementById('no-symptom-warning').classList.remove('visible');
+      goToStep(4);
+    }
+
+    // ââ Step 4: Duration ââââââââââââââââââââââââââââââââââ
+    function selectDuration(btn) {
+      document.querySelectorAll('.duration-btn').forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+      state.duration = btn.dataset.duration;
+      document.getElementById('btn-next-4').disabled = false;
+    }
+
+    // ââ Run Check (API call) ââââââââââââââââââââââââââââââ
+    const LOADING_MESSAGES = [
+      { emoji: 'ð', title: 'Analyzing symptoms...', sub: 'Checking against veterinary triage guidelines' },
+      { emoji: 'ð§¬', title: 'Cross-referencing conditions...', sub: 'Comparing with known cases for this pet type' },
+      { emoji: 'ð', title: 'Building your report...', sub: 'Almost ready â personalizing your results' },
+    ];
+
+    async function runCheck() {
+      state.petName    = document.getElementById('pet-name').value.trim();
+      state.petAge     = document.getElementById('pet-age').value;
+      state.petWeight  = document.getElementById('pet-weight').value;
+      state.petSex     = document.getElementById('pet-sex').value;
+      state.description = document.getElementById('symptom-description').value.trim();
+
+      // Show loading
+      for (let i = 1; i <= 4; i++) {
+        const el = document.getElementById('step-' + i);
+        if (el) el.style.display = 'none';
+      }
+      document.getElementById('sc-loading').classList.add('active');
+      document.getElementById('sc-card').scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+      let msgIdx = 0;
+      const msgInterval = setInterval(() => {
+        msgIdx = (msgIdx + 1) % LOADING_MESSAGES.length;
+        const m = LOADING_MESSAGES[msgIdx];
+        document.getElementById('loading-emoji').textContent = m.emoji;
+        document.getElementById('loading-title').textContent = m.title;
+        document.getElementById('loading-sub').textContent   = m.sub;
+      }, 1800);
+
+      // GA event
+      if (typeof gtag !== 'undefined') {
+        gtag('event', 'symptom_check_started', {
+          animal: state.animal,
+          symptom_count: state.symptoms.length,
+        });
+      }
+
+      try {
+        const res = await fetch('/.netlify/functions/check-symptom', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            animal:      state.animal,
+            petName:     state.petName,
+            petAge:      state.petAge,
+            petWeight:   state.petWeight,
+            petSex:      state.petSex,
+            symptoms:    state.symptoms,
+            description: state.description,
+            duration:    state.duration,
+            sessionId:   state.sessionId,
+          }),
+        });
+
+        clearInterval(msgInterval);
+        if (!res.ok) throw new Error('API error ' + res.status);
+
+        const data = await res.json();
+        state.resultData = data;
+        showResult(data);
+
+      } catch (err) {
+        clearInterval(msgInterval);
+        console.error('check-symptom error:', err);
+        document.getElementById('sc-loading').classList.remove('active');
+        document.getElementById('sc-error').classList.add('active');
+      }
+    }
+
+    // ââ Show Result âââââââââââââââââââââââââââââââââââââââ
+    function showResult(data) {
+      document.getElementById('sc-loading').classList.remove('active');
+      document.getElementById('sc-result').classList.add('active');
+
+      const urgency = data.urgency || 'warning'; // 'emergency' | 'warning' | 'ok'
+
+      // Banner
+      const banner = document.getElementById('urgency-banner');
+      banner.className = 'urgency-banner ' + urgency;
+
+      const ICONS  = { emergency: 'ð¨', warning: 'â ï¸', ok: 'â' };
+      const BADGES = { emergency: 'ð´ Emergency', warning: 'ð¡ Monitor Closely', ok: 'ð¢ Likely OK' };
+
+      document.getElementById('urgency-icon').textContent     = ICONS[urgency];
+      document.getElementById('urgency-badge').textContent    = BADGES[urgency];
+      document.getElementById('urgency-headline').textContent = data.headline     || '';
+      document.getElementById('urgency-sub').textContent      = data.urgency_sub  || '';
+
+      // Immediate action box
+      const iaBox = document.getElementById('ia-box');
+      iaBox.className = 'ia-box ' + urgency;
+      document.getElementById('ia-text').textContent = data.immediate_action || '';
+
+      // GA
+      if (typeof gtag !== 'undefined') {
+        gtag('event', 'symptom_check_completed', {
+          animal:  state.animal,
+          urgency: urgency,
+        });
+      }
+
+      document.getElementById('sc-card').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    // ââ Unlock (Paddle) âââââââââââââââââââââââââââââââââââ
+    function unlockReport() {
+      if (state.unlocked) { renderFullReport(); return; }
+
+      if (typeof Paddle !== 'undefined') {
+        Paddle.Initialize({ token: 'live_ee1c199a48838d75d5ece38b08b' });
+        Paddle.Checkout.open({
+          items: [{ priceId: 'pri_01kmakgmym9zb1bktek1d3zkvb', quantity: 1 }],
+          customData: {
+            session_id:   state.sessionId,
+            product_type: 'symptom_report',
+          },
+          settings: { theme: 'light', displayMode: 'overlay' },
+          successCallback: () => {
+            state.unlocked = true;
+            renderFullReport();
+            if (typeof gtag !== 'undefined') {
+              gtag('event', 'purchase', {
+                currency: 'USD',
+                value: 2.99,
+                items: [{ item_id: 'symptom_report', item_name: 'Symptom Report Unlock' }],
+              });
+            }
+          },
+        });
+      } else {
+        // Dev/fallback: show full report directly (remove in production)
+        state.unlocked = true;
+        // Fake data for testing
+        if (!state.resultData.detailed_causes) {
+          state.resultData.detailed_causes = [
+            'Gastroenteritis â inflammation of the stomach/intestinal lining, often from diet changes or a minor infection',
+            'Dietary indiscretion â common when a pet eats something unusual, spoiled, or out of the ordinary',
+            'Intestinal parasites (roundworm, giardia) â especially if your pet spends time outdoors or around other animals',
+          ];
+          state.resultData.home_care = [
+            'Withhold food for 12â24 hours to let the GI tract rest (fresh water always available)',
+            'Offer small, frequent amounts of water (2â3 tablespoons every 30 minutes) to prevent dehydration',
+            'After fasting, reintroduce bland food: boiled chicken and white rice in small amounts',
+            'Monitor stool consistency â improving diarrhea within 24â48 hrs is a good sign',
+          ];
+          state.resultData.vet_checklist = [
+            'Note the time and frequency of vomiting/diarrhea episodes',
+            'Bring a fresh stool sample in a sealed container if possible',
+            'List all food, treats, or objects your pet may have eaten in the last 48 hours',
+            'Note any medications or supplements your pet currently takes',
+            'Describe any recent changes to diet, environment, or routine',
+          ];
+          state.resultData.red_flags = [
+            'Blood in vomit or stool (bright red or dark/tarry)',
+            'Signs of severe dehydration: sunken eyes, dry gums, skin that doesn\'t spring back when pinched',
+            'Vomiting more than 3â4 times within 1 hour',
+            'Your pet becomes unresponsive, collapses, or loses consciousness',
+          ];
+        }
+        renderFullReport();
+      }
+    }
+
+    function renderFullReport() {
+      const data = state.resultData;
+      if (!data) return;
+
+      document.getElementById('paywall-section').style.display = 'none';
+      document.getElementById('full-report').style.display = 'block';
+
+      // Causes
+      const causesList = document.getElementById('report-causes');
+      causesList.innerHTML = '';
+      (data.detailed_causes || []).forEach(c => {
+        causesList.insertAdjacentHTML('beforeend',
+          `<li><span class="li-icon">ð¬</span>${c}</li>`);
+      });
+
+      // Home care
+      const homecareList = document.getElementById('report-homecare');
+      homecareList.innerHTML = '';
+      (data.home_care || []).forEach((s, i) => {
+        homecareList.insertAdjacentHTML('beforeend',
+          `<li><span class="li-icon">${i+1}.</span>${s}</li>`);
+      });
+
+      // Vet checklist (interactive)
+      const vetDiv = document.getElementById('report-vet-checklist');
+      vetDiv.innerHTML = '';
+      (data.vet_checklist || []).forEach((item) => {
+        const div = document.createElement('div');
+        div.className = 'vet-item';
+        div.innerHTML = `<div class="vet-cb"></div><div class="vet-cb-text">${item}</div>`;
+        div.onclick = () => div.classList.toggle('checked');
+        vetDiv.appendChild(div);
+      });
+
+      // Red flags
+      const flagsList = document.getElementById('report-red-flags');
+      flagsList.innerHTML = '';
+      (data.red_flags || []).forEach(f => {
+        flagsList.insertAdjacentHTML('beforeend',
+          `<li><span class="li-icon">ð©</span>${f}</li>`);
+      });
+    }
+
+    // ââ Start Over ââââââââââââââââââââââââââââââââââââââââ
+    function startOver() {
+      Object.assign(state, {
+        animal: null, petName: '', petAge: '', petWeight: '', petSex: '',
+        symptoms: [], description: '', duration: null,
+        unlocked: false, resultData: null,
+        sessionId: newSessionId(),
+      });
+
+      document.querySelectorAll('.animal-btn, .symptom-chip, .duration-btn')
+        .forEach(b => b.classList.remove('selected'));
+      ['pet-name','pet-age','pet-weight','pet-sex'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.value = '';
+      });
+      document.getElementById('symptom-description').value = '';
+      document.getElementById('symptom-count').style.display = 'none';
+      document.getElementById('btn-next-1').disabled = true;
+      document.getElementById('btn-next-2').disabled = true;
+      document.getElementById('btn-next-4').disabled = true;
+      document.getElementById('no-symptom-warning').classList.remove('visible');
+      document.getElementById('sc-result').classList.remove('active');
+      document.getElementById('sc-error').classList.remove('active');
+      document.getElementById('sc-loading').classList.remove('active');
+      document.getElementById('paywall-section').style.display = 'block';
+      document.getElementById('full-report').style.display = 'none';
+
+      goToStep(1);
+    }
+  </script>
+
+</body>
+</html>
