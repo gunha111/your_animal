@@ -37,10 +37,10 @@
 
   <!-- Shared site CSS -->
   <link rel="stylesheet" href="css/style.css" />
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>ð¥</text></svg>" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🩺</text></svg>" />
 
   <style>
-    /* âââ PAGE-SPECIFIC STYLES âââââââââââââââââââââââââââ */
+    /* PAGE-SPECIFIC STYLES */
 
     .sc-hero {
       background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
@@ -279,7 +279,7 @@
       border-color: #6366f1;
     }
     .symptom-chip.selected .chip-check::after {
-      content: 'â';
+      content: '✓';
       color: #fff;
       font-size: 0.65rem;
       font-weight: 900;
@@ -566,7 +566,7 @@
       display: flex; align-items: center; justify-content: center;
     }
     .vet-item.checked .vet-cb { background: #6366f1; border-color: #6366f1; }
-    .vet-item.checked .vet-cb::after { content: 'â'; color: #fff; font-size: 0.65rem; font-weight: 900; }
+    .vet-item.checked .vet-cb::after { content: '✓'; color: #fff; font-size: 0.65rem; font-weight: 900; }
     .vet-cb-text { font-size: 0.87rem; color: #374151; line-height: 1.4; }
     .vet-item.checked .vet-cb-text { text-decoration: line-through; color: #9ca3af; }
 
@@ -631,47 +631,45 @@
 </head>
 <body>
 
-  <!-- ââ HEADER ââââââââââââââââââââââââââââââââââââââââââââ -->
+  <!-- HEADER -->
   <header class="site-header">
     <div class="container">
       <div class="header-inner">
         <a href="index.html" class="logo">
-          <span class="logo-emoji">ð¾</span>
+          <span class="logo-emoji">🐾</span>
           My Pet Generator
         </a>
         <nav style="display:flex;gap:20px;align-items:center;">
           <a href="name-generator.html" style="font-size:0.88rem;font-weight:600;color:var(--text-muted);text-decoration:none;white-space:nowrap;">Name Generator</a>
           <a href="care-plan.html" style="font-size:0.88rem;font-weight:600;color:var(--text-muted);text-decoration:none;white-space:nowrap;">Care Plan</a>
-          <a href="quiz.html" class="cta-btn" style="padding:10px 24px;font-size:0.88rem;white-space:nowrap;">Pet Quiz â</a>
+          <a href="quiz.html" class="cta-btn" style="padding:10px 24px;font-size:0.88rem;white-space:nowrap;">Pet Quiz →</a>
         </nav>
       </div>
     </div>
   </header>
 
-  <!-- ââ HERO âââââââââââââââââââââââââââââââââââââââââââââ -->
+  <!-- HERO -->
   <section class="sc-hero">
     <div class="container">
-      <div class="sc-hero-badge">ð¥ Free Triage Tool</div>
+      <div class="sc-hero-badge">🏥 Free Triage Tool</div>
       <h1>Is my pet <span>OK right now</span>?</h1>
-      <p>Describe your pet's symptoms and get an instant AI-assisted triage â so you know whether to rush to the vet, monitor at home, or relax.</p>
+      <p>Describe your pet's symptoms and get an instant AI-assisted triage — so you know whether to rush to the vet, monitor at home, or relax.</p>
       <div class="sc-trust-pills">
-        <span class="sc-trust-pill">ð Dogs</span>
-        <span class="sc-trust-pill">ð Cats</span>
-        <span class="sc-trust-pill">ð° Rabbits</span>
-        <span class="sc-trust-pill">ð¹ Small Pets</span>
-        <span class="sc-trust-pill">ð¦ Birds</span>
-        <span class="sc-trust-pill">ð¢ Reptiles</span>
+        <span class="sc-trust-pill">🐕 Dogs</span>
+        <span class="sc-trust-pill">🐈 Cats</span>
+        <span class="sc-trust-pill">🐰 Rabbits</span>
+        <span class="sc-trust-pill">🐹 Small Pets</span>
+        <span class="sc-trust-pill">🦜 Birds</span>
+        <span class="sc-trust-pill">🐢 Reptiles</span>
       </div>
     </div>
   </section>
 
-  <!-- ââ MAIN âââââââââââââââââââââââââââââââââââââââââââââ -->
+  <!-- MAIN -->
   <main class="sc-main">
     <div class="sc-card" id="sc-card">
 
-      <!-- ââââââââââââââââââââââââââââââââââââââââââââââââ
-           STEP 1: Animal Type
-      ââââââââââââââââââââââââââââââââââââââââââââââââââââ -->
+      <!-- STEP 1: Animal Type -->
       <div id="step-1" class="sc-step">
         <div class="sc-step-header">
           <div class="sc-step-pills">
@@ -680,29 +678,27 @@
             <div class="sc-step-pill"></div>
             <div class="sc-step-pill"></div>
           </div>
-          <p class="sc-step-title">Step 1 of 4 â What type of pet?</p>
+          <p class="sc-step-title">Step 1 of 4 — What type of pet?</p>
           <p class="sc-step-sub">Select the animal you're concerned about</p>
         </div>
         <div class="sc-step-body">
           <div class="animal-grid">
-            <button class="animal-btn" data-animal="dog"       onclick="selectAnimal(this)"><span class="a-emoji">ð</span><span class="a-label">Dog</span></button>
-            <button class="animal-btn" data-animal="cat"       onclick="selectAnimal(this)"><span class="a-emoji">ð</span><span class="a-label">Cat</span></button>
-            <button class="animal-btn" data-animal="rabbit"    onclick="selectAnimal(this)"><span class="a-emoji">ð°</span><span class="a-label">Rabbit</span></button>
-            <button class="animal-btn" data-animal="hamster"   onclick="selectAnimal(this)"><span class="a-emoji">ð¹</span><span class="a-label">Hamster</span></button>
-            <button class="animal-btn" data-animal="guinea pig" onclick="selectAnimal(this)"><span class="a-emoji">ð¾</span><span class="a-label">Guinea Pig</span></button>
-            <button class="animal-btn" data-animal="bird"      onclick="selectAnimal(this)"><span class="a-emoji">ð¦</span><span class="a-label">Bird</span></button>
-            <button class="animal-btn" data-animal="reptile"   onclick="selectAnimal(this)"><span class="a-emoji">ð¢</span><span class="a-label">Reptile</span></button>
-            <button class="animal-btn" data-animal="other"     onclick="selectAnimal(this)"><span class="a-emoji">ð¾</span><span class="a-label">Other</span></button>
+            <button class="animal-btn" data-animal="dog"        onclick="selectAnimal(this)"><span class="a-emoji">🐕</span><span class="a-label">Dog</span></button>
+            <button class="animal-btn" data-animal="cat"        onclick="selectAnimal(this)"><span class="a-emoji">🐈</span><span class="a-label">Cat</span></button>
+            <button class="animal-btn" data-animal="rabbit"     onclick="selectAnimal(this)"><span class="a-emoji">🐰</span><span class="a-label">Rabbit</span></button>
+            <button class="animal-btn" data-animal="hamster"    onclick="selectAnimal(this)"><span class="a-emoji">🐹</span><span class="a-label">Hamster</span></button>
+            <button class="animal-btn" data-animal="guinea pig" onclick="selectAnimal(this)"><span class="a-emoji">🐾</span><span class="a-label">Guinea Pig</span></button>
+            <button class="animal-btn" data-animal="bird"       onclick="selectAnimal(this)"><span class="a-emoji">🦜</span><span class="a-label">Bird</span></button>
+            <button class="animal-btn" data-animal="reptile"    onclick="selectAnimal(this)"><span class="a-emoji">🐢</span><span class="a-label">Reptile</span></button>
+            <button class="animal-btn" data-animal="other"      onclick="selectAnimal(this)"><span class="a-emoji">🐾</span><span class="a-label">Other</span></button>
           </div>
           <div class="sc-nav">
-            <button class="sc-btn-next" id="btn-next-1" onclick="goToStep(2)" disabled>Continue â</button>
+            <button class="sc-btn-next" id="btn-next-1" onclick="goToStep(2)" disabled>Continue →</button>
           </div>
         </div>
       </div>
 
-      <!-- ââââââââââââââââââââââââââââââââââââââââââââââââ
-           STEP 2: Pet Info
-      ââââââââââââââââââââââââââââââââââââââââââââââââââââ -->
+      <!-- STEP 2: Pet Info -->
       <div id="step-2" class="sc-step" style="display:none;">
         <div class="sc-step-header">
           <div class="sc-step-pills">
@@ -711,7 +707,7 @@
             <div class="sc-step-pill"></div>
             <div class="sc-step-pill"></div>
           </div>
-          <p class="sc-step-title">Step 2 of 4 â About your pet</p>
+          <p class="sc-step-title">Step 2 of 4 — About your pet</p>
           <p class="sc-step-sub">Helps us give a more accurate assessment</p>
         </div>
         <div class="sc-step-body">
@@ -725,9 +721,9 @@
               <select id="pet-age" onchange="checkStep2()">
                 <option value="">Select age</option>
                 <option value="under 1 year (puppy/kitten)">Under 1 year</option>
-                <option value="1â3 years (young adult)">1â3 years</option>
-                <option value="3â7 years (adult)">3â7 years</option>
-                <option value="7â10 years (mature)">7â10 years</option>
+                <option value="1–3 years (young adult)">1–3 years</option>
+                <option value="3–7 years (adult)">3–7 years</option>
+                <option value="7–10 years (mature)">7–10 years</option>
                 <option value="over 10 years (senior)">Over 10 years</option>
                 <option value="unknown age">Unknown</option>
               </select>
@@ -739,9 +735,9 @@
               <select id="pet-weight" onchange="checkStep2()">
                 <option value="">Select weight</option>
                 <option value="under 1 kg (tiny)">Under 1 kg</option>
-                <option value="1â5 kg (small)">1â5 kg</option>
-                <option value="5â15 kg (medium)">5â15 kg</option>
-                <option value="15â30 kg (large)">15â30 kg</option>
+                <option value="1–5 kg (small)">1–5 kg</option>
+                <option value="5–15 kg (medium)">5–15 kg</option>
+                <option value="15–30 kg (large)">15–30 kg</option>
                 <option value="over 30 kg (extra large)">Over 30 kg</option>
                 <option value="unknown weight">Unknown</option>
               </select>
@@ -759,15 +755,13 @@
             </div>
           </div>
           <div class="sc-nav">
-            <button class="sc-btn-back" onclick="goToStep(1)">â Back</button>
-            <button class="sc-btn-next" id="btn-next-2" onclick="goToStep(3)" disabled>Continue â</button>
+            <button class="sc-btn-back" onclick="goToStep(1)">← Back</button>
+            <button class="sc-btn-next" id="btn-next-2" onclick="goToStep(3)" disabled>Continue →</button>
           </div>
         </div>
       </div>
 
-      <!-- ââââââââââââââââââââââââââââââââââââââââââââââââ
-           STEP 3: Symptoms
-      ââââââââââââââââââââââââââââââââââââââââââââââââââââ -->
+      <!-- STEP 3: Symptoms -->
       <div id="step-3" class="sc-step" style="display:none;">
         <div class="sc-step-header">
           <div class="sc-step-pills">
@@ -776,94 +770,94 @@
             <div class="sc-step-pill active"></div>
             <div class="sc-step-pill"></div>
           </div>
-          <p class="sc-step-title">Step 3 of 4 â What symptoms do you see?</p>
+          <p class="sc-step-title">Step 3 of 4 — What symptoms do you see?</p>
           <p class="sc-step-sub">Select all that apply, then add any extra detail below</p>
         </div>
         <div class="sc-step-body">
 
-          <p class="sc-section-label">ð¨ Urgent / Emergency signs</p>
+          <p class="sc-section-label">🚨 Urgent / Emergency signs</p>
           <div class="symptom-grid">
             <button class="symptom-chip" data-symptom="collapse or loss of consciousness" onclick="toggleSymptom(this)">
-              <span class="chip-icon">ðµ</span>Collapse / unconscious<div class="chip-check"></div>
+              <span class="chip-icon">😵</span>Collapse / unconscious<div class="chip-check"></div>
             </button>
             <button class="symptom-chip" data-symptom="difficulty breathing or gasping" onclick="toggleSymptom(this)">
-              <span class="chip-icon">ð®âð¨</span>Trouble breathing<div class="chip-check"></div>
+              <span class="chip-icon">😮‍💨</span>Trouble breathing<div class="chip-check"></div>
             </button>
             <button class="symptom-chip" data-symptom="seizures or convulsions" onclick="toggleSymptom(this)">
-              <span class="chip-icon">â¡</span>Seizures / tremors<div class="chip-check"></div>
+              <span class="chip-icon">⚡</span>Seizures / tremors<div class="chip-check"></div>
             </button>
             <button class="symptom-chip" data-symptom="severe bleeding that won't stop" onclick="toggleSymptom(this)">
-              <span class="chip-icon">ð©¸</span>Severe bleeding<div class="chip-check"></div>
+              <span class="chip-icon">🩸</span>Severe bleeding<div class="chip-check"></div>
             </button>
             <button class="symptom-chip" data-symptom="suspected poisoning or toxic ingestion" onclick="toggleSymptom(this)">
-              <span class="chip-icon">â ï¸</span>Possible poisoning<div class="chip-check"></div>
+              <span class="chip-icon">⚠️</span>Possible poisoning<div class="chip-check"></div>
             </button>
             <button class="symptom-chip" data-symptom="swollen or hard and distended abdomen" onclick="toggleSymptom(this)">
-              <span class="chip-icon">ð«</span>Swollen abdomen<div class="chip-check"></div>
+              <span class="chip-icon">🫀</span>Swollen abdomen<div class="chip-check"></div>
             </button>
           </div>
 
-          <p class="sc-section-label">ð¤¢ Digestive / GI</p>
+          <p class="sc-section-label">🤢 Digestive / GI</p>
           <div class="symptom-grid">
             <button class="symptom-chip" data-symptom="vomiting" onclick="toggleSymptom(this)">
-              <span class="chip-icon">ð¤¢</span>Vomiting<div class="chip-check"></div>
+              <span class="chip-icon">🤢</span>Vomiting<div class="chip-check"></div>
             </button>
             <button class="symptom-chip" data-symptom="diarrhea" onclick="toggleSymptom(this)">
-              <span class="chip-icon">ð©</span>Diarrhea<div class="chip-check"></div>
+              <span class="chip-icon">💩</span>Diarrhea<div class="chip-check"></div>
             </button>
             <button class="symptom-chip" data-symptom="not eating or loss of appetite" onclick="toggleSymptom(this)">
-              <span class="chip-icon">ð½ï¸</span>Not eating<div class="chip-check"></div>
+              <span class="chip-icon">🍽️</span>Not eating<div class="chip-check"></div>
             </button>
             <button class="symptom-chip" data-symptom="blood in stool or vomit" onclick="toggleSymptom(this)">
-              <span class="chip-icon">ð´</span>Blood in stool/vomit<div class="chip-check"></div>
+              <span class="chip-icon">🔴</span>Blood in stool/vomit<div class="chip-check"></div>
             </button>
             <button class="symptom-chip" data-symptom="excessive drooling" onclick="toggleSymptom(this)">
-              <span class="chip-icon">ð§</span>Excessive drooling<div class="chip-check"></div>
+              <span class="chip-icon">💧</span>Excessive drooling<div class="chip-check"></div>
             </button>
             <button class="symptom-chip" data-symptom="straining or unable to defecate" onclick="toggleSymptom(this)">
-              <span class="chip-icon">ð£</span>Straining to poop<div class="chip-check"></div>
+              <span class="chip-icon">😣</span>Straining to poop<div class="chip-check"></div>
             </button>
           </div>
 
-          <p class="sc-section-label">ð Behavior / Movement</p>
+          <p class="sc-section-label">🐾 Behavior / Movement</p>
           <div class="symptom-grid">
             <button class="symptom-chip" data-symptom="lethargy or extreme tiredness" onclick="toggleSymptom(this)">
-              <span class="chip-icon">ð´</span>Very lethargic<div class="chip-check"></div>
+              <span class="chip-icon">😴</span>Very lethargic<div class="chip-check"></div>
             </button>
             <button class="symptom-chip" data-symptom="limping or difficulty walking" onclick="toggleSymptom(this)">
-              <span class="chip-icon">ð¦µ</span>Limping<div class="chip-check"></div>
+              <span class="chip-icon">🦵</span>Limping<div class="chip-check"></div>
             </button>
             <button class="symptom-chip" data-symptom="hiding or unusual withdrawal from family" onclick="toggleSymptom(this)">
-              <span class="chip-icon">ð«¥</span>Hiding / withdrawn<div class="chip-check"></div>
+              <span class="chip-icon">🫥</span>Hiding / withdrawn<div class="chip-check"></div>
             </button>
             <button class="symptom-chip" data-symptom="crying whimpering or vocalizing pain" onclick="toggleSymptom(this)">
-              <span class="chip-icon">ð¢</span>Crying / whimpering<div class="chip-check"></div>
+              <span class="chip-icon">😢</span>Crying / whimpering<div class="chip-check"></div>
             </button>
             <button class="symptom-chip" data-symptom="sudden aggression or personality change" onclick="toggleSymptom(this)">
-              <span class="chip-icon">ð¡</span>Sudden aggression<div class="chip-check"></div>
+              <span class="chip-icon">😡</span>Sudden aggression<div class="chip-check"></div>
             </button>
             <button class="symptom-chip" data-symptom="head tilt or loss of balance" onclick="toggleSymptom(this)">
-              <span class="chip-icon">ð</span>Head tilt / off-balance<div class="chip-check"></div>
+              <span class="chip-icon">🌀</span>Head tilt / off-balance<div class="chip-check"></div>
             </button>
           </div>
 
-          <p class="sc-section-label">ðï¸ Eyes / Ears / Skin</p>
+          <p class="sc-section-label">👁️ Eyes / Ears / Skin</p>
           <div class="symptom-grid">
             <button class="symptom-chip" data-symptom="redness or discharge from eyes" onclick="toggleSymptom(this)">
-              <span class="chip-icon">ðï¸</span>Eye redness / discharge<div class="chip-check"></div>
+              <span class="chip-icon">👁️</span>Eye redness / discharge<div class="chip-check"></div>
             </button>
             <button class="symptom-chip" data-symptom="scratching ears or constant head shaking" onclick="toggleSymptom(this)">
-              <span class="chip-icon">ð</span>Ear scratching / shaking<div class="chip-check"></div>
+              <span class="chip-icon">👂</span>Ear scratching / shaking<div class="chip-check"></div>
             </button>
             <button class="symptom-chip" data-symptom="hair loss or skin rash or sores" onclick="toggleSymptom(this)">
-              <span class="chip-icon">ð§´</span>Hair loss / rash<div class="chip-check"></div>
+              <span class="chip-icon">🧴</span>Hair loss / rash<div class="chip-check"></div>
             </button>
             <button class="symptom-chip" data-symptom="lump bump or swelling on body" onclick="toggleSymptom(this)">
-              <span class="chip-icon">ðµ</span>Lump / swelling<div class="chip-check"></div>
+              <span class="chip-icon">🔵</span>Lump / swelling<div class="chip-check"></div>
             </button>
           </div>
 
-          <p class="sc-section-label">ð¬ Describe in your own words (optional)</p>
+          <p class="sc-section-label">💬 Describe in your own words (optional)</p>
           <textarea
             class="sc-textarea"
             id="symptom-description"
@@ -872,23 +866,21 @@
           ></textarea>
 
           <div class="sc-warning" id="no-symptom-warning">
-            â ï¸ Please select at least one symptom, or describe what's happening in the text box
+            ⚠️ Please select at least one symptom, or describe what's happening in the text box
           </div>
 
           <div class="sc-nav">
-            <button class="sc-btn-back" onclick="goToStep(2)">â Back</button>
+            <button class="sc-btn-back" onclick="goToStep(2)">← Back</button>
             <button class="sc-btn-next" id="btn-next-3" onclick="validateStep3()">
               Continue
               <span class="sc-count-badge" id="symptom-count" style="display:none;">0</span>
-              â
+              →
             </button>
           </div>
         </div>
       </div>
 
-      <!-- ââââââââââââââââââââââââââââââââââââââââââââââââ
-           STEP 4: Duration
-      ââââââââââââââââââââââââââââââââââââââââââââââââââââ -->
+      <!-- STEP 4: Duration -->
       <div id="step-4" class="sc-step" style="display:none;">
         <div class="sc-step-header">
           <div class="sc-step-pills">
@@ -897,62 +889,58 @@
             <div class="sc-step-pill done"></div>
             <div class="sc-step-pill active"></div>
           </div>
-          <p class="sc-step-title">Step 4 of 4 â How long has this been going on?</p>
+          <p class="sc-step-title">Step 4 of 4 — How long has this been going on?</p>
           <p class="sc-step-sub">Duration helps us assess severity accurately</p>
         </div>
         <div class="sc-step-body">
           <div class="duration-grid">
             <button class="duration-btn" data-duration="just started within the last hour" onclick="selectDuration(this)">
-              <span class="d-label">â¡ Just started</span>
+              <span class="d-label">⚡ Just started</span>
               <span class="d-sub">Within the last hour</span>
             </button>
             <button class="duration-btn" data-duration="started today, a few hours ago" onclick="selectDuration(this)">
-              <span class="d-label">ð Today</span>
+              <span class="d-label">📅 Today</span>
               <span class="d-sub">A few hours ago</span>
             </button>
-            <button class="duration-btn" data-duration="1â2 days" onclick="selectDuration(this)">
-              <span class="d-label">ð 1â2 days</span>
+            <button class="duration-btn" data-duration="1–2 days" onclick="selectDuration(this)">
+              <span class="d-label">📅 1–2 days</span>
               <span class="d-sub">Started yesterday or before</span>
             </button>
-            <button class="duration-btn" data-duration="3â6 days" onclick="selectDuration(this)">
-              <span class="d-label">ðï¸ 3â6 days</span>
+            <button class="duration-btn" data-duration="3–6 days" onclick="selectDuration(this)">
+              <span class="d-label">🗓️ 3–6 days</span>
               <span class="d-sub">Ongoing for a few days</span>
             </button>
             <button class="duration-btn" data-duration="1 week or longer" onclick="selectDuration(this)">
-              <span class="d-label">ð 1 week or more</span>
+              <span class="d-label">📆 1 week or more</span>
               <span class="d-sub">Chronic or recurring issue</span>
             </button>
             <button class="duration-btn" data-duration="unsure when it started" onclick="selectDuration(this)">
-              <span class="d-label">ð¤ Not sure</span>
+              <span class="d-label">🤔 Not sure</span>
               <span class="d-sub">Hard to tell when it began</span>
             </button>
           </div>
           <div class="sc-nav">
-            <button class="sc-btn-back" onclick="goToStep(3)">â Back</button>
+            <button class="sc-btn-back" onclick="goToStep(3)">← Back</button>
             <button class="sc-btn-next" id="btn-next-4" onclick="runCheck()" disabled>
-              ð Check My Pet Now
+              🔍 Check My Pet Now
             </button>
           </div>
         </div>
       </div>
 
-      <!-- ââââââââââââââââââââââââââââââââââââââââââââââââ
-           LOADING
-      ââââââââââââââââââââââââââââââââââââââââââââââââââââ -->
+      <!-- LOADING -->
       <div id="sc-loading" class="sc-loading">
-        <span class="sc-loading-emoji" id="loading-emoji">ð</span>
+        <span class="sc-loading-emoji" id="loading-emoji">🔍</span>
         <h3 id="loading-title">Analyzing symptoms...</h3>
         <p id="loading-sub">Checking against veterinary triage guidelines</p>
         <div class="sc-spinner"></div>
       </div>
 
-      <!-- ââââââââââââââââââââââââââââââââââââââââââââââââ
-           RESULT
-      ââââââââââââââââââââââââââââââââââââââââââââââââââââ -->
+      <!-- RESULT -->
       <div id="sc-result" class="sc-result">
 
         <div class="urgency-banner" id="urgency-banner">
-          <span class="urgency-icon" id="urgency-icon">â ï¸</span>
+          <span class="urgency-icon" id="urgency-icon">⚠️</span>
           <div class="urgency-badge" id="urgency-badge">Assessing...</div>
           <h2 class="urgency-headline" id="urgency-headline"></h2>
           <p class="urgency-sub" id="urgency-sub"></p>
@@ -962,7 +950,7 @@
 
           <!-- Free: Immediate Action -->
           <div class="ia-box ok" id="ia-box">
-            <div class="ia-label">â What to do right now â free</div>
+            <div class="ia-label">✅ What to do right now — free</div>
             <p class="ia-text" id="ia-text">Loading...</p>
           </div>
 
@@ -970,13 +958,13 @@
           <div class="sc-paywall" id="paywall-section">
             <div class="sc-paywall-preview">
               <div class="sc-paywall-blur">
-                <p style="font-size:0.74rem;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:#9ca3af;margin:0 0 10px;">ð¬ Possible Causes</p>
-                <div style="background:#f9fafb;border-radius:10px;padding:10px 14px;margin-bottom:7px;font-size:0.86rem;color:#374151;">â¢ Gastroenteritis (stomach inflammation)</div>
-                <div style="background:#f9fafb;border-radius:10px;padding:10px 14px;margin-bottom:7px;font-size:0.86rem;color:#374151;">â¢ Dietary indiscretion â ate something unusual</div>
-                <div style="background:#f9fafb;border-radius:10px;padding:10px 14px;margin-bottom:14px;font-size:0.86rem;color:#374151;">â¢ Intestinal parasite or bacterial infection</div>
-                <p style="font-size:0.74rem;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:#9ca3af;margin:0 0 10px;">ð  Home Care Steps</p>
-                <div style="background:#f9fafb;border-radius:10px;padding:10px 14px;margin-bottom:7px;font-size:0.86rem;color:#374151;">â¢ Withhold food for 12â24 hours</div>
-                <div style="background:#f9fafb;border-radius:10px;padding:10px 14px;font-size:0.86rem;color:#374151;">â¢ Offer small amounts of water every 2 hours</div>
+                <p style="font-size:0.74rem;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:#9ca3af;margin:0 0 10px;">🔬 Possible Causes</p>
+                <div style="background:#f9fafb;border-radius:10px;padding:10px 14px;margin-bottom:7px;font-size:0.86rem;color:#374151;">• Gastroenteritis (stomach inflammation)</div>
+                <div style="background:#f9fafb;border-radius:10px;padding:10px 14px;margin-bottom:7px;font-size:0.86rem;color:#374151;">• Dietary indiscretion — ate something unusual</div>
+                <div style="background:#f9fafb;border-radius:10px;padding:10px 14px;margin-bottom:14px;font-size:0.86rem;color:#374151;">• Intestinal parasite or bacterial infection</div>
+                <p style="font-size:0.74rem;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:#9ca3af;margin:0 0 10px;">🏠 Home Care Steps</p>
+                <div style="background:#f9fafb;border-radius:10px;padding:10px 14px;margin-bottom:7px;font-size:0.86rem;color:#374151;">• Withhold food for 12–24 hours</div>
+                <div style="background:#f9fafb;border-radius:10px;padding:10px 14px;font-size:0.86rem;color:#374151;">• Offer small amounts of water every 2 hours</div>
               </div>
               <div class="sc-paywall-overlay">
                 <p style="font-size:0.84rem;color:#374151;font-weight:700;margin:0 0 2px;">Full report hidden</p>
@@ -985,19 +973,19 @@
             </div>
             <div class="sc-paywall-cta">
               <h3>Unlock the Full Report</h3>
-              <p>Get a complete breakdown â causes, home care steps, and a printable vet visit checklist.</p>
+              <p>Get a complete breakdown — causes, home care steps, and a printable vet visit checklist.</p>
               <ul class="sc-feature-list">
-                <li><div class="sc-feat-check">â</div> 3â5 likely causes in plain language</li>
-                <li><div class="sc-feat-check">â</div> At-home care steps ranked by priority</li>
-                <li><div class="sc-feat-check">â</div> Interactive vet visit checklist (tap to check off)</li>
-                <li><div class="sc-feat-check">â</div> Red-flag signs to watch for in the next 24 hrs</li>
+                <li><div class="sc-feat-check">✓</div> 3–5 likely causes in plain language</li>
+                <li><div class="sc-feat-check">✓</div> At-home care steps ranked by priority</li>
+                <li><div class="sc-feat-check">✓</div> Interactive vet visit checklist (tap to check off)</li>
+                <li><div class="sc-feat-check">✓</div> Red-flag signs to watch for in the next 24 hrs</li>
               </ul>
               <button class="sc-unlock-btn" onclick="unlockReport()">
                 Unlock Full Report
                 <span class="sc-price-pill">$2.99</span>
               </button>
               <p style="font-size:0.74rem;color:#9ca3af;margin-top:10px;">
-                One-time payment Â· Instant access Â· 100% money-back guarantee
+                One-time payment · Instant access · 100% money-back guarantee
               </p>
             </div>
           </div>
@@ -1005,41 +993,39 @@
           <!-- Full unlocked report (hidden until paid) -->
           <div id="full-report" style="display:none;">
             <div class="report-section">
-              <h4>ð¬ Possible Causes</h4>
+              <h4>🔬 Possible Causes</h4>
               <ul class="report-list" id="report-causes"></ul>
             </div>
             <div class="report-section">
-              <h4>ð  Home Care Steps</h4>
+              <h4>🏠 Home Care Steps</h4>
               <ul class="report-list" id="report-homecare"></ul>
             </div>
             <div class="report-section">
-              <h4>ð Vet Visit Checklist â tap to check off</h4>
+              <h4>📋 Vet Visit Checklist — tap to check off</h4>
               <div id="report-vet-checklist"></div>
             </div>
             <div class="report-section">
-              <h4>ð© Go to the vet immediately if you also see:</h4>
+              <h4>🚩 Go to the vet immediately if you also see:</h4>
               <ul class="report-list" id="report-red-flags"></ul>
             </div>
           </div>
 
           <!-- Action buttons -->
           <div class="sc-actions-row">
-            <button class="sc-action-btn" onclick="startOver()">ð Check Again</button>
-            <a href="care-plan.html" class="sc-action-btn">ð Care Plan</a>
-            <a href="quiz.html"      class="sc-action-btn">ð¾ Pet Quiz</a>
+            <button class="sc-action-btn" onclick="startOver()">🔄 Check Again</button>
+            <a href="care-plan.html" class="sc-action-btn">📋 Care Plan</a>
+            <a href="quiz.html"      class="sc-action-btn">🐾 Pet Quiz</a>
           </div>
 
           <div class="sc-disclaimer">
-            <strong>âï¸ Disclaimer:</strong> This tool provides general information only and is not a substitute for professional veterinary advice, diagnosis, or treatment. If your pet is in distress or you are concerned, contact a licensed veterinarian or emergency animal hospital immediately. Always consult a vet before making medical decisions for your pet.
+            <strong>ℹ️ Disclaimer:</strong> This tool provides general information only and is not a substitute for professional veterinary advice, diagnosis, or treatment. If your pet is in distress or you are concerned, contact a licensed veterinarian or emergency animal hospital immediately. Always consult a vet before making medical decisions for your pet.
           </div>
         </div>
       </div>
 
-      <!-- ââââââââââââââââââââââââââââââââââââââââââââââââ
-           ERROR
-      ââââââââââââââââââââââââââââââââââââââââââââââââââââ -->
+      <!-- ERROR -->
       <div id="sc-error" class="sc-error">
-        <span class="sc-error-emoji">ð</span>
+        <span class="sc-error-emoji">😔</span>
         <h3>Something went wrong</h3>
         <p>We couldn't analyze the symptoms right now. Please try again in a moment.</p>
         <button class="sc-btn-next" style="max-width:220px;margin:0 auto;" onclick="startOver()">Try Again</button>
@@ -1048,14 +1034,14 @@
     </div><!-- /sc-card -->
 
     <p style="text-align:center;color:#9ca3af;font-size:0.77rem;margin-top:20px;max-width:480px;margin-left:auto;margin-right:auto;line-height:1.65;padding:0 20px;">
-      AI-assisted information only â not a replacement for a licensed veterinarian.
+      AI-assisted information only — not a replacement for a licensed veterinarian.
       In an emergency, contact your nearest animal hospital immediately.
     </p>
   </main>
 
-  <!-- ââ FOOTER âââââââââââââââââââââââââââââââââââââââââââ -->
+  <!-- FOOTER -->
   <footer class="site-footer">
-    <div class="footer-logo">ð¾ My Pet Generator</div>
+    <div class="footer-logo">🐾 My Pet Generator</div>
     <div class="footer-links">
       <a href="terms.html">Terms of Service</a>
       <a href="privacy.html">Privacy Policy</a>
@@ -1067,11 +1053,9 @@
     <p>© 2026 My Pet Generator. All rights reserved.</p>
   </footer>
 
-  <!-- ââââââââââââââââââââââââââââââââââââââââââââââââââââââ
-       JAVASCRIPT
-  âââââââââââââââââââââââââââââââââââââââââââââââââââââââ -->
+  <!-- JAVASCRIPT -->
   <script>
-    // ââ State âââââââââââââââââââââââââââââââââââââââââââââ
+    // State
     const state = {
       animal:      null,
       petName:     '',
@@ -1090,7 +1074,7 @@
       return 'sc_' + Date.now() + '_' + Math.random().toString(36).slice(2, 8);
     }
 
-    // ââ Step Navigation âââââââââââââââââââââââââââââââââââ
+    // Step Navigation
     function goToStep(n) {
       for (let i = 1; i <= 4; i++) {
         const el = document.getElementById('step-' + i);
@@ -1099,7 +1083,7 @@
       document.getElementById('sc-card').scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
 
-    // ââ Step 1: Animal ââââââââââââââââââââââââââââââââââââ
+    // Step 1: Animal
     function selectAnimal(btn) {
       document.querySelectorAll('.animal-btn').forEach(b => b.classList.remove('selected'));
       btn.classList.add('selected');
@@ -1107,7 +1091,7 @@
       document.getElementById('btn-next-1').disabled = false;
     }
 
-    // ââ Step 2: Pet Info ââââââââââââââââââââââââââââââââââ
+    // Step 2: Pet Info
     function checkStep2() {
       const age    = document.getElementById('pet-age').value;
       const weight = document.getElementById('pet-weight').value;
@@ -1115,7 +1099,7 @@
       document.getElementById('btn-next-2').disabled = !(age && weight && sex);
     }
 
-    // ââ Step 3: Symptoms ââââââââââââââââââââââââââââââââââ
+    // Step 3: Symptoms
     function toggleSymptom(btn) {
       btn.classList.toggle('selected');
       const s = btn.dataset.symptom;
@@ -1141,7 +1125,7 @@
       goToStep(4);
     }
 
-    // ââ Step 4: Duration ââââââââââââââââââââââââââââââââââ
+    // Step 4: Duration
     function selectDuration(btn) {
       document.querySelectorAll('.duration-btn').forEach(b => b.classList.remove('selected'));
       btn.classList.add('selected');
@@ -1149,18 +1133,18 @@
       document.getElementById('btn-next-4').disabled = false;
     }
 
-    // ââ Run Check (API call) ââââââââââââââââââââââââââââââ
+    // Run Check (API call)
     const LOADING_MESSAGES = [
-      { emoji: 'ð', title: 'Analyzing symptoms...', sub: 'Checking against veterinary triage guidelines' },
-      { emoji: 'ð§¬', title: 'Cross-referencing conditions...', sub: 'Comparing with known cases for this pet type' },
-      { emoji: 'ð', title: 'Building your report...', sub: 'Almost ready â personalizing your results' },
+      { emoji: '🔍', title: 'Analyzing symptoms...',          sub: 'Checking against veterinary triage guidelines' },
+      { emoji: '🧬', title: 'Cross-referencing conditions...', sub: 'Comparing with known cases for this pet type' },
+      { emoji: '📋', title: 'Building your report...',         sub: 'Almost ready — personalizing your results' },
     ];
 
     async function runCheck() {
-      state.petName    = document.getElementById('pet-name').value.trim();
-      state.petAge     = document.getElementById('pet-age').value;
-      state.petWeight  = document.getElementById('pet-weight').value;
-      state.petSex     = document.getElementById('pet-sex').value;
+      state.petName     = document.getElementById('pet-name').value.trim();
+      state.petAge      = document.getElementById('pet-age').value;
+      state.petWeight   = document.getElementById('pet-weight').value;
+      state.petSex      = document.getElementById('pet-sex').value;
       state.description = document.getElementById('symptom-description').value.trim();
 
       // Show loading
@@ -1220,31 +1204,28 @@
       }
     }
 
-    // ââ Show Result âââââââââââââââââââââââââââââââââââââââ
+    // Show Result
     function showResult(data) {
       document.getElementById('sc-loading').classList.remove('active');
       document.getElementById('sc-result').classList.add('active');
 
-      const urgency = data.urgency || 'warning'; // 'emergency' | 'warning' | 'ok'
+      const urgency = data.urgency || 'warning';
 
-      // Banner
       const banner = document.getElementById('urgency-banner');
       banner.className = 'urgency-banner ' + urgency;
 
-      const ICONS  = { emergency: 'ð¨', warning: 'â ï¸', ok: 'â' };
-      const BADGES = { emergency: 'ð´ Emergency', warning: 'ð¡ Monitor Closely', ok: 'ð¢ Likely OK' };
+      const ICONS  = { emergency: '🚨', warning: '⚠️', ok: '✅' };
+      const BADGES = { emergency: '🔴 Emergency', warning: '🟡 Monitor Closely', ok: '🟢 Likely OK' };
 
       document.getElementById('urgency-icon').textContent     = ICONS[urgency];
       document.getElementById('urgency-badge').textContent    = BADGES[urgency];
-      document.getElementById('urgency-headline').textContent = data.headline     || '';
-      document.getElementById('urgency-sub').textContent      = data.urgency_sub  || '';
+      document.getElementById('urgency-headline').textContent = data.headline    || '';
+      document.getElementById('urgency-sub').textContent      = data.urgency_sub || '';
 
-      // Immediate action box
       const iaBox = document.getElementById('ia-box');
       iaBox.className = 'ia-box ' + urgency;
       document.getElementById('ia-text').textContent = data.immediate_action || '';
 
-      // GA
       if (typeof gtag !== 'undefined') {
         gtag('event', 'symptom_check_completed', {
           animal:  state.animal,
@@ -1255,7 +1236,7 @@
       document.getElementById('sc-card').scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
 
-    // ââ Unlock (Paddle) âââââââââââââââââââââââââââââââââââ
+    // Unlock (Paddle)
     function unlockReport() {
       if (state.unlocked) { renderFullReport(); return; }
 
@@ -1283,18 +1264,17 @@
       } else {
         // Dev/fallback: show full report directly (remove in production)
         state.unlocked = true;
-        // Fake data for testing
         if (!state.resultData.detailed_causes) {
           state.resultData.detailed_causes = [
-            'Gastroenteritis â inflammation of the stomach/intestinal lining, often from diet changes or a minor infection',
-            'Dietary indiscretion â common when a pet eats something unusual, spoiled, or out of the ordinary',
-            'Intestinal parasites (roundworm, giardia) â especially if your pet spends time outdoors or around other animals',
+            'Gastroenteritis — inflammation of the stomach/intestinal lining, often from diet changes or a minor infection',
+            'Dietary indiscretion — common when a pet eats something unusual, spoiled, or out of the ordinary',
+            'Intestinal parasites (roundworm, giardia) — especially if your pet spends time outdoors or around other animals',
           ];
           state.resultData.home_care = [
-            'Withhold food for 12â24 hours to let the GI tract rest (fresh water always available)',
-            'Offer small, frequent amounts of water (2â3 tablespoons every 30 minutes) to prevent dehydration',
+            'Withhold food for 12–24 hours to let the GI tract rest (fresh water always available)',
+            'Offer small, frequent amounts of water (2–3 tablespoons every 30 minutes) to prevent dehydration',
             'After fasting, reintroduce bland food: boiled chicken and white rice in small amounts',
-            'Monitor stool consistency â improving diarrhea within 24â48 hrs is a good sign',
+            'Monitor stool consistency — improving diarrhea within 24–48 hrs is a good sign',
           ];
           state.resultData.vet_checklist = [
             'Note the time and frequency of vomiting/diarrhea episodes',
@@ -1306,7 +1286,7 @@
           state.resultData.red_flags = [
             'Blood in vomit or stool (bright red or dark/tarry)',
             'Signs of severe dehydration: sunken eyes, dry gums, skin that doesn\'t spring back when pinched',
-            'Vomiting more than 3â4 times within 1 hour',
+            'Vomiting more than 3–4 times within 1 hour',
             'Your pet becomes unresponsive, collapses, or loses consciousness',
           ];
         }
@@ -1326,7 +1306,7 @@
       causesList.innerHTML = '';
       (data.detailed_causes || []).forEach(c => {
         causesList.insertAdjacentHTML('beforeend',
-          `<li><span class="li-icon">ð¬</span>${c}</li>`);
+          `<li><span class="li-icon">🔬</span>${c}</li>`);
       });
 
       // Home care
@@ -1353,11 +1333,11 @@
       flagsList.innerHTML = '';
       (data.red_flags || []).forEach(f => {
         flagsList.insertAdjacentHTML('beforeend',
-          `<li><span class="li-icon">ð©</span>${f}</li>`);
+          `<li><span class="li-icon">🚩</span>${f}</li>`);
       });
     }
 
-    // ââ Start Over ââââââââââââââââââââââââââââââââââââââââ
+    // Start Over
     function startOver() {
       Object.assign(state, {
         animal: null, petName: '', petAge: '', petWeight: '', petSex: '',
