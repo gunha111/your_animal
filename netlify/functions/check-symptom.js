@@ -185,7 +185,10 @@ export default async (req) => {
       }),
     });
 
-    if (!anthropicRes.ok) throw new Error(`Anthropic API returned ${anthropicRes.status}`);
+    if (!anthropicRes.ok) {
+      const errBody = await anthropicRes.text();
+      throw new Error(`Anthropic API returned ${anthropicRes.status}: ${errBody}`);
+    }
     const anthropicData = await anthropicRes.json();
     resultData = parseClaudeResponse(anthropicData.content);
 
