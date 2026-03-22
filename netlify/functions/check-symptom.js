@@ -11,7 +11,7 @@
 export const config = { path: '/api/check-symptom' };
 
 const ANTHROPIC_API = 'https://api.anthropic.com/v1/messages';
-const MODEL         = 'claude-sonnet-4-20250514';
+const MODEL         = 'claude-haiku-4-5-20251001';
 const MAX_TOKENS    = 1200;
 const RATE_LIMIT_SESSION = 5;
 const RATE_LIMIT_IP      = 20;
