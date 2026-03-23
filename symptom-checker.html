@@ -1133,27 +1133,48 @@
       document.getElementById('btn-next-4').disabled = false;
     }
 
-    // Run Check (API call)
-    const LOADING_MESSAGES = [
-      { emoji: '🔍', title: 'Analyzing symptoms...',          sub: 'Checking against veterinary triage guidelines' },
-      { emoji: '🧬', title: 'Cross-referencing conditions...', sub: 'Comparing with known cases for this pet type' },
-      { emoji: '📋', title: 'Building your report...',         sub: 'Almost ready — personalizing your results' },
+    // Emergency symptoms for client-side urgency estimate
+    const EMERGENCY_SYMPTOMS = [
+      'collapse or loss of consciousness',
+      'difficulty breathing or gasping',
+      'seizures or convulsions',
+      'severe bleeding that won\'t stop',
+      'suspected poisoning or toxic ingestion',
+      'swollen or hard and distended abdomen',
     ];
 
-    async function runCheck() {
+    const LOADING_MESSAGES = [
+      { emoji: '🔍', title: 'Scanning your symptoms...',        sub: 'Checking against veterinary triage guidelines' },
+      { emoji: '🧬', title: 'Cross-referencing conditions...', sub: 'Comparing with known cases for this pet type' },
+      { emoji: '📋', title: 'Preparing your report...',        sub: 'Almost ready — personalizing your results' },
+    ];
+
+    function estimateUrgency() {
+      const hasEmergency = state.symptoms.some(s => EMERGENCY_SYMPTOMS.includes(s));
+      if (hasEmergency) return 'emergency';
+      const desc = (state.description || '').toLowerCase();
+      if (desc.includes('breath') || desc.includes('bleed') || desc.includes('seiz') || desc.includes('collaps')) return 'emergency';
+      return 'warning';
+    }
+
+    function runCheck() {
       state.petName     = document.getElementById('pet-name').value.trim();
       state.petAge      = document.getElementById('pet-age').value;
       state.petWeight   = document.getElementById('pet-weight').value;
       state.petSex      = document.getElementById('pet-sex').value;
       state.description = document.getElementById('symptom-description').value.trim();
 
-      // Show loading
+      // Show brief loading animation then paywall
       for (let i = 1; i <= 4; i++) {
         const el = document.getElementById('step-' + i);
         if (el) el.style.display = 'none';
       }
       document.getElementById('sc-loading').classList.add('active');
       document.getElementById('sc-card').scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+      if (typeof gtag !== 'undefined') {
+        gtag('event', 'symptom_check_started', { animal: state.animal, symptom_count: state.symptoms.length });
+      }
 
       let msgIdx = 0;
       const msgInterval = setInterval(() => {
@@ -1162,15 +1183,79 @@
         document.getElementById('loading-emoji').textContent = m.emoji;
         document.getElementById('loading-title').textContent = m.title;
         document.getElementById('loading-sub').textContent   = m.sub;
-      }, 1800);
+      }, 1000);
 
-      // GA event
+      // Show paywall after 2.8s animation
+      setTimeout(() => {
+        clearInterval(msgInterval);
+        showPaywall();
+      }, 2800);
+    }
+
+    function showPaywall() {
+      const urgency = estimateUrgency();
+      const ICONS  = { emergency: '🚨', warning: '⚠️', ok: '✅' };
+      const BADGES = { emergency: '🔴 Emergency — Vet Visit Likely Required', warning: '🟡 Monitor Closely — Vet Advice Recommended', ok: '🟢 Likely OK — Monitor at Home' };
+      const HEADLINES = {
+        emergency: 'Your pet may need immediate veterinary attention',
+        warning:   'Your pet\'s symptoms need careful monitoring',
+        ok:        'Your pet\'s symptoms appear manageable at home',
+      };
+
+      document.getElementById('sc-loading').classList.remove('active');
+      document.getElementById('sc-result').classList.add('active');
+
+      const banner = document.getElementById('urgency-banner');
+      banner.className = 'urgency-banner ' + urgency;
+      document.getElementById('urgency-icon').textContent     = ICONS[urgency];
+      document.getElementById('urgency-badge').textContent    = BADGES[urgency];
+      document.getElementById('urgency-headline').textContent = HEADLINES[urgency];
+      document.getElementById('urgency-sub').textContent      = 'Full report ready — unlock to see causes, home care steps & vet checklist';
+
+      const iaBox = document.getElementById('ia-box');
+      iaBox.className = 'ia-box ' + urgency;
+      document.getElementById('ia-text').textContent = urgency === 'emergency'
+        ? 'Contact your vet or emergency animal hospital now. Do not wait for symptoms to worsen.'
+        : 'Keep your pet calm and comfortable. Unlock the full report for specific steps.';
+
       if (typeof gtag !== 'undefined') {
-        gtag('event', 'symptom_check_started', {
-          animal: state.animal,
-          symptom_count: state.symptoms.length,
-        });
+        gtag('event', 'symptom_paywall_shown', { animal: state.animal, urgency });
       }
+
+      document.getElementById('sc-card').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    // Unlock: payment first, then API call
+    async function unlockReport() {
+      if (state.unlocked) { renderFullReport(); return; }
+
+      if (typeof Paddle === 'undefined') {
+        alert('Payment module not loaded. Please refresh the page and try again.');
+        return;
+      }
+
+      Paddle.Initialize({ token: 'live_ee1c199a48838d75d5ece38b08b' });
+      Paddle.Checkout.open({
+        items: [{ priceId: 'pri_01kmakgmym9zb1bktek1d3zkvb', quantity: 1 }],
+        customData: { session_id: state.sessionId, product_type: 'symptom_report' },
+        settings: { theme: 'light', displayMode: 'overlay' },
+        successCallback: async () => {
+          state.unlocked = true;
+          if (typeof gtag !== 'undefined') {
+            gtag('event', 'purchase', { currency: 'USD', value: 2.99, items: [{ item_id: 'symptom_report', item_name: 'Symptom Report Unlock' }] });
+          }
+          await fetchAndRenderReport();
+        },
+      });
+    }
+
+    async function fetchAndRenderReport() {
+      // Show loading while calling API
+      document.getElementById('sc-result').classList.remove('active');
+      document.getElementById('sc-loading').classList.add('active');
+      document.getElementById('loading-emoji').textContent = '🧬';
+      document.getElementById('loading-title').textContent = 'Generating your full report...';
+      document.getElementById('loading-sub').textContent   = 'This usually takes 10–15 seconds';
 
       try {
         const res = await fetch('/api/check-symptom', {
@@ -1189,110 +1274,33 @@
           }),
         });
 
-        clearInterval(msgInterval);
         if (!res.ok) throw new Error('API error ' + res.status);
-
         const data = await res.json();
         state.resultData = data;
-        showResult(data);
+
+        // Update urgency banner with real data
+        const urgency = data.urgency || 'warning';
+        const ICONS  = { emergency: '🚨', warning: '⚠️', ok: '✅' };
+        const BADGES = { emergency: '🔴 Emergency', warning: '🟡 Monitor Closely', ok: '🟢 Likely OK' };
+        document.getElementById('urgency-banner').className = 'urgency-banner ' + urgency;
+        document.getElementById('urgency-icon').textContent     = ICONS[urgency];
+        document.getElementById('urgency-badge').textContent    = BADGES[urgency];
+        document.getElementById('urgency-headline').textContent = data.headline || '';
+        document.getElementById('urgency-sub').textContent      = data.urgency_sub || '';
+        document.getElementById('ia-box').className = 'ia-box ' + urgency;
+        document.getElementById('ia-text').textContent = data.immediate_action || '';
+
+        document.getElementById('sc-loading').classList.remove('active');
+        document.getElementById('sc-result').classList.add('active');
+        renderFullReport();
 
       } catch (err) {
-        clearInterval(msgInterval);
         console.error('check-symptom error:', err);
         document.getElementById('sc-loading').classList.remove('active');
         document.getElementById('sc-error').classList.add('active');
       }
     }
 
-    // Show Result
-    function showResult(data) {
-      document.getElementById('sc-loading').classList.remove('active');
-      document.getElementById('sc-result').classList.add('active');
-
-      const urgency = data.urgency || 'warning';
-
-      const banner = document.getElementById('urgency-banner');
-      banner.className = 'urgency-banner ' + urgency;
-
-      const ICONS  = { emergency: '🚨', warning: '⚠️', ok: '✅' };
-      const BADGES = { emergency: '🔴 Emergency', warning: '🟡 Monitor Closely', ok: '🟢 Likely OK' };
-
-      document.getElementById('urgency-icon').textContent     = ICONS[urgency];
-      document.getElementById('urgency-badge').textContent    = BADGES[urgency];
-      document.getElementById('urgency-headline').textContent = data.headline    || '';
-      document.getElementById('urgency-sub').textContent      = data.urgency_sub || '';
-
-      const iaBox = document.getElementById('ia-box');
-      iaBox.className = 'ia-box ' + urgency;
-      document.getElementById('ia-text').textContent = data.immediate_action || '';
-
-      if (typeof gtag !== 'undefined') {
-        gtag('event', 'symptom_check_completed', {
-          animal:  state.animal,
-          urgency: urgency,
-        });
-      }
-
-      document.getElementById('sc-card').scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-
-    // Unlock (Paddle)
-    function unlockReport() {
-      if (state.unlocked) { renderFullReport(); return; }
-
-      if (typeof Paddle !== 'undefined') {
-        Paddle.Initialize({ token: 'live_ee1c199a48838d75d5ece38b08b' });
-        Paddle.Checkout.open({
-          items: [{ priceId: 'pri_01kmakgmym9zb1bktek1d3zkvb', quantity: 1 }],
-          customData: {
-            session_id:   state.sessionId,
-            product_type: 'symptom_report',
-          },
-          settings: { theme: 'light', displayMode: 'overlay' },
-          successCallback: () => {
-            state.unlocked = true;
-            renderFullReport();
-            if (typeof gtag !== 'undefined') {
-              gtag('event', 'purchase', {
-                currency: 'USD',
-                value: 2.99,
-                items: [{ item_id: 'symptom_report', item_name: 'Symptom Report Unlock' }],
-              });
-            }
-          },
-        });
-      } else {
-        // Dev/fallback: show full report directly (remove in production)
-        state.unlocked = true;
-        if (!state.resultData.detailed_causes) {
-          state.resultData.detailed_causes = [
-            'Gastroenteritis — inflammation of the stomach/intestinal lining, often from diet changes or a minor infection',
-            'Dietary indiscretion — common when a pet eats something unusual, spoiled, or out of the ordinary',
-            'Intestinal parasites (roundworm, giardia) — especially if your pet spends time outdoors or around other animals',
-          ];
-          state.resultData.home_care = [
-            'Withhold food for 12–24 hours to let the GI tract rest (fresh water always available)',
-            'Offer small, frequent amounts of water (2–3 tablespoons every 30 minutes) to prevent dehydration',
-            'After fasting, reintroduce bland food: boiled chicken and white rice in small amounts',
-            'Monitor stool consistency — improving diarrhea within 24–48 hrs is a good sign',
-          ];
-          state.resultData.vet_checklist = [
-            'Note the time and frequency of vomiting/diarrhea episodes',
-            'Bring a fresh stool sample in a sealed container if possible',
-            'List all food, treats, or objects your pet may have eaten in the last 48 hours',
-            'Note any medications or supplements your pet currently takes',
-            'Describe any recent changes to diet, environment, or routine',
-          ];
-          state.resultData.red_flags = [
-            'Blood in vomit or stool (bright red or dark/tarry)',
-            'Signs of severe dehydration: sunken eyes, dry gums, skin that doesn\'t spring back when pinched',
-            'Vomiting more than 3–4 times within 1 hour',
-            'Your pet becomes unresponsive, collapses, or loses consciousness',
-          ];
-        }
-        renderFullReport();
-      }
-    }
 
     function renderFullReport() {
       const data = state.resultData;

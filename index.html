@@ -102,23 +102,151 @@
     </div>
   </header>
 
+  <style>
+    @keyframes shimmer {
+      0% { background-position: -200% center; }
+      100% { background-position: 200% center; }
+    }
+    @keyframes glow-pulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(99,102,241,0.5), 0 8px 32px rgba(99,102,241,0.35); }
+      50% { box-shadow: 0 0 0 12px rgba(99,102,241,0), 0 8px 32px rgba(99,102,241,0.55); }
+    }
+    @keyframes bounce-arrow {
+      0%, 100% { transform: translateX(0); }
+      50% { transform: translateX(5px); }
+    }
+    .hero-cta-main {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 20px 48px;
+      font-size: 1.2rem;
+      font-weight: 900;
+      color: #fff;
+      border-radius: 100px;
+      text-decoration: none;
+      background: linear-gradient(90deg, #6366f1, #818cf8, #a78bfa, #6366f1);
+      background-size: 300% auto;
+      animation: shimmer 3s linear infinite, glow-pulse 2.5s ease-in-out infinite;
+      transition: transform 0.2s;
+      position: relative;
+      letter-spacing: -0.01em;
+    }
+    .hero-cta-main:hover { transform: translateY(-3px) scale(1.03); }
+    .hero-cta-main:active { transform: scale(0.97); }
+    .hero-cta-main .arrow { display: inline-block; animation: bounce-arrow 1s ease-in-out infinite; }
+    .hero-social-proof {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 16px;
+      font-size: 0.85rem;
+      color: #6b7280;
+    }
+    .hero-social-proof .avatars { display: flex; }
+    .hero-social-proof .avatars span {
+      width: 26px; height: 26px; border-radius: 50%;
+      background: linear-gradient(135deg,#6366f1,#ec4899);
+      border: 2px solid #fff;
+      margin-left: -6px;
+      font-size: 0.7rem;
+      display: flex; align-items: center; justify-content: center;
+      color: #fff; font-weight: 700;
+    }
+    .hero-social-proof .avatars span:first-child { margin-left: 0; }
+    .hero-animals-clickable { cursor: pointer; transition: transform 0.15s; display: inline-block; }
+    .hero-animals-clickable:hover { transform: scale(1.2); }
+    .hero-animals-hint { font-size: 0.75rem; color: #9ca3af; margin-top: 6px; }
+
+    /* Sticky mobile CTA */
+    .sticky-cta {
+      display: none;
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      padding: 12px 20px;
+      background: rgba(255,255,255,0.95);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-top: 1px solid #e5e7eb;
+      z-index: 999;
+      box-shadow: 0 -4px 20px rgba(0,0,0,0.1);
+    }
+    .sticky-cta a {
+      display: block;
+      padding: 15px;
+      text-align: center;
+      background: linear-gradient(90deg,#6366f1,#818cf8,#a78bfa,#6366f1);
+      background-size: 300% auto;
+      animation: shimmer 3s linear infinite;
+      color: #fff;
+      border-radius: 14px;
+      font-weight: 800;
+      font-size: 1rem;
+      text-decoration: none;
+    }
+    @media(max-width: 640px) {
+      .sticky-cta { display: block; }
+      body { padding-bottom: 80px; }
+    }
+  </style>
+
   <!-- HERO -->
   <section class="hero">
     <div class="container" style="position:relative;">
       <div class="hero-badge">✨ Free Personality Quiz</div>
       <h1>Which pet is <span class="highlight">made for you</span>?</h1>
       <p class="hero-desc">Answer a few quick questions about your lifestyle, personality, and living situation — and we'll reveal your TOP 5 perfect pet matches</p>
-      <div class="hero-animals">🐕 🐈 🐰 🐹 🐠 🦜 🐾 🐢 🦡 🦔</div>
-      <div class="hero-cta-wrap">
-        <a href="quiz.html" class="cta-btn"
+
+      <div style="margin: 20px 0 10px; font-size: 1.8rem; line-height: 1.6;">
+        <a href="quiz.html" style="text-decoration:none;">
+          <span class="hero-animals-clickable">🐕</span>
+          <span class="hero-animals-clickable">🐈</span>
+          <span class="hero-animals-clickable">🐰</span>
+          <span class="hero-animals-clickable">🐹</span>
+          <span class="hero-animals-clickable">🐠</span>
+          <span class="hero-animals-clickable">🦜</span>
+          <span class="hero-animals-clickable">🐾</span>
+          <span class="hero-animals-clickable">🐢</span>
+          <span class="hero-animals-clickable">🦡</span>
+          <span class="hero-animals-clickable">🦔</span>
+        </a>
+        <p class="hero-animals-hint">👆 Tap any animal to start</p>
+      </div>
+
+      <div class="hero-cta-wrap" style="margin-top:28px;">
+        <a href="quiz.html" class="hero-cta-main"
            data-ab-test="hero-cta-copy"
            data-ab-variants="A,B">
-          Take the Quiz Now <span class="arrow">→</span>
+          Find My Perfect Pet <span class="arrow">→</span>
         </a>
       </div>
-      <p class="hero-note">✨ Free · Takes about 2 minutes · Instant results</p>
+
+      <div class="hero-social-proof">
+        <div class="avatars">
+          <span>K</span><span>J</span><span>M</span><span>S</span><span>+</span>
+        </div>
+        <span><strong id="quiz-counter-hero">12,400+</strong> people matched this month · Free</span>
+      </div>
+
+      <p class="hero-note" style="margin-top:10px;">✨ Takes about 2 minutes · Instant results · No sign-up required</p>
     </div>
   </section>
+
+  <!-- Sticky mobile CTA -->
+  <div class="sticky-cta" id="sticky-cta">
+    <a href="quiz.html">🐾 Find My Perfect Pet — Free →</a>
+  </div>
+  <script>
+    // Hide sticky CTA once user scrolls past hero
+    (function() {
+      const sticky = document.getElementById('sticky-cta');
+      if (!sticky) return;
+      window.addEventListener('scroll', function() {
+        sticky.style.display = window.scrollY > 600 ? 'block' : 'none';
+      }, { passive: true });
+    })();
+  </script>
 
   <!-- FEATURES -->
   <section class="section">
@@ -352,8 +480,10 @@
         );
         const data = await res.json();
         const count = Array.isArray(data) ? data.length : 0;
-        document.getElementById('quiz-counter').textContent =
-          count > 0 ? (count + 200).toLocaleString() : '1,240+';
+        const label = count > 0 ? (count + 200).toLocaleString() : '1,240+';
+        document.getElementById('quiz-counter').textContent = label;
+        const heroCounter = document.getElementById('quiz-counter-hero');
+        if (heroCounter) heroCounter.textContent = label + '+';
       } catch {
         document.getElementById('quiz-counter').textContent = '1,240+';
       }

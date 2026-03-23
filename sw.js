@@ -1,5 +1,5 @@
 // My Pet Generator — Service Worker
-const CACHE = 'mpg-v6';
+const CACHE = 'mpg-v9';
 const STATIC = [
   '/',
   '/index.html',
@@ -9,10 +9,13 @@ const STATIC = [
   '/js/paywall.js',
   '/js/auth.js',
   '/js/scoring.js',
+  '/js/ab-test.js',
+  '/js/analytics.js',
   '/js/supabase-config.js',
   '/data/questions.js',
   '/data/pets.js',
   '/data/care-plans.js',
+  '/manifest.json',
 ];
 
 // Install: cache static assets
