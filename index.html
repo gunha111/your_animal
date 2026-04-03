@@ -74,7 +74,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/style.css" />
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐾</text></svg>" />
+  <link rel="icon" type="image/png" href="/images/mascot-favicon.png" />
   <link rel="manifest" href="/manifest.json" />
   <meta name="theme-color" content="#6366f1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -189,47 +189,85 @@
       .sticky-cta { display: block; }
       body { padding-bottom: 80px; }
     }
+
+    /* Mascot hero layout */
+    .hero-layout {
+      display: flex;
+      align-items: center;
+      gap: 48px;
+      justify-content: center;
+    }
+    .hero-text { flex: 1; min-width: 0; }
+    .hero-mascot {
+      flex-shrink: 0;
+      width: 260px;
+    }
+    .hero-mascot img {
+      width: 100%;
+      height: auto;
+      display: block;
+      filter: drop-shadow(0 24px 48px rgba(99,102,241,0.18));
+      animation: mascot-float 4s ease-in-out infinite;
+    }
+    @keyframes mascot-float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-14px); }
+    }
+    @media (max-width: 900px) {
+      .hero-layout { flex-direction: column-reverse; gap: 16px; }
+      .hero-mascot { width: 150px; }
+    }
+    @media (max-width: 640px) {
+      .hero-mascot { width: 120px; }
+    }
   </style>
 
   <!-- HERO -->
   <section class="hero">
     <div class="container" style="position:relative;">
-      <div class="hero-badge">✨ Free Personality Quiz</div>
-      <h1>Which pet is <span class="highlight">made for you</span>?</h1>
-      <p class="hero-desc">Answer a few quick questions about your lifestyle, personality, and living situation — and we'll reveal your TOP 5 perfect pet matches</p>
+      <div class="hero-layout">
+        <div class="hero-text">
+          <div class="hero-badge">✨ Free Personality Quiz</div>
+          <h1>Which pet is <span class="highlight">made for you</span>?</h1>
+          <p class="hero-desc">Answer a few quick questions about your lifestyle, personality, and living situation — and we'll reveal your TOP 5 perfect pet matches</p>
 
-      <div style="margin: 20px 0 10px; font-size: 1.8rem; line-height: 1.6;">
-        <a href="quiz.html" style="text-decoration:none;">
-          <span class="hero-animals-clickable">🐕</span>
-          <span class="hero-animals-clickable">🐈</span>
-          <span class="hero-animals-clickable">🐰</span>
-          <span class="hero-animals-clickable">🐹</span>
-          <span class="hero-animals-clickable">🐠</span>
-          <span class="hero-animals-clickable">🦜</span>
-          <span class="hero-animals-clickable">🐾</span>
-          <span class="hero-animals-clickable">🐢</span>
-          <span class="hero-animals-clickable">🦡</span>
-          <span class="hero-animals-clickable">🦔</span>
-        </a>
-        <p class="hero-animals-hint">👆 Tap any animal to start</p>
-      </div>
+          <div style="margin: 20px 0 10px; font-size: 1.8rem; line-height: 1.6;">
+            <a href="quiz.html" style="text-decoration:none;">
+              <span class="hero-animals-clickable">🐕</span>
+              <span class="hero-animals-clickable">🐈</span>
+              <span class="hero-animals-clickable">🐰</span>
+              <span class="hero-animals-clickable">🐹</span>
+              <span class="hero-animals-clickable">🐠</span>
+              <span class="hero-animals-clickable">🦜</span>
+              <span class="hero-animals-clickable">🐾</span>
+              <span class="hero-animals-clickable">🐢</span>
+              <span class="hero-animals-clickable">🦡</span>
+              <span class="hero-animals-clickable">🦔</span>
+            </a>
+            <p class="hero-animals-hint">👆 Tap any animal to start</p>
+          </div>
 
-      <div class="hero-cta-wrap" style="margin-top:28px;">
-        <a href="quiz.html" class="hero-cta-main"
-           data-ab-test="hero-cta-copy"
-           data-ab-variants="A,B">
-          Find My Perfect Pet <span class="arrow">→</span>
-        </a>
-      </div>
+          <div class="hero-cta-wrap" style="margin-top:28px;">
+            <a href="quiz.html" class="hero-cta-main"
+               data-ab-test="hero-cta-copy"
+               data-ab-variants="A,B">
+              Find My Perfect Pet <span class="arrow">→</span>
+            </a>
+          </div>
 
-      <div class="hero-social-proof">
-        <div class="avatars">
-          <span>K</span><span>J</span><span>M</span><span>S</span><span>+</span>
+          <div class="hero-social-proof">
+            <div class="avatars">
+              <span>K</span><span>J</span><span>M</span><span>S</span><span>+</span>
+            </div>
+            <span><strong id="quiz-counter-hero">12,400+</strong> people matched this month · Free</span>
+          </div>
+
+          <p class="hero-note" style="margin-top:10px;">✨ Takes about 2 minutes · Instant results · No sign-up required</p>
         </div>
-        <span><strong id="quiz-counter-hero">12,400+</strong> people matched this month · Free</span>
+        <div class="hero-mascot">
+          <img src="images/mascot-hero.png" alt="My Pet Generator mascot" />
+        </div>
       </div>
-
-      <p class="hero-note" style="margin-top:10px;">✨ Takes about 2 minutes · Instant results · No sign-up required</p>
     </div>
   </section>
 
